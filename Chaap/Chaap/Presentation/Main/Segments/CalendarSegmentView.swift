@@ -49,7 +49,7 @@ struct CalendarSegmentView: View {
                 calendarGrid
                 eventsList
             }
-            .frame(width: 360, height: 336.29)
+            .frame(width: 360, height: 482.31)
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.black.opacity(0.4))
@@ -78,7 +78,7 @@ struct CalendarSegmentView: View {
                 .disabled(!canNavigateMonth(-1))
                 
                 Text(monthYearFormatter.string(from: currentMonth))
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.chBodyBold)
                     .foregroundColor(.white)
                     .frame(width: 160, height: 25)
                     .background(Color.clear)
@@ -96,7 +96,8 @@ struct CalendarSegmentView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 8)
+        .padding(.top, 8)
+        .padding(.bottom, 16)
         .frame(height: 50)
     }
     
@@ -104,28 +105,28 @@ struct CalendarSegmentView: View {
         HStack {
             ForEach(weekdays, id: \.self) { weekday in
                 Text(weekday)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.chBodyRegular)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
             }
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 8)
-        .frame(height: 32)
+        .frame(height: 46.86)
     }
     
     private var calendarGrid: some View {
         LazyVGrid(
             columns: Array(repeating: GridItem(.flexible()), count: 7),
-            spacing: 4
+            spacing: 5
         ) {
             ForEach(daysInMonth.indices, id: \.self) { index in
                 dayCell(date: daysInMonth[index])
             }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .frame(height: 180)
+        .padding(.top, 5)
+        .padding(.bottom, 8)
+        .frame(height: 306.16)
     }
     
     private func dayCell(date: Date) -> some View {
@@ -155,10 +156,7 @@ struct CalendarSegmentView: View {
                         .frame(width: 28, height: 28)
                     
                     Text("\(day)")
-                        .font(.system(
-                            size: 15,
-                            weight: isSelected ? .bold : .regular
-                        ))
+                        .font(.chBodyRegular)
                         .foregroundColor(cellTextColor(
                             isSelected: isSelected,
                             isToday: isToday,
@@ -181,7 +179,7 @@ struct CalendarSegmentView: View {
                         .frame(height: 10)
                 }
             }
-            .frame(width: 35, height: 34)
+            .frame(width: 35, height: 46.86)
         }
     }
     
