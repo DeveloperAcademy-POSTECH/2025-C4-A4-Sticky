@@ -52,13 +52,15 @@ class CalendarSegmentViewModel: ObservableObject {
         var days: [Date] = []
         
         /// 이전 달 날짜들로 첫 주 채우기
-        for dayOffset in (1...adjustedFirstWeekday).reversed() {
-            if let previousDate = calendar.date(
-                byAdding: .day,
-                value: -dayOffset,
-                to: firstOfMonth
-            ) {
-                days.append(previousDate)
+        if adjustedFirstWeekday > 0 {
+            for dayOffset in (1...adjustedFirstWeekday).reversed() {
+                if let previousDate = calendar.date(
+                    byAdding: .day,
+                    value: -dayOffset,
+                    to: firstOfMonth
+                ) {
+                    days.append(previousDate)
+                }
             }
         }
         
@@ -80,19 +82,19 @@ class CalendarSegmentViewModel: ObservableObject {
         }
         
         /// 다음 달 날짜들로 마지막 주 채우기 (7의 배수로 맞추기)
-        let lastOfMonth = calendar.date(
-            byAdding: .day,
-            value: numberOfDays,
-            to: firstOfMonth
-        ) ?? firstOfMonth
-        
         let remainingCells = 7 - (days.count % 7)
         if remainingCells < 7 {
-            for dayOffset in 0..<remainingCells {
+            let lastDayOfMonth = calendar.date(
+                byAdding: .day,
+                value: numberOfDays - 1,
+                to: firstOfMonth
+            ) ?? firstOfMonth
+            
+            for dayOffset in 1...remainingCells {
                 if let nextDate = calendar.date(
                     byAdding: .day,
                     value: dayOffset,
-                    to: lastOfMonth
+                    to: lastDayOfMonth
                 ) {
                     days.append(nextDate)
                 }
@@ -124,13 +126,17 @@ class CalendarSegmentViewModel: ObservableObject {
             value: direction,
             to: currentMonth
         ) {
-            currentMonth = newMonth
+            DispatchQueue.main.async {
+                self.currentMonth = newMonth
+            }
         }
     }
     
     /// 날짜 선택
     func selectDate(_ date: Date) {
-        selectedDate = date
+        DispatchQueue.main.async {
+            self.selectedDate = date
+        }
     }
     
 
@@ -203,10 +209,15 @@ class CalendarSegmentViewModel: ObservableObject {
     /// 캘린더를 초기화하는 함수
     private func calendarDidInitialize() {
         let currentYear = calendar.component(.year, from: Date())
+        let currentMonthNumber = calendar.component(.month, from: Date())
+        
         if currentYear < startYear {
-            currentMonth = createDate(year: startYear, month: 1, day: 1) ?? Date()
+            self.currentMonth = createDate(year: startYear, month: 1, day: 1) ?? Date()
         } else if currentYear > endYear {
-            currentMonth = createDate(year: endYear, month: 12, day: 1) ?? Date()
+            self.currentMonth = createDate(year: endYear, month: 12, day: 1) ?? Date()
+        } else {
+            // 현재 년도가 범위 내에 있을 때는 현재 월을 사용
+            self.currentMonth = createDate(year: currentYear, month: currentMonthNumber, day: 1) ?? Date()
         }
     }
     
