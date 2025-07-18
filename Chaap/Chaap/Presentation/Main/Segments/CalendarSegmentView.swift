@@ -11,22 +11,32 @@ struct CalendarSegmentView: View {
     @StateObject private var viewModel = CalendarSegmentViewModel()
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                monthHeader
-                weekdayHeader
-                calendarGrid
-                eventsList
-            }
-            .frame(width: 360, height: 450.31)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.gray.opacity(0.2))
-            )
-            .padding(.horizontal, 16)
-            .padding(.top, 16)
+        ZStack {
+            // 전체화면 배경
+            Color.gray.opacity(0.2)
+                .ignoresSafeArea(.all)
             
-            Spacer()
+            VStack(spacing: 0) {
+                Spacer()
+                
+                VStack(alignment: .center, spacing: 16) {
+                    monthHeader
+                    
+                    VStack(alignment: .leading, spacing: 5) {
+                        weekdayHeader
+                        calendarGrid
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 0)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    
+                    eventsList
+                }
+                .padding(0)
+                .frame(width: 360, alignment: .top)
+                
+                Spacer()
+            }
         }
     }
     
@@ -39,7 +49,7 @@ struct CalendarSegmentView: View {
                     viewModel.changeMonth(-1)
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(hex: "#919191"))
                         .font(.system(size: 16, weight: .medium))
                 }
                 .disabled(!viewModel.canNavigateMonth(-1))
@@ -56,7 +66,7 @@ struct CalendarSegmentView: View {
                     viewModel.changeMonth(1)
                 } label: {
                     Image(systemName: "chevron.right")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(hex: "#919191"))
                         .font(.system(size: 16, weight: .medium))
                 }
                 .disabled(!viewModel.canNavigateMonth(1))
@@ -65,38 +75,40 @@ struct CalendarSegmentView: View {
             
             Spacer()
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 2)
-        .frame(height: 50)
+        .padding(0)
+        .frame(width: 160, alignment: .center)
     }
     
     private var weekdayHeader: some View {
-        HStack {
+        HStack(alignment: .center, spacing: 10) {
             ForEach(viewModel.weekdays, id: \.self) { weekday in
                 Text(weekday)
-                    .font(.chBodyRegular)
+                    .font(.chPrimaryCaptionRegular)
                     .foregroundColor(Color(hex: "#919191"))
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        .padding(.horizontal, 16)
-        .frame(height: 46.86)
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36, alignment: .center)
     }
     
     private var calendarGrid: some View {
-        LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible()), count: 7),
-            spacing: 2
-        ) {
-            ForEach(viewModel.daysInMonth.indices, id: \.self) { index in
-                dayCell(date: viewModel.daysInMonth[index])
+        VStack(alignment: .center, spacing: 5) {
+            ForEach(0..<6, id: \.self) { week in
+                HStack(alignment: .center, spacing: 10) {
+                    ForEach(0..<7, id: \.self) { day in
+                        let index = week * 7 + day
+                        if index < viewModel.daysInMonth.count {
+                            dayCell(date: viewModel.daysInMonth[index])
+                        } else {
+                            Spacer()
+                        }
+                    }
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36, alignment: .center)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 2)
-        .padding(.bottom, 8)
-        .frame(height: 291.16)
     }
     
     private func dayCell(date: Date) -> some View {
@@ -120,10 +132,10 @@ struct CalendarSegmentView: View {
                             isSelected: isSelected,
                             isToday: isToday
                         ))
-                        .frame(width: 37, height: 36)
+                        .frame(width: 28, height: 27)
                     
                     Text("\(day)")
-                        .font(.chBodyRegular)
+                        .font(.chPrimaryCaptionRegular)
                         .foregroundColor(viewModel.cellTextColor(
                             for: date,
                             isSelected: isSelected,
@@ -144,7 +156,7 @@ struct CalendarSegmentView: View {
                         .frame(height: 10)
                 }
             }
-            .frame(width: 35, height: 46.86)
+            .frame(width: 35, height: 36)
         }
     }
     
@@ -155,43 +167,42 @@ struct CalendarSegmentView: View {
                     eventRow(event: event)
                     if event.id != viewModel.eventsForSelectedDate.last?.id {
                         Divider()
-                            .padding(.leading, 50)
+                            .padding(.leading, 38)
                     }
                 }
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .frame(height: 74.29)
+        .padding(.top, 6)
+        .frame(height: 60)
     }
     
     private func eventRow(event: CalendarEvent) -> some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             Circle()
                 .fill(Color.gray.opacity(0.3))
-                .frame(width: 36, height: 36)
+                .frame(width: 27, height: 27)
                 .overlay(
                     Text(String(event.organizer.prefix(1)))
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.black)
                 )
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(event.title)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.black)
                 
                 HStack {
                     Text(event.time)
-                        .font(.system(size: 12))
+                        .font(.system(size: 9))
                         .foregroundColor(.gray)
                     
                     if !event.location.isEmpty {
                         Image(systemName: "location")
-                            .font(.system(size: 10))
+                            .font(.system(size: 8))
                             .foregroundColor(.gray)
                         Text(event.location)
-                            .font(.system(size: 12))
+                            .font(.system(size: 9))
                             .foregroundColor(.gray)
                     }
                 }
@@ -199,8 +210,8 @@ struct CalendarSegmentView: View {
             
             Spacer()
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 6)
     }
 }
 
