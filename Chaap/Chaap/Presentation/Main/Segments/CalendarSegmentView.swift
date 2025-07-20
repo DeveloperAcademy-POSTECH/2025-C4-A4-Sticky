@@ -172,7 +172,8 @@ struct CalendarSegmentView: View {
             .frame(width: 35, height: 36)
         }
     }
-    
+
+    //TODO: Custom Modal로 변경해야 함.    
     private var eventsList: some View {
         ScrollView {
             VStack(spacing: 0) {
