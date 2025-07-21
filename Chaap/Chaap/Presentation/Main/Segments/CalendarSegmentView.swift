@@ -230,6 +230,7 @@ struct CalendarSegmentView: View {
 }
 
 // MARK: - CalendarEvent 모델
+// TODO: 실제 기록 모델로 변경 혹은 캘린더 이벤트용 모델 따로 생성
 
 struct CalendarEvent {
     let id: String
