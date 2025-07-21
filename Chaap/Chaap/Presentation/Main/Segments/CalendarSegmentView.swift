@@ -32,8 +32,7 @@ struct CalendarSegmentView: View {
 
                     eventsList
                 }
-                .padding(0)
-                .frame(width: 360, alignment: .top)
+                .padding(.horizontal, 16)
 
                 Spacer()
             }
