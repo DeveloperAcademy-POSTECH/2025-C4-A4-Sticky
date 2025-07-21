@@ -26,7 +26,7 @@ struct CHBottomModalModifier<SheetContent: View>: ViewModifier {
             if isPresented {
                 sheetView()
                     .transition(.move(edge: .bottom))
-                    .animation(.easeInOut, value: isPresented)
+                    .zIndex(1) // base보다 위에 보이게 하기 위함
             }
         }
     }
