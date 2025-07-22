@@ -106,7 +106,7 @@ struct ProfileView: View {
                             .font(.chPrimaryCaptionRegular)
                             .foregroundColor(.black) // Primary-Black
                             .padding(.horizontal, 20)
-                            .onChange(of: nickname) { newValue in
+                            .onChange(of: nickname) { oldValue, newValue in
                                 nickname = validateInput(newValue)
                             }
                     }

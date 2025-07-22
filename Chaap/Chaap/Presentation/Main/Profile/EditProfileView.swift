@@ -104,7 +104,7 @@ struct EditProfileView: View {
                                 hasUserEdited ? .black : Color(red: 0.6, green: 0.6, blue: 0.6)
                             )
                             .padding(.horizontal, 20)
-                            .onChange(of: nickname) { newValue in
+                            .onChange(of: nickname) { oldValue, newValue in
                                 if !hasUserEdited {
                                     hasUserEdited = true
                                 }
