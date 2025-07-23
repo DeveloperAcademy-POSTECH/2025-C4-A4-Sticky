@@ -14,12 +14,10 @@ struct PeopleDetailView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                // Top navigation
+                /// Top navigation
                 HStack {
-                    // Back button
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
+                    /// Back button
+                    Button(action: backTapped) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 20))
                             .foregroundColor(.white)
@@ -30,14 +28,14 @@ struct PeopleDetailView: View {
                     
                     Spacer()
                     
-                    // Person name
+                    /// Person name
                     Text(person.name)
                         .font(.chBodyBold)
                         .foregroundColor(.white)
                     
                     Spacer()
                     
-                    // Invisible spacer to center the name
+                    /// Invisible spacer to center the name
                     Rectangle()
                         .frame(width: 40, height: 40)
                         .opacity(0)
@@ -45,7 +43,7 @@ struct PeopleDetailView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 60)
                 
-                // Card counter
+                /// Card counter
                 Text("\(person.currentCard) / \(person.totalCards)")
                     .font(.chBodyRegular)
                     .foregroundColor(.white)
@@ -53,11 +51,11 @@ struct PeopleDetailView: View {
                 
                 Spacer()
                 
-                // Person card
+                /// Person card
                 VStack(spacing: 0) {
-                    // Card content
+                    /// Card content
                     VStack(spacing: 16) {
-                        // Person avatar and name
+                        /// Person avatar and name
                         VStack(spacing: 8) {
                             ZStack {
                                 Circle()
@@ -74,7 +72,7 @@ struct PeopleDetailView: View {
                                 .foregroundColor(.white)
                         }
                         
-                        // Date and time
+                        /// Date and time
                         Text("2025.07.08 화요일 18:00")
                             .font(.chSecondaryCaptionRegular)
                             .foregroundColor(.white.opacity(0.8))
@@ -82,12 +80,12 @@ struct PeopleDetailView: View {
                         Spacer()
                             .frame(height: 20)
                         
-                        // Title
+                        /// Title
                         Text("카페 공쥬!")
                             .font(.chBodyBold)
                             .foregroundColor(.white)
                         
-                        // Korean text content
+                        /// Korean text content
                         VStack(alignment: .leading, spacing: 8) {
                             Text("패피와 같이 카페에서 공부를 했다.")
                             Text("역시 공부는 집에서 안하는 것 같다..")
@@ -101,7 +99,7 @@ struct PeopleDetailView: View {
                         Spacer()
                             .frame(height: 20)
                         
-                        // Location
+                        /// Location
                         HStack {
                             Image(systemName: "location")
                                 .font(.system(size: 12))
@@ -133,8 +131,14 @@ struct PeopleDetailView: View {
         .background(
             EllipticalGradient(
                 stops: [
-                    Gradient.Stop(color: Color(red: 0.11, green: 0.22, blue: 0.53), location: 0.00),
-                    Gradient.Stop(color: Color(red: 0.62, green: 0.66, blue: 0.88), location: 1.00),
+                    Gradient.Stop(
+                        color: Color(red: 0.11, green: 0.22, blue: 0.53),
+                        location: 0.00
+                    ),
+                    Gradient.Stop(
+                        color: Color(red: 0.62, green: 0.66, blue: 0.88),
+                        location: 1.00
+                    ),
                 ],
                 center: UnitPoint(x: -0.05, y: 0.21)
             )
@@ -142,12 +146,23 @@ struct PeopleDetailView: View {
         .ignoresSafeArea()
         .navigationBarHidden(true)
     }
+    
+    // MARK: - Event Handlers
+    
+    private func backTapped() {
+        presentationMode.wrappedValue.dismiss()
+    }
 }
 
 #Preview {
     NavigationView {
         PeopleDetailView(
-            person: Person(name: "Peppr", imageName: "person.fill", totalCards: 13, currentCard: 1)
+            person: Person(
+                name: "Peppr",
+                imageName: "person.fill",
+                totalCards: 13,
+                currentCard: 1
+            )
         )
     }
 } 
