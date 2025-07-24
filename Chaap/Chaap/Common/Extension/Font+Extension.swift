@@ -67,4 +67,8 @@ extension Font {
     static var chSecondaryCaptionRegular: Font {
         return .pretend(type: .regular, size: 11)
     }
+    
+    static var systemEmphasized: Font {
+        return .system(size: 17, weight: .semibold)
+    }
 }
