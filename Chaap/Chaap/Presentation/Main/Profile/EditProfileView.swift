@@ -27,7 +27,7 @@ struct EditProfileView: View {
                         .font(.chPrimaryCaptionMedium)
                         .foregroundColor(.black)
                     
-                    /// 오른쪽 버튼
+                    /// 오른쪽(저장) 버튼
                     HStack {
                         Spacer()
                         Button("저장") {

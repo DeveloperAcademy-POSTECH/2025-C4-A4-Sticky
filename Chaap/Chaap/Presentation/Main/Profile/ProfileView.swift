@@ -24,7 +24,7 @@ struct ProfileView: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13))
                     
-                    /// 오른쪽 버튼
+                    /// 오른쪽(다음) 버튼
                     HStack {
                         Spacer()
                         Button("다음") {
