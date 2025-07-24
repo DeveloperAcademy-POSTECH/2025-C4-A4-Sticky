@@ -17,12 +17,8 @@ struct ProfileView: View {
                 ZStack {
                     /// 중앙 타이틀
                     Text("Chaap")
-                        .font(
-                            Font.custom("SF Pro", size: 17)
-                                .weight(.semibold)
-                        )
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13))
+                        .font(.systemEmphasized)
+                        .foregroundColor(.chLabelBlackPrimary)
                     
                     /// 오른쪽(다음) 버튼
                     HStack {
