@@ -34,8 +34,7 @@ struct EditProfileView: View {
                             // 저장 버튼 액션
                         }
                         .font(.chPrimaryCaptionMedium)
-                        // Primary-Black : Secondary-Black
-                        .foregroundColor(hasChanges ? .black : .gray)
+                        .foregroundColor(hasChanges ? .chLabelBlackPrimary : .chLabelBlackSecondary)
                     }
                 }
             }

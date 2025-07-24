@@ -31,8 +31,7 @@ struct ProfileView: View {
                             // 다음 버튼 액션
                         }
                         .font(.chPrimaryCaptionMedium)
-                        // Secondary-Black : Primary-Black
-                        .foregroundColor(nickname.isEmpty ? .gray : .black)
+                        .foregroundColor(nickname.isEmpty ? .chLabelBlackSecondary : .chLabelBlackPrimary)
                     }
                 }
             }
