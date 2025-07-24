@@ -10,25 +10,6 @@ import SwiftUI
 struct ProfileView: View {
     @State private var nickname = ""
     
-    /// 바이트 수 계산 함수
-    private func getByteCount(of text: String) -> Int {
-        return text.data(using: .utf8)?.count ?? 0
-    }
-    
-    /// 입력 검증 및 제한 함수
-    private func validateInput(_ newValue: String) -> String {
-        let byteCount = getByteCount(of: newValue)
-        if byteCount > 50 {
-            // 50바이트를 초과하는 경우, 50바이트까지만 잘라서 반환
-            var trimmedValue = newValue
-            while getByteCount(of: trimmedValue) > 50 {
-                trimmedValue = String(trimmedValue.dropLast())
-            }
-            return trimmedValue
-        }
-        return newValue
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             /// 상단 네비게이션
