@@ -8,8 +8,36 @@
 import SwiftUI
 
 struct MainView: View {
+    @StateObject private var viewModel = SegmentsViewModel()
+
     var body: some View {
-        Text("메인 뷰입니다.")
+        NavigationStack {
+            ZStack {
+                selectedSegmentView
+                
+                VStack(alignment: .leading) {
+                    SegmentControlPicker(selected: $viewModel.selectedSegement)
+                        .safeAreaPadding(.top, 68)
+                    
+                    Spacer()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Selected Segment View
+    @ViewBuilder
+    var selectedSegmentView: some View {
+        switch viewModel.selectedSegement {
+        case .cardSegment:
+            CardSegmentView()
+        case .peopleSegment:
+            PeopleSegmentView()
+        case .calendarSegment:
+            CalendarSegmentView()
+        case .mapSegment:
+            MapSegmentView()
+        }
     }
 }
 
