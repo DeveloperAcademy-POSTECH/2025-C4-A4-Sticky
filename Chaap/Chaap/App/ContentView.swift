@@ -23,6 +23,7 @@ struct ContentView: View {
                     .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                 )
                 .ignoresSafeArea(.all)
+            MainView()
         }
         
     }
