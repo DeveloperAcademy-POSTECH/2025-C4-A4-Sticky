@@ -45,7 +45,16 @@ extension Color {
     }
     
     /// 16진수 색상코드 가져와서 커스텀 컬러 지정
-    static let chPrimary = Color(hex: "#1C3E98") // Primary Color
-    static let chSecondary = Color(hex: "#9EA9E1") // Secondary Color
+    /// chColors
+    static let chPrimary = Color(hex: "#1C3E98")
+    static let chSecondary = Color(hex: "#9EA9E1")
     static let chBlack = Color(hex: "#020202")
+    
+    /// chLabelBlack
+    static let chLabelBlackPrimary = Color(hex: "#202020")
+    static let chLabelBlackSecondary = Color(hex: "#757575")
+    
+    /// chLabelWhite
+    static let chLabelWhitePrimary = Color(hex: "#FEFEFE")
+    static let chLabelWhiteSecondary = Color(hex: "#EBEDF0")
 }
