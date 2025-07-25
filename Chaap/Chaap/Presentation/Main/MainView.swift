@@ -22,6 +22,10 @@ struct MainView: View {
                 }
                 .safeAreaPadding(.top, 14)
                 .safeAreaPadding(.horizontal, 16)
+                VStack {
+                    Spacer()
+                    CHFloatingBtn()
+                }
             }
         }
     }
