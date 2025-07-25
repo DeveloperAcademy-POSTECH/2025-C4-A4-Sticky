@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Segments: String, CaseIterable {
+enum SegmentsModel: String, CaseIterable {
     case cardSegment
     case peopleSegment
     case calendarSegment

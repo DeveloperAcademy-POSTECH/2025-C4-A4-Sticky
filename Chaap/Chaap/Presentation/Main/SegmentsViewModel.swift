@@ -9,5 +9,5 @@ import Foundation
 import SwiftUI
 
 class SegmentsViewModel: ObservableObject {
-    @Published var selectedSegement: Segments = .cardSegment
+    @Published var selectedSegement: SegmentsModel = .cardSegment
 }

@@ -22,6 +22,7 @@ struct MainView: View {
                     Spacer()
                 }
             }
+            .safeAreaPadding(.horizontal, 16)
         }
     }
     
