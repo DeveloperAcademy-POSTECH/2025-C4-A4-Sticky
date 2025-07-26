@@ -24,8 +24,8 @@ struct CardSegmentView: View {
                 )
                 .ignoresSafeArea(.all)
             
-            CHCardShow()
-                .frame(width: 319, height: 389)
+//            CHCardShow()
+//                .frame(width: 319, height: 389)
         }
     }
 }

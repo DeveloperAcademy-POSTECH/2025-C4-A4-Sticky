@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CHCardShow: View {
+    @State var viewModel: CHCardShowViewModel
+    
     var body: some View {
         ZStack {
             CHCardBG()
@@ -33,12 +35,12 @@ struct CHCardShow: View {
                 .frame(width: 44, height: 44)
                 .foregroundStyle(.white)
             
-            // 상대 프로필 닉네읾
-            Text("with (상대 닉네임)")
+            // 상대 프로필 닉네임
+            Text("with \(viewModel.peerName)")
                 .font(.chBodyBold)
                 .foregroundStyle(.white)
             
-            Text("YYYY.MM.DD ㅁ요일 HH:MM")
+            Text(viewModel.formattedDate)
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.8))
         }
@@ -48,12 +50,12 @@ struct CHCardShow: View {
     var middleContent: some View {
         VStack(spacing: 8) {
             // 기록 제목
-            Text("Title")
+            Text(viewModel.title)
                 .font(.chBodyBold)
                 .foregroundStyle(.white)
             
             // 기록 내용
-            Text("Content")
+            Text(viewModel.memo)
                 .font(.chBodyRegular)
                 .foregroundStyle(.white.opacity(0.8))
         }
@@ -67,13 +69,9 @@ struct CHCardShow: View {
                 .foregroundStyle(.white.opacity(0.8))
             
             // 위치 정보
-            Text("location")
+            Text(viewModel.location)
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.8))
         }
     }
-}
-
-#Preview {
-    CHCardShow()
 }
