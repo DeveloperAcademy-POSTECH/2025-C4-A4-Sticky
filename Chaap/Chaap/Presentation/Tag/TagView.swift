@@ -11,6 +11,7 @@ import Lottie
 
 struct TagView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var navigationManager: CHNavigationManager
     
     @State private var viewModel: TagViewModel
     
