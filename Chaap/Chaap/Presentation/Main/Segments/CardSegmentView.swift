@@ -13,14 +13,10 @@ struct CardSegmentView: View {
     
     @State private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
-//    @State private var isAnimating: Bool = false
     
-    // 현재 시간 기준 기록 시간이 24시간 내인 경우만
-    var recentChaaps: [Chaap] {
-        let now = Date()
-        return allChaaps.filter {
-            now.timeIntervalSince($0.createdAt) <= 86400
-        }
+    // 최근 5개
+    var recentFiveChaaps: [Chaap] {
+        Array(allChaaps.prefix(5))
     }
     
     var body: some View {
@@ -41,8 +37,8 @@ struct CardSegmentView: View {
             
             GeometryReader { proxy in
                 ZStack {
-                    ForEach(recentChaaps.indices, id: \.self) { index in
-                        let chaap = recentChaaps[index]
+                    ForEach(recentFiveChaaps.indices, id: \.self) { index in
+                        let chaap = recentFiveChaaps[index]
                         
                         if abs(index - currentIndex) <= 1 {
                             CHCardShow(chaap: chaap)
@@ -57,13 +53,13 @@ struct CardSegmentView: View {
                                         .updating($dragOffset) { value, state, _ in
                                             if index == currentIndex {
                                                 let direction = value.translation.height
-                                                if (currentIndex > 0 && direction > 0) || (currentIndex < recentChaaps.count - 1 && direction < 0) {
+                                                if (currentIndex > 0 && direction > 0) || (currentIndex < recentFiveChaaps.count - 1 && direction < 0) {
                                                     state = value.translation.height
                                                 }
                                             }
                                         }
                                         .onEnded { value in
-                                            if value.translation.height < -10 && currentIndex < recentChaaps.count - 1 {
+                                            if value.translation.height < -10 && currentIndex < recentFiveChaaps.count - 1 {
                                                 currentIndex += 1
                                             } else if value.translation.height > 10 && currentIndex > 0 {
                                                 currentIndex -= 1
