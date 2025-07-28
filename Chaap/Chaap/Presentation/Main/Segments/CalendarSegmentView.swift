@@ -27,7 +27,7 @@ struct CalendarSegmentView: View {
 
             VStack(spacing: 0) {
                 Spacer()
-
+                // TODO: CHBlurView 추가 필요
                 VStack(alignment: .center, spacing: 16) {
                     monthHeader
 
@@ -36,11 +36,13 @@ struct CalendarSegmentView: View {
                         calendarGrid
                     }
                     .frame(maxWidth: .infinity, alignment: .topLeading)
+                    Spacer()
                 }
                 .padding(.horizontal, 16)
 
                 Spacer()
             }
+            .safeAreaPadding(.top, 144)
         }
         .modifier(CHBottomModalModifier(
             isPresented: $isModalPresented,
