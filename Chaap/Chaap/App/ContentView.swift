@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @AppStorage("displayName") private var displayName: String = ""
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -23,6 +26,12 @@ struct ContentView: View {
                     .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                 )
                 .ignoresSafeArea(.all)
+            
+            if displayName.isEmpty {
+                ProfileView()
+            } else {
+                MainView()
+            }
         }
         
     }
