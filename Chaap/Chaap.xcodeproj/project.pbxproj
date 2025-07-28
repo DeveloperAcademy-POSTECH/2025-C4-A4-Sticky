@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EE938C902E33646A008E6DAE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = EE938C8F2E33646A008E6DAE /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		EE5000E52E28D768009A909E /* Chaap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chaap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE938C902E33646A008E6DAE /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Chaap;
 			packageProductDependencies = (
+				EE938C8F2E33646A008E6DAE /* Lottie */,
 			);
 			productName = Chaap;
 			productReference = EE5000E52E28D768009A909E /* Chaap.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = EE5000DC2E28D768009A909E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EE938C8E2E33646A008E6DAE /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EE5000E62E28D768009A909E /* Products */;
 			projectDirPath = "";
@@ -270,6 +279,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chaap/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "동일 네트워크 상의 기기와 통신하여 기능을 제공하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 항상 또는 사용하는 동안에만 수집합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 항상 수집합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 사용하는 동안에만 수집합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "주변 기기와의 거리 및 방향 측정 기능을 제공하기 위해 Nearby Interaction 기능을 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +313,11 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chaap/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "동일 네트워크 상의 기기와 통신하여 기능을 제공하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 항상 또는 사용하는 동안에만 수집합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 항상 수집합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치 기반 기능을 제공하기 위해 사용자의 위치 정보를 사용하는 동안에만 수집합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "주변 기기와의 거리 및 방향 측정 기능을 제공하기 위해 Nearby Interaction 기능을 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +358,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EE938C8E2E33646A008E6DAE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EE938C8F2E33646A008E6DAE /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE938C8E2E33646A008E6DAE /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EE5000DD2E28D768009A909E /* Project object */;
 }
