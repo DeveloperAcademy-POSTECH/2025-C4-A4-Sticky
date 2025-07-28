@@ -11,8 +11,7 @@ import NearbyInteraction
 
 struct CalendarSegmentView: View {
     @StateObject private var viewModel: CalendarSegmentViewModel
-    @State private var showChaapDetail = false
-    @State private var selectedChaap: Chaap?
+    @State private var isModalPresented: Bool = false
     
     init(modelContext: ModelContext) {
         _viewModel = StateObject(
@@ -21,23 +20,39 @@ struct CalendarSegmentView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            
-            VStack(alignment: .center, spacing: 16) {
-                monthHeader
-                
-                VStack(alignment: .leading, spacing: 5) {
-                    weekdayHeader
-                    calendarGrid
+        ZStack {
+            /// 전체화면 배경
+            Color.gray.opacity(0.2)
+                .ignoresSafeArea(.all)
+
+            VStack(spacing: 0) {
+                Spacer()
+
+                VStack(alignment: .center, spacing: 16) {
+                    monthHeader
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        weekdayHeader
+                        calendarGrid
+                    }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-                
-                eventsList
+                .padding(.horizontal, 16)
+
+                Spacer()
             }
-            .padding(.horizontal, 16)
-            
-            Spacer()
+        }
+        .modifier(CHBottomModalModifier(
+            isPresented: $isModalPresented,
+            minHeight: 200,
+            maxHeight: 400
+        ) {
+            chaapListModal
+        })
+        .onChange(of: viewModel.selectedDate) { _, _ in
+            withAnimation(.easeInOut(duration: 0.3)) {
+                isModalPresented = !viewModel.eventsForSelectedDate.isEmpty
+            }
         }
     }
     
@@ -179,33 +194,25 @@ struct CalendarSegmentView: View {
         }
     }
 
-    //TODO: Custom Modal로 변경해야 함.
-    private var eventsList: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ForEach(viewModel.eventsForSelectedDate, id: \.id) { chaap in
-                    PeerChaapRow(chaap: chaap)
-                        .padding(.horizontal, 9)
-                        .padding(.vertical, 6)
-                        .onTapGesture {
-                            selectedChaap = chaap
-                            showChaapDetail = true
+    private var chaapListModal: some View {
+        VStack(spacing: 0) {
+            // 챱 목록
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(viewModel.eventsForSelectedDate, id: \.id) { chaap in
+                        PeerChaapRow(chaap: chaap)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 12)
+                        
+                        if chaap.id != viewModel.eventsForSelectedDate.last?.id {
+                            Divider()
+                                .background(Color.white.opacity(0.2))
+                                .padding(.horizontal, 4)
                         }
-                    
-                    if chaap.id != viewModel.eventsForSelectedDate.last?.id {
-                        Divider()
-                            .padding(.leading, 38)
                     }
                 }
             }
-        }
-        .padding(.top, 6)
-        .frame(maxHeight: 150)
-        .chBottomModal(isPresented: $showChaapDetail) {
-            if let selectedChaap = selectedChaap {
-                CHCardShow(viewModel: CHCardShowViewModel(chaap: selectedChaap))
-                    .frame(height: 400)
-            }
+            .scrollIndicators(.hidden)
         }
     }
 }

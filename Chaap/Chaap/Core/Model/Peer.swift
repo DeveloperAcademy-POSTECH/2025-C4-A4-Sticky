@@ -20,7 +20,7 @@ class Peer {
         self.tokenString = Peer.tokenToString(token)
         self.displayName = displayName
     }
-
+    
     /// 토큰 -> 고유 식별자
     static func tokenToString(_ token: NIDiscoveryToken) -> String {
         return token.description

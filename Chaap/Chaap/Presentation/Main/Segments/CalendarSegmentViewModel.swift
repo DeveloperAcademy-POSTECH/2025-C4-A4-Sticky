@@ -262,7 +262,7 @@ class CalendarSegmentViewModel: ObservableObject {
         return calendar.date(from: components)
     }
     
-    /// 특정 날짜의 챱 목록 가져오기
+    /// 특정 날짜의 이벤트 목록 가져오기 (실제 Chaap 데이터 사용)
     private func chaapsForDate(_ date: Date) -> [Chaap] {
         // Calendar의 startOfDay와 endOfDay를 구하여 해당 날짜의 Chaap들을 필터링
         let startOfDay = calendar.startOfDay(for: date)
