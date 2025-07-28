@@ -6,14 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PeopleDetailView: View {
-    let peer: Peer
+    let displayName: String
+    let peers: [Peer]
+    
     @Environment(\.presentationMode) var presentationMode
     
-    var totalCards: Int = 13
-    var currentCard: Int = 1
+    @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)])
+    var allChaaps: [Chaap]
     
+    // 이 Peer들이 포함된 Chaap만 추출
+    var filteredChaaps: [Chaap] {
+        allChaaps.filter { chaap in
+            chaap.peers.contains { peer in
+                peer.displayName == displayName
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
             VStack(spacing: 62) {
@@ -33,7 +45,7 @@ struct PeopleDetailView: View {
                     }
                     HStack {
                         Spacer()
-                        Text(peer.displayName)
+                        Text(displayName)
                             .font(.systemEmphasized)
                             .foregroundColor(.white)
                         
@@ -43,13 +55,29 @@ struct PeopleDetailView: View {
                 .padding(.horizontal, 16)
                 
                 /// Card counter
-                Text("\(currentCard) / \(totalCards)")
+                Text("n / \(filteredChaaps.count)")
                     .font(.chBodyBold)
                     .foregroundColor(.white)
                 
                 /// Person card
-                // TODO: CardView 추가 예정
-                Spacer()
+//                ScrollView(.horizontal) {
+                    VStack(spacing: 16) {
+                        ForEach(allChaaps, id: \.id) { chaap in
+                            // TODO: CardView or ChaapCellView
+                            VStack {
+                                Text("Chaap")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                            .background(Color.black.opacity(0.2))
+                            .cornerRadius(12)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+//                }
             }
         }
         // TODO: Custom Background에 얹을 거라서 삭제

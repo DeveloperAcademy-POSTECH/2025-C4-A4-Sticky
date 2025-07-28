@@ -19,13 +19,26 @@ struct PeopleSegmentView: View {
         allChaaps.flatMap { $0.peers }
     }
     
+    // displayName 기준으로 그룹화
+    var groupedPeers: [String: [Peer]] {
+        Dictionary(grouping: allPeers, by: { $0.displayName })
+    }
+    
+    // 정렬된 이름 목록
+    var displayNames: [String] {
+        groupedPeers.keys.sorted()
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 32) {
-                    ForEach(allPeers, id: \.tokenString) { peer in
-                        NavigationLink(destination: PeopleDetailView(peer: peer)) {
-                            PeopleCircle(name: peer.displayName, iconName: peer.iconName)
+                    ForEach(displayNames, id: \.self) { name in
+                        if let peersForName = groupedPeers[name],
+                           let iconName = peersForName.first?.iconName {
+                            NavigationLink(destination: PeopleDetailView(displayName: name, peers: peersForName)) {
+                                PeopleCircle(name: name, iconName: iconName)
+                            }
                         }
                     }
                 }
