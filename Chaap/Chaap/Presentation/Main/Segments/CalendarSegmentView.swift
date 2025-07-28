@@ -27,18 +27,24 @@ struct CalendarSegmentView: View {
 
             VStack(spacing: 0) {
                 Spacer()
-                // TODO: CHBlurView 추가 필요
-                VStack(alignment: .center, spacing: 16) {
-                    monthHeader
+                
+                ZStack {
+                    CHCalendarBG(bottomExtension: -295)
+                    
+                    VStack(alignment: .center, spacing: 16) {
+                        monthHeader
 
-                    VStack(alignment: .leading, spacing: 5) {
-                        weekdayHeader
-                        calendarGrid
+                        VStack(alignment: .leading, spacing: 5) {
+                            weekdayHeader
+                            calendarGrid
+                        }
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    Spacer()
+                    .padding(.horizontal, -10)
+                    .padding(.vertical, 24)
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 24)
 
                 Spacer()
             }
