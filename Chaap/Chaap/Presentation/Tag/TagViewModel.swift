@@ -10,6 +10,7 @@ import MultipeerConnectivity
 import NearbyInteraction
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 @MainActor
 @Observable
@@ -34,6 +35,9 @@ class TagViewModel: NSObject {
     
     var distance: Float? // Peer 간의 거리
     let nearbyDistanceThreshold: Float = 0.2 // 태깅 범위
+    
+    // Audio
+    var player: AVAudioPlayer?
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -353,3 +357,23 @@ extension TagViewModel: NISessionDelegate {
     }
 }
 
+extension TagViewModel {
+    func prepareToPlayAudio() {
+        guard let url = Bundle.main.url(forResource: "activesound", withExtension: "wav") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true) // 오디오 세션 활성화. 앱이 백그라운드로 이동하거나 중단되었을 때, 다시 활성화해야함
+            
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.prepareToPlay()
+        } catch {
+            print("Error loading audio: \(error)")
+        }
+    }
+    
+    func playAudio() {
+        guard let player else { return }
+        player.play()
+    }
+}

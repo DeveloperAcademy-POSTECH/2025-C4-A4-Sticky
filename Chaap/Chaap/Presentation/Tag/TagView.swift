@@ -45,19 +45,40 @@ struct TagView: View {
                 .ignoresSafeArea(.all)
             
             VStack {
+                Spacer()
+                LottieView(animation: .named("loadingDots"))
+                    .playing(loopMode: .loop)
+                    .frame(maxWidth: 50, maxHeight: 15)
+                    
+                Spacer()
+                    .frame(height: 21)
+                Text("사용자를 찾는중")
+                    .font(.chTitle)
+                    .foregroundStyle(Color.chLabelWhitePrimary)
+                Spacer()
+                    .frame(height: 11)
+                Text("상대도 서칭중인지 확인하세요.")
+                    .font(.chPrimaryCaptionMedium)
+                    .foregroundStyle(Color(hex: "#D9D9D9"))
+                Spacer()
+                    .frame(height: 64)
                 Button {
-                    showChaapList.toggle()
+                    print("닫기 버튼 누름")
                 } label: {
-                    Text("저장된 챱 보기")
-                        .foregroundStyle(.white)
+                    Image(.taggingCloseButton)
                 }
+                .padding(.bottom, 57)
             }
         }
         .onAppear {
             viewModel.startMPC()
+            viewModel.prepareToPlayAudio()
+            viewModel.playAudio()
         }
         .onChange(of: viewModel.mpcManager?.nearbyPeers.count) {
-            showPeerList = true
+            if viewModel.mpcManager?.nearbyPeers.count ?? 0 >= 1 {
+                showPeerList = true
+            }
         }
         .chBottomModal(isPresented: $showPeerList) {
             if let mpcManager = viewModel.mpcManager {
