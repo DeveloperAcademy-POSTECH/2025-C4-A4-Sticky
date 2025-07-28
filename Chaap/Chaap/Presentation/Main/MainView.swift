@@ -9,9 +9,11 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = SegmentsViewModel()
-
+    @StateObject private var navManager = CHNavigationManager()
+    @Environment(\.modelContext) private var modelContext
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navManager.appRoutes) {
             ZStack {
                 selectedSegmentView
                 
@@ -25,9 +27,23 @@ struct MainView: View {
                 VStack {
                     Spacer()
                     CHFloatingButton()
+                        .environmentObject(navManager)
                 }
             }
             .safeAreaPadding(.horizontal, 16)
+            .navigationDestination(for: CHAppRoute.self) { route in
+                            switch route {
+                            case .tagView:
+                                TagView(modelContext: modelContext)
+                            case .search:
+                                // 다른 뷰
+                                EmptyView()
+                            case .editProfile:
+                                EmptyView()
+                            case .chaapping:
+                                EmptyView()
+                            }
+                        }
         }
     }
     

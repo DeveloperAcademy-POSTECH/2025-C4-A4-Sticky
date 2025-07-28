@@ -9,12 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct CHFloatingButton: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var showTagView = false
+    @EnvironmentObject private var navManager: CHNavigationManager
 
     var body: some View {
         Button(action: {
-            showTagView = true
+            navManager.push(.tagView)
         }, label: {
             Image(.chaapBtn)
                 .resizable()
@@ -66,9 +65,6 @@ struct CHFloatingButton: View {
                     }
                 )
         })
-        .sheet(isPresented: $showTagView) {
-            TagView(modelContext: modelContext)
-        }
     }
 }
 
