@@ -43,7 +43,7 @@ struct CHCardShow: View {
             
             Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
                 .font(.caption)
-                .foregroundStyle(Color.chLabelWhitePrimary)
+                .foregroundStyle(Color.chLabelWhiteSecondary)
         }
     }
     
@@ -58,7 +58,7 @@ struct CHCardShow: View {
             // 기록 내용
             Text(chaap.memo)
                 .font(.chBodyRegular)
-                .foregroundStyle(Color.chLabelWhitePrimary)
+                .foregroundStyle(Color.chLabelWhiteSecondary)
         }
     }
     
@@ -67,12 +67,12 @@ struct CHCardShow: View {
         HStack(spacing: 4) {
             // 장소 아이콘
             Image(.placeMarker)
-                .foregroundStyle(Color.chLabelWhitePrimary)
+                .foregroundStyle(Color.chLabelWhiteSecondary)
             
             // 위치 정보
             Text(chaap.place)
                 .font(.caption)
-                .foregroundStyle(Color.chLabelWhitePrimary)
+                .foregroundStyle(Color.chLabelWhiteSecondary)
         }
     }
 }
