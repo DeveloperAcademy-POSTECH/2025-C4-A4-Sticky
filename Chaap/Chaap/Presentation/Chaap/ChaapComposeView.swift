@@ -10,6 +10,7 @@ import SwiftUI
 struct ChaapComposeView: View {
     @Bindable var chaap: Chaap
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var navigationManager: CHNavigationManager
     
     var body: some View {
         ZStack {
@@ -112,7 +113,7 @@ struct ChaapComposeView: View {
                 Spacer()
                 /// 저장 버튼
                 Button {
-                    dismiss()
+                    navigationManager.goToRoot()
                 } label: {
                     HStack(alignment: .center) {
                         Spacer()
