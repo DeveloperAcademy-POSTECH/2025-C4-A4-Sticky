@@ -43,5 +43,5 @@ class EditProfileViewModel {
 }
 
 enum UserDefaultsKey {
-    static let nickname = "nickname"
+    static let nickname = "displayName"
 }

@@ -85,7 +85,7 @@ struct ProfileView: View {
                 }
                 Spacer()
             }
-            .background(Color.white)
+            .background(Color.clear)
         }
     }
 }

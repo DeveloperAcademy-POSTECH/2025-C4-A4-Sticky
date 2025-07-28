@@ -44,6 +44,10 @@ extension Font {
         return .pretend(type: .bold, size: 24)
     }
     
+    static var chTitleSemibold: Font {
+        return .pretend(type: .semibold, size: 22)
+    }
+    
     static var chBodyBold: Font {
         return .pretend(type: .bold, size: 18)
     }
