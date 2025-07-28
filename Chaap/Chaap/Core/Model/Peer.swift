@@ -15,6 +15,8 @@ class Peer {
     var tokenString: String
 
     var displayName: String
+    
+    var iconName: String = RandomIcon.allCases.randomElement()!.rawValue
 
     init(token: NIDiscoveryToken, displayName: String) {
         self.tokenString = Peer.tokenToString(token)

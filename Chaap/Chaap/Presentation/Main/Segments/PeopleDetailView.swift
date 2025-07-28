@@ -6,52 +6,111 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PeopleDetailView: View {
-    let person: Person
-    @Environment(\.presentationMode) var presentationMode
+    let displayName: String
+    let peers: [Peer]
     
+    @Environment(\.presentationMode) var presentationMode
+    @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)]) var allChaaps: [Chaap]
+    
+    @State private var currentIndex: Int? = 0
+    @GestureState private var dragOffset: CGFloat = 0
+    
+    private let cardWidth = UIScreen.main.bounds.width * 0.816
+    private let cardHeight = UIScreen.main.bounds.height * 0.37
+    
+    // 이 Peer들이 포함된 Chaap만 추출
+    var filteredChaaps: [Chaap] {
+        allChaaps.filter { chaap in
+            chaap.peers.contains { peer in
+                peer.displayName == displayName
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
+            Rectangle()
+                .foregroundColor(.clear)
+                .background(.black.opacity(0.05))
+                .background(
+                    EllipticalGradient(
+                        colors: [Color.chPrimary, Color.chSecondary],
+                        center: .topLeading,
+                        startRadiusFraction: 0.2,
+                        endRadiusFraction: 1.0
+                    )
+                    .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                )
+                .ignoresSafeArea(.all)
+            
             VStack(spacing: 62) {
-                /// Top navigation
-                ZStack {
-                    HStack {
-                        /// Back button
-                        Button(action: backTapped) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20))
-                                .foregroundColor(.white)
-                                .frame(width: 40, height: 40)
-                                .background(Color.black.opacity(0.4))
-                                .clipShape(Circle())
-                        }
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Text(person.name)
-                            .font(.systemEmphasized)
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal, 16)
-                
-                /// Card counter
-                Text("\(person.currentCard) / \(person.totalCards)")
-                    .font(.chBodyBold)
-                    .foregroundColor(.white)
-                
-                /// Person card
-                // TODO: CardView 추가 예정
+                topNavigation
+                cardNumberView
+                slideCard
                 Spacer()
             }
         }
-        // TODO: Custom Background에 얹을 거라서 삭제
-        .background(.blue)
         .navigationBarHidden(true)
+    }
+    
+    // MARK: - Top navigation
+    var topNavigation: some View {
+        ZStack {
+            Text(displayName)
+                .font(.systemEmphasized)
+                .foregroundColor(.white)
+            
+            HStack {
+                /// Back button
+                Button(action: backTapped) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                        .frame(width: 40, height: 40)
+                        .background(Color.black.opacity(0.4))
+                        .clipShape(Circle())
+                }
+                Spacer()
+
+                CHNavBar()
+            }
+        }
+        .padding(.bottom, 10)
+        .safeAreaPadding(.horizontal, 16)
+    }
+    
+    // MARK: - Card counter
+    private var cardNumberView: some View {
+        let displayIndex = min((currentIndex ?? 0) + 1, filteredChaaps.count)
+        
+        return
+            Text("\(displayIndex)/\(filteredChaaps.count)")
+                .font(.chBodyBold)
+                .foregroundColor(.white)
+
+        
+    }
+    // MARK: - Card View
+    var slideCard: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 13) {
+                ForEach(filteredChaaps.indices, id: \.self) { index in
+                    CHCardShow(chaap: filteredChaaps[index])
+                        .frame(width: 319, height: 389)
+                        .animation(.spring(), value: currentIndex)
+                        .containerRelativeFrame(.horizontal)
+                        .tag(index)
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $currentIndex)
+        .contentMargins(.horizontal, (UIScreen.main.bounds.width - cardWidth) / 2, for: .scrollContent)
+        
     }
     
     // TODO: 네비게이션 연결 방식에 따라 변경
@@ -59,16 +118,3 @@ struct PeopleDetailView: View {
         presentationMode.wrappedValue.dismiss()
     }
 }
-
-#Preview {
-    NavigationView {
-        PeopleDetailView(
-            person: Person(
-                name: "Peppr",
-                imageName: "person.fill",
-                totalCards: 13,
-                currentCard: 1
-            )
-        )
-    }
-} 
