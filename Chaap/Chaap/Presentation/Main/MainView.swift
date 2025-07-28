@@ -24,7 +24,7 @@ struct MainView: View {
                 .safeAreaPadding(.horizontal, 16)
                 VStack {
                     Spacer()
-                    CHFloatingBtn()
+                    CHFloatingButton()
                 }
             }
             .safeAreaPadding(.horizontal, 16)

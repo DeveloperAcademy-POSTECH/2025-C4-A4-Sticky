@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct CHFloatingBtn: View {
+struct CHFloatingButton: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var showTagView = false
+
     var body: some View {
         Button(action: {
-            
+            showTagView = true
         }, label: {
             Image(.chaapBtn)
                 .resizable()
@@ -62,9 +66,12 @@ struct CHFloatingBtn: View {
                     }
                 )
         })
+        .sheet(isPresented: $showTagView) {
+            TagView(modelContext: modelContext)
+        }
     }
 }
 
 #Preview {
-    CHFloatingBtn()
+    CHFloatingButton()
 }

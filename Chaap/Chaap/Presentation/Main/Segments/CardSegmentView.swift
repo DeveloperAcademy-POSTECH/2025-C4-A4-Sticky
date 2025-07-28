@@ -6,11 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CardSegmentView: View {
+    @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)]) var allChaaps: [Chaap]
+    
     @State private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
-    @State private var isAnimating: Bool = false
+    
+    // 최근 5개
+    var recentFiveChaaps: [Chaap] {
+        Array(allChaaps.prefix(5))
+    }
     
     var body: some View {
         ZStack {
@@ -30,9 +37,11 @@ struct CardSegmentView: View {
             
             GeometryReader { proxy in
                 ZStack {
-                    ForEach(Array(dummyData.enumerated()), id: \.offset) { index, model in
+                    ForEach(recentFiveChaaps.indices, id: \.self) { index in
+                        let chaap = recentFiveChaaps[index]
+                        
                         if abs(index - currentIndex) <= 1 {
-                            CHCardShow(viewModel: dummyData[index])
+                            CHCardShow(chaap: chaap)
                                 .frame(width: 319, height: 389)
                                 .offset(y: cardOffset(for: index))
                                 .scaleEffect(scale(for: index))
@@ -44,13 +53,13 @@ struct CardSegmentView: View {
                                         .updating($dragOffset) { value, state, _ in
                                             if index == currentIndex {
                                                 let direction = value.translation.height
-                                                if (currentIndex > 0 && direction > 0) || (currentIndex < dummyData.count - 1 && direction < 0) {
+                                                if (currentIndex > 0 && direction > 0) || (currentIndex < recentFiveChaaps.count - 1 && direction < 0) {
                                                     state = value.translation.height
                                                 }
                                             }
                                         }
                                         .onEnded { value in
-                                            if value.translation.height < -10 && currentIndex < dummyData.count - 1 {
+                                            if value.translation.height < -10 && currentIndex < recentFiveChaaps.count - 1 {
                                                 currentIndex += 1
                                             } else if value.translation.height > 10 && currentIndex > 0 {
                                                 currentIndex -= 1
@@ -89,28 +98,6 @@ struct CardSegmentView: View {
     func zIndex(for index: Int) -> Double {
         index == currentIndex ? 2 : 1
     }
-    
-    // MARK: - 더미 Chaap 4개
-    private let dummyData: [CHCardShowViewModel] = {
-        let titles = ["카페에서 수다", "산책", "스터디", "전시회"]
-        let memos = ["오랜만에 친구와 만남", "강아지랑 한강 걷기", "팀 프로젝트 준비", "MMCA 전시 관람"]
-        let places = ["망원동", "여의도", "성수동", "삼청동"]
-        
-        return zip(titles, zip(memos, places)).map { title, memoPlace in
-            let (memo, place) = memoPlace
-            let chaap = Chaap(
-                createdAt: Date(),
-                place: place,
-                latitude: nil,
-                longitude: nil,
-                title: title,
-                memo: memo,
-                photoData: nil,
-                peers: [] // Peer 없이 테스트
-            )
-            return CHCardShowViewModel(chaap: chaap)
-        }
-    }()
 }
 
 #Preview {
