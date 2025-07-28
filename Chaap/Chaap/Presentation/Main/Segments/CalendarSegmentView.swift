@@ -21,29 +21,23 @@ struct CalendarSegmentView: View {
     }
 
     var body: some View {
-        ZStack {
-            /// 전체화면 배경
-            Color.gray.opacity(0.2)
-                .ignoresSafeArea(.all)
-
-            VStack(spacing: 0) {
-                Spacer()
-
-                VStack(alignment: .center, spacing: 16) {
-                    monthHeader
-
-                    VStack(alignment: .leading, spacing: 5) {
-                        weekdayHeader
-                        calendarGrid
-                    }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                    eventsList
+        VStack(spacing: 0) {
+            Spacer()
+            
+            VStack(alignment: .center, spacing: 16) {
+                monthHeader
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    weekdayHeader
+                    calendarGrid
                 }
-                .padding(.horizontal, 16)
-
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                
+                eventsList
             }
+            .padding(.horizontal, 16)
+            
+            Spacer()
         }
     }
     
