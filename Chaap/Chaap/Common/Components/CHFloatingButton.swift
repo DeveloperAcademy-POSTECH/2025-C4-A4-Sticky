@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct CHFloatingBtn: View {
+struct CHFloatingButton: View {
+
     var body: some View {
         Button(action: {
             
@@ -66,5 +68,5 @@ struct CHFloatingBtn: View {
 }
 
 #Preview {
-    CHFloatingBtn()
+    CHFloatingButton()
 }
