@@ -18,7 +18,7 @@ struct TagView: View {
     @State private var showDistanceWithPeer = false
     @State private var hasDetectedDistanceChange = false
     
-    @State private var showChaapList = false
+//    @State private var showChaapList = false
     
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TagViewModel(modelContext: modelContext))
@@ -172,8 +172,8 @@ struct TagView: View {
             }
         }
         
-        .sheet(isPresented: $showChaapList) {
-            ShowChaapTestView()
-        }
+//        .sheet(isPresented: $showChaapList) {
+//            ShowChaapTestView()
+//        }
     }
 }
