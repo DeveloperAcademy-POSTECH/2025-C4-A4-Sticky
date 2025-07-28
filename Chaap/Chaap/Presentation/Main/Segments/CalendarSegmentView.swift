@@ -56,6 +56,7 @@ struct CalendarSegmentView: View {
             maxHeight: 400
         ) {
             chaapListModal
+                .padding(.horizontal, 16)
         })
         .onChange(of: viewModel.selectedDate) { _, _ in
             withAnimation(.easeInOut(duration: 0.3)) {
@@ -212,11 +213,11 @@ struct CalendarSegmentView: View {
                             .padding(.horizontal, 4)
                             .padding(.vertical, 12)
                         
-                        if chaap.id != viewModel.eventsForSelectedDate.last?.id {
-                            Divider()
-                                .background(Color.white.opacity(0.2))
-                                .padding(.horizontal, 4)
-                        }
+//                        if chaap.id != viewModel.eventsForSelectedDate.last?.id {
+//                            Divider()
+//                                .background(Color.white.opacity(0.2))
+//                                .padding(.horizontal, 4)
+//                        }
                     }
                 }
             }
