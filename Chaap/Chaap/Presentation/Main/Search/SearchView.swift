@@ -14,7 +14,6 @@ struct SearchView: View {
         NavigationView {
             VStack {
                 SearchBar(text: $searchText)
-                    .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 
                 List {
 //                    ForEach(array.filter{$0.hasPrefix(searchText) || searchText == ""}, id:\.self) {
@@ -27,6 +26,8 @@ struct SearchView: View {
                     hideKeyboard()
                 }
             }
+            .safeAreaPadding(.horizontal, 16)
+            .safeAreaPadding(.top, 9)
         }
     }
 }

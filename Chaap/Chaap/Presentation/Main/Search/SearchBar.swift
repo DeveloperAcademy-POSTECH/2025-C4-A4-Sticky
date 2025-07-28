@@ -8,30 +8,38 @@ import SwiftUI
 
 struct SearchBar: View {
     @Binding var text: String
+    @Environment(\.presentationMode) var presentaionMode
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             HStack {
                 Image(systemName: "magnifyingglass")
 
-                TextField("Search", text: $text)
+                TextField("사람, 장소, 내용 등", text: $text)
                     .foregroundColor(.primary)
+                    .autocapitalization(.none)
+                
 
-                if !text.isEmpty {
-                    Button(action: {
-                        self.text = ""
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                    }
-                } else {
-                    EmptyView()
-                }
+//                if !text.isEmpty {
+//                    Button(action: {
+//                        text = ""
+//                    }) {
+//                        Image(systemName: "xmark.circle.fill")
+//                            .foregroundStyle(.gray)
+//                    }
+//                }
             }
-            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+            .padding(.vertical, 11)
+            .padding(.horizontal, 16)
             .foregroundColor(.secondary)
             .background(Color(.secondarySystemBackground))
-            .cornerRadius(10.0)
+            .cornerRadius(100)
+            
+            Button("취소") {
+                // TODO: 연결 ?
+            }
+            .font(.chPrimaryCaptionMedium)
+            .foregroundStyle(Color(hex: "#202020"))
         }
-        .padding(.horizontal)
     }
 }
