@@ -32,18 +32,16 @@ struct MainView: View {
             }
             .safeAreaPadding(.horizontal, 16)
             .navigationDestination(for: CHAppRoute.self) { route in
-                            switch route {
-                            case .tagView:
-                                TagView(modelContext: modelContext)
-                            case .search:
-                                // 다른 뷰
-                                EmptyView()
-                            case .editProfile:
-                                EmptyView()
-                            case .chaapping:
-                                EmptyView()
-                            }
-                        }
+                switch route {
+                case .tag:
+                    TagView(modelContext: modelContext)
+                case .search:
+                    // 다른 뷰
+                    SearchView()
+                case .editProfile:
+                    EditProfileView()
+                }
+            }
         }
     }
     
