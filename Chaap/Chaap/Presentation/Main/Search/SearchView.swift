@@ -31,14 +31,6 @@ struct SearchView: View {
     }
 }
 
-//캔버스 컨텐츠뷰
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
-}
-
-
 //화면 터치시 키보드 숨김
 #if canImport(UIKit)
 extension View {
