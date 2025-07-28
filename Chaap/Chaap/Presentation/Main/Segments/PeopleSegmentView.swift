@@ -11,6 +11,8 @@ import SwiftData
 struct PeopleSegmentView: View {
     @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)])
     var allChaaps: [Chaap]
+    
+    let columns = Array(repeating: GridItem(.flexible()), count: 3)
 
     // Chaap에서 모든 Peer를 추출
     var allPeers: [Peer] {
@@ -20,21 +22,10 @@ struct PeopleSegmentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                /// People grid
-                LazyVGrid(columns: [
-                    GridItem(.flexible()),
-                    GridItem(.flexible()),
-                    GridItem(.flexible()),
-                ], spacing: 32) {
+                LazyVGrid(columns: columns, spacing: 32) {
                     ForEach(allPeers, id: \.tokenString) { peer in
-                        VStack(spacing: 8) {
-                            NavigationLink(destination: PeopleDetailView(peer: peer)) {
-                                PeopleCircle(name: peer.displayName, iconName: peer.iconName)
-                            }
-                            
-                            Text(peer.displayName)
-                                .font(.chBodyBold)
-                                .foregroundColor(.white)
+                        NavigationLink(destination: PeopleDetailView(peer: peer)) {
+                            PeopleCircle(name: peer.displayName, iconName: peer.iconName)
                         }
                     }
                 }

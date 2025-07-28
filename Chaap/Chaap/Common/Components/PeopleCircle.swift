@@ -6,6 +6,7 @@ struct PeopleCircle: View {
     
     var body: some View {
         VStack(spacing: 8) {
+            // TODO: inner shadow 입혀야 함
             /// 원형 아이콘 컨테이너
             Image(iconName)
                 .resizable()
@@ -27,12 +28,3 @@ struct PeopleCircle: View {
         }
     }
 }
-
-// MARK: - Private Computed Properties
-
-//extension PeopleCircle {
-//    /// 선택된 아이콘 이름
-//    private var selectedIconName: String {
-//        iconName ?? randomIcons.randomElement() ?? "person.fill"
-//    }
-//}
