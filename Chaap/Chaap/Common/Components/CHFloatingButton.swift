@@ -9,11 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct CHFloatingButton: View {
-    @EnvironmentObject private var navManager: CHNavigationManager
-
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     var body: some View {
         Button(action: {
-            navManager.push(.tagView)
+            navigationManager.push(.tag)
         }, label: {
             Image(.chaapBtn)
                 .resizable()
