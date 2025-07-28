@@ -184,12 +184,12 @@ class TagViewModel: NSObject {
         return distance < nearbyDistanceThreshold
     }
     
-    func createChaap(peerToken: NIDiscoveryToken) async {
+    func createChaap(peerToken: NIDiscoveryToken) async -> Chaap? {
         print("➡️ createChaap 호출됨")
         
         guard let location = locationManager.currentLocation else {
             print("❌ 위치 없음")
-            return
+            return nil
         }
 
         await locationManager.reverseGeocode(location: location)
@@ -209,8 +209,10 @@ class TagViewModel: NSObject {
             modelContext.insert(chaap)
             try modelContext.save()
             print("✅ Chaap 저장 성공")
+            return chaap
         } catch {
             print("❌ Chaap 저장 실패: \(error.localizedDescription)")
+            return nil
         }
     }
     
