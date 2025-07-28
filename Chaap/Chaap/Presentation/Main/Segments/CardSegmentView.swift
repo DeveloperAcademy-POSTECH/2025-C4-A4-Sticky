@@ -14,6 +14,8 @@ struct CardSegmentView: View {
     @State private var currentIndex: Int = 0
     @GestureState private var dragOffset: CGFloat = 0
     
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     // 최근 5개
     var recentFiveChaaps: [Chaap] {
         Array(allChaaps.prefix(5))
@@ -64,6 +66,12 @@ struct CardSegmentView: View {
                                             } else if value.translation.height > 10 && currentIndex > 0 {
                                                 currentIndex -= 1
                                             }
+                                        }
+                                )
+                                .gesture(
+                                    TapGesture()
+                                        .onEnded { _ in
+                                            navigationManager.push(.compose(chaap))
                                         }
                                 )
                         }
