@@ -129,23 +129,37 @@ struct TagView: View {
             
                     HStack {
                         // TODO: Component 적용 해야 함.
-                        Button {
-                            viewModel.rejectInvitation()
-                            showInvitationAlert = false
-                        } label: {
-                            Text("거절")
-                                .font(.chTitleSemibold)
-                                .foregroundStyle(Color.chLabelWhitePrimary)
-                        }
+//                        Button {
+//                            viewModel.rejectInvitation()
+//                            showInvitationAlert = false
+//                        } label: {
+//                            Text("거절")
+//                                .font(.chTitleSemibold)
+//                                .foregroundStyle(Color.chLabelWhitePrimary)
+//                        }
+                        CHMainButton(
+                            actionType: .decline,
+                            action: {
+                                viewModel.rejectInvitation()
+                                showInvitationAlert = false
+                            }
+                        )
                         Spacer()
-                        Button {
-                            viewModel.acceptInvitation()
-                            showInvitationAlert = false
-                        } label: {
-                            Text("수락")
-                                .font(.chTitleSemibold)
-                                .foregroundStyle(Color.chLabelWhitePrimary)
-                        }
+//                        Button {
+//                            viewModel.acceptInvitation()
+//                            showInvitationAlert = false
+//                        } label: {
+//                            Text("수락")
+//                                .font(.chTitleSemibold)
+//                                .foregroundStyle(Color.chLabelWhitePrimary)
+//                        }
+                        CHMainButton(
+                            actionType: .accept,
+                            action: {
+                                viewModel.acceptInvitation()
+                                showInvitationAlert = false
+                            }
+                        )
                     }
                 }
             }

@@ -172,39 +172,12 @@ struct ChaapComposeView: View {
                 .frame(height: 430)
                 Spacer()
                 /// 저장 버튼
-                Button {
-                    navigationManager.goToRoot()
-                } label: {
-                    HStack(alignment: .center) {
-                        Spacer()
-                        Text("저장")
-                            .font(.chBodyMedium)
-                            .foregroundStyle(Color.chLabelWhitePrimary)
-                        Spacer()
+                CHMainButton(
+                    actionType: .save,
+                    action: {
+                        dismiss()
                     }
-                    .safeAreaPadding(.horizontal, 16)
-                    .frame(height: 50)
-                    // TODO: 여기 배경 이상함 다시 해야 함...
-                    .background(
-                        ZStack {
-                            Color.chSecondary.opacity(0.2)
-                            CHBlurView(style: .systemUltraThinMaterialDark)
-                                .clipShape(RoundedRectangle(cornerRadius: 50))
-                            EllipticalGradient(
-                                stops: [
-                                    Gradient.Stop(color: Color.chPrimary, location: 0.2),
-                                    Gradient.Stop(color: Color.chPrimary.opacity(0.5), location: 1.00),
-                                ],
-                                center: UnitPoint(x: 0.49, y: 0)
-                            )
-                        }
-                    )
-                    .cornerRadius(50)
-                    .shadow(color: .black.opacity(0.1), radius: 4.6087, x: 4.6087, y: 4.6087)
-                    .overlay(
-                        GradientStroke()
-                    )
-                }
+                )
             }
             .safeAreaPadding(.horizontal, 16)
         }
