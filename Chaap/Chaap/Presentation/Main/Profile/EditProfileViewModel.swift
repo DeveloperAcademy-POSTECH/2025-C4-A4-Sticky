@@ -11,21 +11,24 @@ import SwiftUI
 class EditProfileViewModel {
     private var rawNickname: String
     var originalNickname: String
+    var originalImageName: String? = UserDefaults.standard.string(forKey: "SelectedProfileImageName")
 
+    var hasUserEdited: Bool = false
+    
     var nickname: String {
         get { rawNickname }
         set {
             rawNickname = newValue.utf8ByteCount > 50
-                ? newValue.trimmedToMaxByteLength(50)
-                : newValue
+            ? newValue.trimmedToMaxByteLength(50)
+            : newValue
             hasUserEdited = true
         }
     }
-
-    var hasUserEdited: Bool = false
-
-    var hasChanges: Bool {
-        nickname != originalNickname
+    
+    var selectedImageName: String? {
+        didSet {
+            hasUserEdited = (selectedImageName != originalImageName) || hasUserEdited
+        }
     }
 
     init() {
@@ -33,11 +36,23 @@ class EditProfileViewModel {
         let saved = UserDefaults.standard.string(forKey: UserDefaultsKey.nickname) ?? ""
         self.rawNickname = saved
         self.originalNickname = saved
+        self.selectedImageName = originalImageName 
     }
 
     func saveNickname() {
         UserDefaults.standard.set(nickname, forKey: UserDefaultsKey.nickname)
         originalNickname = nickname
+        hasUserEdited = false
+    }
+    
+    func saveProfileImage() {
+        if let imgName = selectedImageName {
+            UserDefaults.standard.set(imgName, forKey: "SelectedProfileImageName")
+            originalImageName = imgName
+        } else {
+            UserDefaults.standard.removeObject(forKey: "SelectedProfileImageName")
+            originalImageName = nil
+        }
         hasUserEdited = false
     }
 }

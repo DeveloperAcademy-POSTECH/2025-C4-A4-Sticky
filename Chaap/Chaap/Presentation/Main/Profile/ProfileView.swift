@@ -46,6 +46,11 @@ struct ProfileView: View {
                     Spacer()
                     Button("다음") {
                         viewModel.saveNickname()
+                        
+                        if let selectedImageName {
+                            UserDefaults.standard.set(selectedImageName, forKey: "SelectedProfileImageName")
+                        }
+                        
                         shouldNavigateToHome = true
                         // TODO: 연결
                     }

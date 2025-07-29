@@ -11,7 +11,8 @@ struct MainView: View {
     @StateObject private var viewModel = SegmentsViewModel()
     @StateObject private var navigationManager = CHNavigationManager()
     @Environment(\.modelContext) private var modelContext
-    
+    @AppStorage("SelectedProfileImageName") private var selectedImageName: String?
+
     var body: some View {
         NavigationStack(path: $navigationManager.appRoutes) {
             ZStack {
@@ -35,11 +36,13 @@ struct MainView: View {
                 
                 // Top Bar
                 VStack(alignment: .center, spacing: 15) {
-                    CHNavBar(didPressSearchButton: {
-                        navigationManager.push(.search)
-                    }, didPressProfileButton: {
-                        navigationManager.push(.editProfile)
-                    })
+                    CHNavBar(
+                        selectedImageName: $selectedImageName,
+                        didPressSearchButton: {
+                            navigationManager.push(.search)
+                        }, didPressProfileButton: {
+                            navigationManager.push(.editProfile)
+                        })
                     SegmentControlPicker(selected: $viewModel.selectedSegement)
                     Spacer()
                 }
@@ -64,7 +67,7 @@ struct MainView: View {
                     SearchView()
                         .environmentObject(navigationManager)
                 case .editProfile:
-                    EditProfileView()
+                    EditProfileView(selectedImageName: $selectedImageName)
                         .environmentObject(navigationManager)
                 case .compose(let chaap):
                     ChaapComposeView(chaap: chaap)

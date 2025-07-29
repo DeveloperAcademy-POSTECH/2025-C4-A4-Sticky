@@ -36,6 +36,7 @@ struct CHNavBar: View {
                 .frame(width: 16.39, height: 16.54)
                 .padding(.horizontal,11.80)
                 .padding(.vertical, 11.73)
+                .frame(width: 44, height: 44)
                 .background(.black.opacity(0.4))
                 .clipShape(Circle())
         })
@@ -46,11 +47,23 @@ struct CHNavBar: View {
         Button(action: {
             didPressProfileButton()
         }, label: {
-            Image(selectedImageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
+            ZStack {
+                Circle()
+                    .frame(width: 44, height: 44)
+                    .foregroundColor(Color.chLabelWhitePrimary)
+                
+                if let imageName = selectedImageName, !imageName.isEmpty {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 24, height: 24)
+                } else {
+                    Image(.profileButterfly)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 24, height: 24)
+                }
+            }
         })
     }
 }
