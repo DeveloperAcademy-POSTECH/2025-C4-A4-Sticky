@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
     @StateObject private var viewModel = SegmentsViewModel()
     @StateObject private var navigationManager = CHNavigationManager()
     @Environment(\.modelContext) private var modelContext
-    
+
     var body: some View {
         NavigationStack(path: $navigationManager.appRoutes) {
             ZStack {
@@ -85,7 +86,7 @@ struct MainView: View {
         case .peopleSegment:
             PeopleSegmentView()
         case .calendarSegment:
-            CalendarSegmentView()
+            CalendarSegmentView(modelContext: modelContext)
         case .mapSegment:
             MapSegmentView()
         }

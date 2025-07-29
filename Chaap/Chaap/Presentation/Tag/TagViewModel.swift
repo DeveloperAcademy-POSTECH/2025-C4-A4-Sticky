@@ -257,9 +257,8 @@ class TagViewModel: NSObject {
 }
 
 extension TagViewModel: NISessionDelegate {
-    func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
+    nonisolated func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
 //        print("➡️ didUpdate called with \(nearbyObjects.count) objects")
-        
         guard let peerToken = peerDiscoveryToken else {
 //            fatalError("don't have peer token")
             return
@@ -274,16 +273,9 @@ extension TagViewModel: NISessionDelegate {
         let peerObj = nearbyObjects.first { (obj) -> Bool in
             return obj.discoveryToken == peerToken
         }
-
-        guard let nearbyObjectUpdate = peerObj else {
-            return
-        }
-        
-        self.distance = nearbyObjectUpdate.distance
-        
-        if let distance = nearbyObjectUpdate.distance {
-            self.distance = distance
-            
+            guard let nearbyObjectUpdate = peerObj else {
+                return
+            }
             if isNearby(distance), !hasCreatedChaap {
                 hasCreatedChaap = true
                 Task {
@@ -306,70 +298,95 @@ extension TagViewModel: NISessionDelegate {
         }
     }
 
-    func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
+    nonisolated func session(
+        _ session: NISession,
+        didRemove nearbyObjects: [NINearbyObject],
+        reason: NINearbyObject.RemovalReason
+    ) {
         print("NISession didRemove")
-        guard let peerToken = peerDiscoveryToken else {
-            fatalError("don't have peer token")
-        }
-        // Find the right peer.
-        let peerObj = nearbyObjects.first { (obj) -> Bool in
-            return obj.discoveryToken == peerToken
-        }
-
-        if peerObj == nil {
-            return
-        }
-
-        currentDistanceState = .unknown
         
-        // 피어 연결해제 원인
-        switch reason {
-        case .peerEnded:
-            // The peer token is no longer valid.
-            peerDiscoveryToken = nil
- 
-            session.invalidate()
-            
-            // Restart the sequence to see if the peer comes back.
-            startNI()
-
-        case .timeout:
-            
-            // The peer timed out, but the session is valid.
-            // If the configuration is valid, run the session again.
-            if let config = session.configuration {
-                session.run(config)
+        Task { @MainActor in
+            guard let peerToken = peerDiscoveryToken else {
+                fatalError("don't have peer token")
             }
-        default:
-            fatalError("Unknown and unhandled NINearbyObject.RemovalReason")
+            // Find the right peer.
+            let peerObj = nearbyObjects.first { (obj) -> Bool in
+                return obj.discoveryToken == peerToken
+            }
+
+            if peerObj == nil {
+                return
+            }
+
+            currentDistanceState = .unknown
+            
+            // 피어 연결해제 원인
+            switch reason {
+            case .peerEnded:
+                // The peer token is no longer valid.
+                peerDiscoveryToken = nil
+     
+                session.invalidate()
+                
+                // Restart the sequence to see if the peer comes back.
+                startNI()
+
+            case .timeout:
+                // The peer timed out, but the session is valid.
+                // If the configuration is valid, run the session again.
+                if let config = session.configuration {
+                    session.run(config)
+                }
+            default:
+                fatalError("Unknown and unhandled NINearbyObject.RemovalReason")
+            }
         }
     }
     
-    func session(_ session: NISession, didInvalidateWith error: Error) {
-        currentDistanceState = .unknown
-        
-        if case NIError.userDidNotAllow = error {
-            if #available(iOS 15.0, *) {
-
-                let accessAlert = UIAlertController(title: "Access Required",
-                                                    message: """
-                                                    NIPeekaboo requires access to Nearby Interactions for this app.
-                                                    Use this string to explain to users which functionality will be enabled if they change
-                                                    Nearby Interactions access in Settings.
-                                                    """,
-                                                    preferredStyle: .alert)
-                accessAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                accessAlert.addAction(UIAlertAction(title: "Go to Settings", style: .default, handler: {_ in
-                    if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                        UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
-                    }
-                }))
-                
-            } else {
-
-            }
+    nonisolated func session(_ session: NISession, didInvalidateWith error: Error) {
+        Task { @MainActor in
+            currentDistanceState = .unknown
             
-            return
+            if case NIError.userDidNotAllow = error {
+                if #available(iOS 15.0, *) {
+                    let message = """
+                        NIPeekaboo requires access to Nearby Interactions for this app.
+                        Use this string to explain to users which functionality will be enabled if they change
+                        Nearby Interactions access in Settings.
+                        """
+                    
+                    let accessAlert = UIAlertController(
+                        title: "Access Required",
+                        message: message,
+                        preferredStyle: .alert
+                    )
+                    
+                    accessAlert.addAction(
+                        UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                    )
+                    
+                    accessAlert.addAction(UIAlertAction(
+                        title: "Go to Settings",
+                        style: .default,
+                        handler: { _ in
+                            if let settingsURL = URL(
+                                string: UIApplication.openSettingsURLString
+                            ) {
+                                UIApplication.shared.open(
+                                    settingsURL,
+                                    options: [:],
+                                    completionHandler: nil
+                                )
+                            }
+                        }
+                    ))
+                    
+                } else {
+                    // iOS 15 미만 버전 처리
+                }
+                
+                return
+            }
         }
     }
 }

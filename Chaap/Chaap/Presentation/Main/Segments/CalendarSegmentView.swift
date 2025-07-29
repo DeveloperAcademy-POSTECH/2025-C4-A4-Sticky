@@ -6,35 +6,74 @@
 //
 
 import SwiftUI
+import SwiftData
+import NearbyInteraction
 
 struct CalendarSegmentView: View {
-    @StateObject private var viewModel = CalendarSegmentViewModel()
+    @StateObject private var viewModel: CalendarSegmentViewModel
+    @State private var isModalPresented: Bool = false
+    
+    init(modelContext: ModelContext) {
+        _viewModel = StateObject(
+            wrappedValue: CalendarSegmentViewModel(modelContext: modelContext)
+        )
+    }
 
     var body: some View {
-//        ZStack {
-//            /// 전체화면 배경
-//            Color.gray.opacity(0.2)
-//                .ignoresSafeArea(.all)
-//
-//            VStack(spacing: 0) {
-//                Spacer()
-//
-//                VStack(alignment: .center, spacing: 16) {
-//                    monthHeader
-//
-//                    VStack(alignment: .leading, spacing: 5) {
-//                        weekdayHeader
-//                        calendarGrid
-//                    }
-//                    .frame(maxWidth: .infinity, alignment: .topLeading)
-//
-//                    eventsList
-//                }
-//                .padding(.horizontal, 16)
-//
-//                Spacer()
-//            }
-//        }
+        ZStack {
+            /// 전체화면 배경
+            Rectangle()
+                .foregroundColor(.clear)
+                .background(.black.opacity(0.05))
+                .background(
+                    EllipticalGradient(
+                        colors: [Color.chPrimary, Color.chSecondary],
+                        center: .topLeading,
+                        startRadiusFraction: 0.2,
+                        endRadiusFraction: 1.0
+                    )
+                    .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                )
+                .ignoresSafeArea(.all)
+
+            VStack(spacing: 0) {
+                Spacer()
+                
+                ZStack {
+                    CHCalendarBG(bottomExtension: -255)
+                    
+                    VStack(alignment: .center, spacing: 16) {
+                        monthHeader
+
+                        VStack(alignment: .leading, spacing: 5) {
+                            weekdayHeader
+                            calendarGrid
+                        }
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        Spacer()
+                    }
+                    .padding(.horizontal, -19)
+                    .padding(.vertical, 24)
+                }
+                .padding(.horizontal, 24)
+
+                Spacer()
+            }
+            .safeAreaPadding(.top, 144)
+        }
+        .modifier(CHBottomModalModifier(
+            isPresented: $isModalPresented,
+            minHeight: 200,
+            maxHeight: 400
+        ) {
+            chaapListModal
+                .padding(.horizontal, 16)
+        })
+        .onChange(of: viewModel.selectedDate) { _, _ in
+            withAnimation(.easeInOut(duration: 0.3)) {
+                isModalPresented = !viewModel.eventsForSelectedDate.isEmpty
+            }
+        }
     }
     
     private var monthHeader: some View {
@@ -43,7 +82,7 @@ struct CalendarSegmentView: View {
 
             HStack(spacing: 0) {
                 Button {
-                    viewModel.didTapPreviousMonth()
+                    viewModel.previousMonthWasTapped()
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundColor(Color(hex: "#919191"))
@@ -53,14 +92,16 @@ struct CalendarSegmentView: View {
 
                 Spacer()
 
-                Text(viewModel.monthYearFormatter.string(from: viewModel.currentMonth))
-                    .font(.chBodyBold)
-                    .foregroundColor(.white)
+                Text(
+                    viewModel.monthYearFormatter.string(from: viewModel.currentMonth)
+                )
+                .font(.chBodyBold)
+                .foregroundColor(.white)
 
                 Spacer()
 
                 Button {
-                    viewModel.didTapNextMonth()
+                    viewModel.nextMonthWasTapped()
                 } label: {
                     Image(systemName: "chevron.right")
                         .foregroundColor(Color(hex: "#919191"))
@@ -160,8 +201,8 @@ struct CalendarSegmentView: View {
                 /// 오늘 날짜 표시 (선택되지 않았을 때만)
                 if isToday && isCurrentMonth && !isSelected {
                     Text("오늘")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundColor(.chPrimary)
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.pointColorPurple)
                 } else {
                     /// 빈 공간 유지
                     Text("")
@@ -173,74 +214,40 @@ struct CalendarSegmentView: View {
         }
     }
 
-    //TODO: Custom Modal로 변경해야 함.    
-    private var eventsList: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ForEach(viewModel.eventsForSelectedDate, id: \.id) { event in
-                    eventRow(event: event)
-                    if event.id != viewModel.eventsForSelectedDate.last?.id {
-                        Divider()
-                            .padding(.leading, 38)
+    private var chaapListModal: some View {
+        VStack(spacing: 0) {
+            // 챱 목록
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(viewModel.eventsForSelectedDate, id: \.id) { chaap in
+                        PeerChaapRow(chaap: chaap)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 12)
+                        
+//                        if chaap.id != viewModel.eventsForSelectedDate.last?.id {
+//                            Divider()
+//                                .background(Color.white.opacity(0.2))
+//                                .padding(.horizontal, 4)
+//                        }
                     }
                 }
             }
+            .scrollIndicators(.hidden)
         }
-        .padding(.top, 6)
-        .frame(maxHeight: 150)
-    }
-    
-    private func eventRow(event: CalendarEvent) -> some View {
-        HStack(spacing: 8) {
-            Circle()
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 27, height: 27)
-                .overlay(
-                    Text(String(event.organizer.prefix(1)))
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.black)
-                )
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(event.title)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.black)
-
-                HStack {
-                    Text(event.time)
-                        .font(.system(size: 9))
-                        .foregroundColor(.gray)
-
-                    if !event.location.isEmpty {
-                        Image(systemName: "location")
-                            .font(.system(size: 8))
-                            .foregroundColor(.gray)
-                        Text(event.location)
-                            .font(.system(size: 9))
-                            .foregroundColor(.gray)
-                    }
-                }
-            }
-
-            Spacer()
-        }
-        .padding(.horizontal, 9)
-        .padding(.vertical, 6)
     }
 }
 
-// MARK: - CalendarEvent 모델
-// TODO: 실제 기록 모델로 변경 혹은 캘린더 이벤트용 모델 따로 생성
-
-struct CalendarEvent {
-    let id: String
-    let title: String
-    let time: String
-    let location: String
-    let organizer: String
-}
-
-#Preview {
-    CalendarSegmentView()
-        .background(Color.black)
+struct CalendarSegmentView_Previews: PreviewProvider {
+    static var previews: some View {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(
+            for: Chaap.self,
+            Peer.self,
+            configurations: config
+        )
+        
+        CalendarSegmentView(modelContext: container.mainContext)
+            .background(Color.black)
+            .modelContainer(container)
+    }
 }
