@@ -12,6 +12,7 @@ import Foundation
 
 enum RandomIcon: String, CaseIterable, Codable {
     case bird = "profileBird"
+    case butterfly = "profileButterfly"
     case cat = "profileCat"
     case dog = "profileDog"
     case rabbit = "profileRabbit"
