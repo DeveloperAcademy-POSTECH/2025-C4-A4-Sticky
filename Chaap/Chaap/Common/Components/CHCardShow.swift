@@ -49,7 +49,7 @@ struct CHCardShow: View {
     
     // MARK: - middle content (title, content)
     var middleContent: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             // 기록 제목
             Text(chaap.title)
                 .font(.chBodyBold)
@@ -59,6 +59,8 @@ struct CHCardShow: View {
             Text(chaap.memo)
                 .font(.chBodyRegular)
                 .foregroundStyle(Color.chLabelWhiteSecondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(3)
         }
     }
     

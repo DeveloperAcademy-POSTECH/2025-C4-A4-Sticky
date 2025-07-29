@@ -29,6 +29,7 @@ struct SearchView: View {
             .safeAreaPadding(.horizontal, 16)
             .safeAreaPadding(.top, 9)
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

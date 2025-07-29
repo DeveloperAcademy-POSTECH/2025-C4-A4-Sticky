@@ -9,6 +9,7 @@ import SwiftUI
 struct SearchBar: View {
     @Binding var text: String
     @Environment(\.presentationMode) var presentaionMode
+    @EnvironmentObject private var navigationManager: CHNavigationManager
 
     var body: some View {
         HStack(spacing: 8) {
@@ -36,7 +37,7 @@ struct SearchBar: View {
             .cornerRadius(100)
             
             Button("취소") {
-                // TODO: 연결 ?
+                navigationManager.pop()
             }
             .font(.chPrimaryCaptionMedium)
             .foregroundStyle(Color(hex: "#202020"))

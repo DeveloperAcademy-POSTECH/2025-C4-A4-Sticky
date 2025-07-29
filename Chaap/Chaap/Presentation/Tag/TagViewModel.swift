@@ -196,7 +196,10 @@ class TagViewModel: NSObject {
         await locationManager.reverseGeocode(location: location)
 
         // Peer 생성
-        let peer = getOrCreatePeer(for: peerToken, displayName: connectedPeer?.displayName ?? "Unknown")
+        guard let displayName = connectedPeer?.displayName else {
+            return nil
+        }
+        let peer = getOrCreatePeer(for: peerToken, displayName: displayName)
         
         let chaap = Chaap(
             createdAt: Date(),
@@ -258,7 +261,8 @@ extension TagViewModel: NISessionDelegate {
 //        print("➡️ didUpdate called with \(nearbyObjects.count) objects")
         
         guard let peerToken = peerDiscoveryToken else {
-            fatalError("don't have peer token")
+//            fatalError("don't have peer token")
+            return
         }
         
 //        guard let peerToken = peerDiscoveryToken else {

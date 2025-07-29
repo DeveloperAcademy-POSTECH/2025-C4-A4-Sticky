@@ -10,6 +10,7 @@ import SwiftUI
 struct ChaapComposeView: View {
     @Bindable var chaap: Chaap
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var navigationManager: CHNavigationManager
     
     var body: some View {
         ZStack {
@@ -63,17 +64,28 @@ struct ChaapComposeView: View {
                                             .inset(by: 0.46)
                                             .stroke(.white.opacity(0), lineWidth: 0.92174)
                                     )
-                                TextField("제목을 입력하세요", text: $chaap.title)
-                                    .font(.chBodyRegular)
-                                    .foregroundStyle(Color.chLabelWhiteSecondary)
-                                    .multilineTextAlignment(.center)
-                                    .background(Color.clear)
+                                ZStack(alignment: .center) {
+                                    if chaap.title.isEmpty {
+                                        Text("제목을 입력하세요")
+                                            .font(.chBodyRegular)
+                                            .foregroundStyle(Color.chLabelWhiteSecondary)
+                                    }
+                                    TextField("", text: $chaap.title)
+                                        .font(.chBodyBold)
+                                        .foregroundStyle(Color.chLabelWhitePrimary)
+                                        .lineLimit(1)
+                                        .background(Color.clear)
+                                        .autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .disableAutocorrection(true)
+                                        .multilineTextAlignment(.center)
+                                }
                             }
                             .frame(height: 57)
                             /// 메모 입력
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12)
-                                //                                    .background(Color(hex: "#808080").opacity(0.25))
+                                    .background(Color(hex: "#808080").opacity(0.25))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12)
                                             .inset(by: 0.46)
@@ -86,23 +98,72 @@ struct ChaapComposeView: View {
                                             .stroke(.white.opacity(0), lineWidth: 0.92174)
                                             .background(Color.clear)
                                     )
-                                TextField("내용을 입력하세요", text: $chaap.memo)
-                                    .font(.chBodyRegular)
-                                    .foregroundStyle(Color.chLabelWhiteSecondary)
-                                    .multilineTextAlignment(.center)
-                                    .background(Color.clear)
+                                ZStack(alignment: .center) {
+                                    if chaap.memo.isEmpty {
+                                        Text("내용을 입력하세요")
+                                            .font(.chBodyRegular)
+                                            .foregroundStyle(Color.chLabelWhiteSecondary)
+                                    }
+                                    
+                                    TextEditor(text: $chaap.memo)
+                                        .font(.chBodyRegular)
+                                        .foregroundStyle(Color.chLabelWhitePrimary)
+                                        .frame(height: 130)
+                                        .scrollContentBackground(.hidden)
+                                        .scrollDisabled(true)
+                                        .background(Color.clear)
+                                        .autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .multilineTextAlignment(.center)
+                                        .lineLimit(3)
+                                }
                             }
                             .frame(height: 136)
                         }
                         // TODO: 장소 수정 어떤 방식으로 진행?
-                        HStack(alignment: .top) {
-                            Spacer()
-                            Image(.placeMarker)
-                            Text(chaap.place)
-                                .font(.chPrimaryCaptionRegular)
-                                .foregroundStyle(Color.chLabelWhitePrimary)
-                            Spacer()
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .background(Color(hex: "#808080").opacity(0.25))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .inset(by: 0.46)
+                                        .stroke(Color(red: 0.93, green: 0.93, blue: 0.93).opacity(0.8), lineWidth: 0.92174)
+                                        .background(Color.clear)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .inset(by: 0.46)
+                                        .stroke(.white.opacity(0), lineWidth: 0.92174)
+                                        .background(Color.clear)
+                                )
+                            HStack {
+                                Spacer()
+                                HStack(alignment: .top, spacing: 4){
+                                    Image(.placeMarker)
+                                    TextField("\(chaap.place)", text: $chaap.place)
+                                        .font(.chPrimaryCaptionRegular)
+                                        .foregroundStyle(Color.chLabelWhiteSecondary)
+//                                        .frame(minWidth: 100, maxWidth: 140)
+                                        .lineLimit(1)
+                                        .background(Color.clear)
+                                        .autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .disableAutocorrection(true)
+                                        .multilineTextAlignment(.center)
+                                }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 20)
                         }
+                        .frame(height: 54)
+//                        HStack(alignment: .top) {
+//                            Spacer()
+//                            Image(.placeMarker)
+//                            Text(chaap.place)
+//                                .font(.chPrimaryCaptionRegular)
+//                                .foregroundStyle(Color.chLabelWhitePrimary)
+//                            Spacer()
+//                        }
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 24)
@@ -110,6 +171,7 @@ struct ChaapComposeView: View {
                 // TODO: 임의로 상수 넣었음..
                 .frame(height: 430)
                 Spacer()
+                /// 저장 버튼
                 CHMainButton(
                     actionType: .save,
                     action: {

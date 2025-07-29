@@ -75,7 +75,7 @@ struct PeopleDetailView: View {
                 }
                 Spacer()
 
-                CHNavBar()
+//                CHNavBar()
             }
         }
         .padding(.bottom, 10)
@@ -89,7 +89,7 @@ struct PeopleDetailView: View {
         return
             Text("\(displayIndex)/\(filteredChaaps.count)")
                 .font(.chBodyBold)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
 
         
     }

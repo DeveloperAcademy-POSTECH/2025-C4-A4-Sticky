@@ -22,7 +22,6 @@ struct TagView: View {
     @State private var showDistanceWithPeer = false
     @State private var hasDetectedDistanceChange = false
     
-//    @State private var showChaapList = false
     
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TagViewModel(modelContext: modelContext))
@@ -44,9 +43,15 @@ struct TagView: View {
                 )
                 .ignoresSafeArea(.all)
             
-            LottieView(animation: .named("findingPeer"))
-                .playing(loopMode: .loop)
-                .ignoresSafeArea(.all)
+            if !hasDetectedDistanceChange {
+                LottieView(animation: .named("findingPeer"))
+                    .playing(loopMode: .loop)
+                    .ignoresSafeArea(.all)
+            } else {
+                LottieView(animation: .named("creatingChaap"))
+                    .playing(loopMode: .playOnce)
+                    .ignoresSafeArea(.all)
+            }
             
             VStack {
                 Spacer()
@@ -192,7 +197,10 @@ struct TagView: View {
         }
         
         .onChange(of: viewModel.createdChaap) { _, newChaap in
-            guard let chaap = newChaap, !pushed else { return }
+            guard let chaap = newChaap, !pushed else {
+                print("compose로 이동 X")
+                return
+            }
             pushed = true
             navigationManager.push(.compose(chaap))
         }

@@ -35,7 +35,11 @@ struct MainView: View {
                 
                 // Top Bar
                 VStack(alignment: .center, spacing: 15) {
-                    CHNavBar()
+                    CHNavBar(didPressSearchButton: {
+                        navigationManager.push(.search)
+                    }, didPressProfileButton: {
+                        navigationManager.push(.editProfile)
+                    })
                     SegmentControlPicker(selected: $viewModel.selectedSegement)
                     Spacer()
                 }
@@ -57,12 +61,14 @@ struct MainView: View {
                     TagView(modelContext: modelContext)
                         .environmentObject(navigationManager)
                 case .search:
-                    // 다른 뷰
                     SearchView()
+                        .environmentObject(navigationManager)
                 case .editProfile:
                     EditProfileView()
+                        .environmentObject(navigationManager)
                 case .compose(let chaap):
                     ChaapComposeView(chaap: chaap)
+                        .environmentObject(navigationManager)
                 }
                 
             }
@@ -75,6 +81,7 @@ struct MainView: View {
         switch viewModel.selectedSegement {
         case .cardSegment:
             CardSegmentView()
+                .environmentObject(navigationManager)
         case .peopleSegment:
             PeopleSegmentView()
         case .calendarSegment:

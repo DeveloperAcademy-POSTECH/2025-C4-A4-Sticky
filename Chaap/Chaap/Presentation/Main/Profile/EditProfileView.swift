@@ -9,12 +9,27 @@ import SwiftUI
 
 struct EditProfileView: View {
     @Bindable var viewModel = EditProfileViewModel()
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 0) {
             /// 상단 네비게이션
             VStack(alignment: .leading, spacing: 0) {
                 ZStack {
+                    /// 뒤로가기 버튼
+                    HStack {
+                        Button{
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20))
+                                .foregroundColor(Color.chLabelBlackPrimary)
+                                .frame(width: 40, height: 40)
+                        }
+                        Spacer()
+                    }
                     /// 중앙 타이틀
                     Text("프로필 수정")
                         .font(.systemEmphasized)
@@ -26,6 +41,7 @@ struct EditProfileView: View {
                         Button("저장") {
                             viewModel.saveNickname()
                             // TODO: 연결
+                            navigationManager.pop()
                         }
                         .font(.chPrimaryCaptionMedium)
                         .foregroundColor(viewModel.hasChanges ? .chLabelBlackPrimary : .chLabelBlackSecondary)
