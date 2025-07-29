@@ -16,7 +16,7 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .bottom) {
                 Rectangle()
                     .foregroundColor(.clear)
                     .background(
@@ -50,6 +50,19 @@ struct ProfileView: View {
 
                     Spacer()
                 }
+            }
+            .chBottomModal(isPresented: $showImagePicker) {
+                VStack(spacing: 20) {
+                    Text("프로필 이미지 선택")
+                        .font(.chBodyMedium)
+                        .foregroundStyle(Color.chLabelWhitePrimary)
+                    
+                    imageOption
+                    Spacer()
+                }
+                .padding(.top, 15)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
             }
         }
     }
@@ -88,7 +101,7 @@ struct ProfileView: View {
             Circle()
                 .frame(width: 111, height: 111)
                 .foregroundColor(Color.chLabelWhitePrimary)
-                .shadow(color: .black.opacity(0.1), radius: 2.5, x: 3, y: 3)
+                .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
             
             if let selectedImageName {
                 Image(selectedImageName)
@@ -105,36 +118,26 @@ struct ProfileView: View {
         .onTapGesture {
             showImagePicker = true
         }
-        .sheet(isPresented: $showImagePicker) {
-            VStack(spacing: 20) {
-                Text("프로필 이미지 선택")
-                    .font(.headline)
-                
-                imageOption
-            }
-            .padding()
-            .presentationDetents([.medium])
-            .presentationDragIndicator(.visible)
-        }
     }
     
     // MARK: - Image Option Sheet
     var imageOption: some View {
         let imageNames = [
             "profileBird",
+            "profileButterfly",
             "profileCat",
             "profileDog",
             "profileRabbit",
             "profileTurtle"
         ]
         
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 20) {
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 30) {
             ForEach(imageNames, id: \.self) { imageName in
                 ZStack {
                     Circle()
-                        .frame(width: 111, height: 111)
+                        .frame(width: 90, height: 90)
                         .foregroundColor(Color.chLabelWhitePrimary)
-                        .shadow(color: .black.opacity(0.1), radius: 2.5, x: 3, y: 3)
+                        .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
                         .onTapGesture {
                             selectedImageName = imageName
                             showImagePicker = false
