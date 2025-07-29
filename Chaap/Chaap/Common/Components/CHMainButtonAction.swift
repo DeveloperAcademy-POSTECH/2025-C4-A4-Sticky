@@ -44,7 +44,7 @@ enum MainButtonAction {
         case .accept, .connect, .save:
             return .chLabelWhitePrimary
         case .cancel, .decline:
-            return .chLabelBlackSecondary
+            return .chLabelBlackPrimary
         }
     }
     
