@@ -44,29 +44,29 @@ struct CHMainButton: View {
     var backgroundView: some View {
         if actionType == .save {
             if isEnabled {
-                EllipticalGradient(
-                    stops: [
-                        Gradient.Stop(color: Color(hex: "#051A6B"), location: 0.0),
-                        Gradient.Stop(color: Color(hex: "#051A6B").opacity(0.5), location: 1.0)
-                    ],
-                    center: UnitPoint(x: 0.49, y: 0)
+                RadialGradient(
+                    gradient: Gradient(colors: [
+                        Color(hex: "#051A6B"),
+                        Color(hex: "#051A6B").opacity(0.5)
+                    ]),
+                    center: .top, startRadius: 0, endRadius: 300
                 )
-                .clipShape(RoundedRectangle(cornerRadius: 50))
             } else {
                 Color(hex: "#D9D9D9")
+                    .opacity(0.25)
                     .clipShape(RoundedRectangle(cornerRadius: 50))
             }
         } else if actionType == .accept || actionType == .connect {
-            EllipticalGradient(
-                stops: [
-                    Gradient.Stop(color: Color(hex: "#051A6B"), location: 0.0),
-                    Gradient.Stop(color: Color(hex: "#051A6B").opacity(0.5), location: 1.0)
-                ],
-                center: UnitPoint(x: 0.49, y: 0)
+            RadialGradient(
+                gradient: Gradient(colors: [
+                    Color(hex: "#051A6B"),
+                    Color(hex: "#051A6B").opacity(0.5)
+                ]),
+                center: .top, startRadius: 0, endRadius: 500
             )
-            .clipShape(RoundedRectangle(cornerRadius: 50))
         } else {
             Color(hex: "#D9D9D9")
+                .opacity(0.25)
                 .clipShape(RoundedRectangle(cornerRadius: 50))
         }
     }
