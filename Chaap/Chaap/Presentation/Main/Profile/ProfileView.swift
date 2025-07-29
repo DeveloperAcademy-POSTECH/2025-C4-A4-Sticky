@@ -16,7 +16,7 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .bottom) {
                 Rectangle()
                     .foregroundColor(.clear)
                     .background(
@@ -37,53 +37,62 @@ struct ProfileView: View {
                     )
                     .ignoresSafeArea(.all)
                 
-                VStack(spacing: 0) {
+                VStack(spacing: 19) {
                     /// 상단 네비게이션
                     topNavigation
+                        .padding(.bottom, 10)
                     
-                    /// 메인 컨텐츠
-                    VStack(spacing: 50) {
-                        /// 프로필 사진
-                        chooseProfileImage
-                        
-                        /// 닉네임 섹션
-                        nicknameField
-                    }
+                    /// 프로필 사진
+                    chooseProfileImage
+                    
+                    /// 닉네임 섹션
+                    nicknameField
+
                     Spacer()
                 }
+            }
+            .chBottomModal(isPresented: $showImagePicker) {
+                VStack(spacing: 20) {
+                    Text("프로필 이미지 선택")
+                        .font(.chBodyMedium)
+                        .foregroundStyle(Color.chLabelWhitePrimary)
+                    
+                    imageOption
+                    Spacer()
+                }
+                .padding(.top, 15)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
             }
         }
     }
     
     var topNavigation: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ZStack {
-                /// 중앙 타이틀
-                Text("Chaap")
-                    .font(.systemEmphasized)
-                    .foregroundColor(.chLabelWhitePrimary)
-                
-                /// 오른쪽(다음) 버튼
-                HStack {
-                    Spacer()
-                    Button("다음") {
-                        viewModel.saveNickname()
-                        
-                        if let selectedImageName {
-                            UserDefaults.standard.set(selectedImageName, forKey: "SelectedProfileImageName")
-                        }
-                        
-                        shouldNavigateToHome = true
-                        // TODO: 연결
+        ZStack {
+            /// 중앙 타이틀
+            Text("Chaap")
+                .font(.systemEmphasized)
+                .foregroundColor(.chLabelWhitePrimary)
+            
+            /// 오른쪽(다음) 버튼
+            HStack {
+                Spacer()
+                Button("다음") {
+                    viewModel.saveNickname()
+                    
+                    if let selectedImageName {
+                        UserDefaults.standard.set(selectedImageName, forKey: "SelectedProfileImageName")
                     }
-                    .font(.chPrimaryCaptionMedium)
-                    .foregroundColor(viewModel.isNextButtonEnabled ? .chLabelWhitePrimary : .chLabelWhiteSecondary)
-                    .disabled(!viewModel.isNextButtonEnabled)
+                    
+                    shouldNavigateToHome = true
+                    // TODO: 연결
                 }
+                .font(.chPrimaryCaptionMedium)
+                .foregroundColor(viewModel.isNextButtonEnabled ? .chLabelWhitePrimary : .chLabelWhiteSecondary)
+                .disabled(!viewModel.isNextButtonEnabled)
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 29)
+        .safeAreaPadding(.horizontal, 16)
     }
     
     // MARK: - choose profile image
@@ -92,7 +101,7 @@ struct ProfileView: View {
             Circle()
                 .frame(width: 111, height: 111)
                 .foregroundColor(Color.chLabelWhitePrimary)
-                .shadow(color: .black.opacity(0.1), radius: 2.5, x: 3, y: 3)
+                .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
             
             if let selectedImageName {
                 Image(selectedImageName)
@@ -109,37 +118,26 @@ struct ProfileView: View {
         .onTapGesture {
             showImagePicker = true
         }
-        .sheet(isPresented: $showImagePicker) {
-            VStack(spacing: 20) {
-                Text("프로필 이미지 선택")
-                    .font(.headline)
-                
-                imageOption
-            }
-            .padding()
-            .presentationDetents([.medium])
-            .presentationDragIndicator(.visible)
-        }
     }
     
     // MARK: - Image Option Sheet
     var imageOption: some View {
         let imageNames = [
             "profileBird",
+            "profileButterfly",
             "profileCat",
             "profileDog",
             "profileRabbit",
             "profileTurtle"
         ]
         
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 20) {
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 30) {
             ForEach(imageNames, id: \.self) { imageName in
                 ZStack {
                     Circle()
-                        .frame(width: 111, height: 111)
+                        .frame(width: 90, height: 90)
                         .foregroundColor(Color.chLabelWhitePrimary)
-                        .shadow(color: .black.opacity(0.1), radius: 2.5, x: 3, y: 3)
-                        .shadow(color: .black.opacity(0.1), radius: 2.5, x: 3, y: 3)
+                        .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
                         .onTapGesture {
                             selectedImageName = imageName
                             showImagePicker = false
@@ -168,22 +166,45 @@ struct ProfileView: View {
             
             /// 닉네임 입력란
             ZStack(alignment: .leading) {
-                Rectangle()
-                    .foregroundColor(.clear)
+                RoundedRectangle(cornerRadius: 100)
+                    .foregroundColor(Color.black.opacity(0.1))
                     .frame(height: 52)
-                    .background(.black.opacity(0.05))
-                    .cornerRadius(100)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 100)
+                            .stroke(Color.black.opacity(0.1), lineWidth: 3)
+                            .blur(radius: 1)
+                            .offset(x: 1, y: 2)
+                            .mask(
+                                RoundedRectangle(cornerRadius: 100)
+                                    .fill(LinearGradient(colors: [.black, .black], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            )
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 100)
+                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            .offset(x: 0, y: -1)
+                            .mask(
+                                RoundedRectangle(cornerRadius: 100)
+                                    .fill(LinearGradient(colors: [.white, .white.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            )
+                    )
                 
-                TextField("닉네임을 입력해주세요.", text: $viewModel.nickname)
+                if viewModel.nickname.isEmpty {
+                    Text("닉네임을 입력해주세요.")
+                        .foregroundColor(.chLabelBlackSecondary)
+                        .font(.chPrimaryCaptionMedium)
+                        .padding(.horizontal, 20)
+                }
+                
+                TextField("", text: $viewModel.nickname)
                     .font(.chPrimaryCaptionRegular)
                     .foregroundColor(.chLabelWhitePrimary)
                     .padding(.horizontal, 20)
                     .frame(height: 52)
-                    .background(.black.opacity(0.05))
                     .cornerRadius(100)
             }
         }
-        .padding(.horizontal, 30)
+        .safeAreaPadding(.horizontal, 22)
     }
 }
 
