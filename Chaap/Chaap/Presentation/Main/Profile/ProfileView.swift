@@ -16,19 +16,41 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                /// 상단 네비게이션
-                topNavigation
+            ZStack {
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .background(
+                        EllipticalGradient(
+                            colors: [Color.chPrimary, Color.chSecondary],
+                            center: .topLeading,
+                            startRadiusFraction: 0.2,
+                            endRadiusFraction: 1.0
+                        )
+                        .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                    )
+                    .ignoresSafeArea(.all)
                 
-                /// 메인 컨텐츠
-                VStack(spacing: 50) {
-                    /// 프로필 사진
-                    chooseProfileImage
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .background(
+                        Color.black.opacity(0.25)
+                    )
+                    .ignoresSafeArea(.all)
+                
+                VStack(spacing: 0) {
+                    /// 상단 네비게이션
+                    topNavigation
                     
-                    /// 닉네임 섹션
-                    nicknameField
+                    /// 메인 컨텐츠
+                    VStack(spacing: 50) {
+                        /// 프로필 사진
+                        chooseProfileImage
+                        
+                        /// 닉네임 섹션
+                        nicknameField
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
         }
     }
@@ -39,7 +61,7 @@ struct ProfileView: View {
                 /// 중앙 타이틀
                 Text("Chaap")
                     .font(.systemEmphasized)
-                    .foregroundColor(.chLabelBlackPrimary)
+                    .foregroundColor(.chLabelWhitePrimary)
                 
                 /// 오른쪽(다음) 버튼
                 HStack {
@@ -55,7 +77,7 @@ struct ProfileView: View {
                         // TODO: 연결
                     }
                     .font(.chPrimaryCaptionMedium)
-                    .foregroundColor(viewModel.isNextButtonEnabled ? .chLabelBlackPrimary : .chLabelBlackSecondary)
+                    .foregroundColor(viewModel.isNextButtonEnabled ? .chLabelWhitePrimary : .chLabelWhiteSecondary)
                     .disabled(!viewModel.isNextButtonEnabled)
                 }
             }
@@ -140,7 +162,7 @@ struct ProfileView: View {
             HStack {
                 Text("닉네임")
                     .font(.chPrimaryCaptionMedium)
-                    .foregroundColor(.black)
+                    .foregroundColor(.chLabelWhitePrimary)
                 Spacer()
             }
             
@@ -154,7 +176,7 @@ struct ProfileView: View {
                 
                 TextField("닉네임을 입력해주세요.", text: $viewModel.nickname)
                     .font(.chPrimaryCaptionRegular)
-                    .foregroundColor(.black)
+                    .foregroundColor(.chLabelWhitePrimary)
                     .padding(.horizontal, 20)
                     .frame(height: 52)
                     .background(.black.opacity(0.05))
