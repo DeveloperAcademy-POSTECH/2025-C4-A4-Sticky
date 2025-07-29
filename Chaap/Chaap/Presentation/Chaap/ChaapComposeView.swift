@@ -36,9 +36,31 @@ struct ChaapComposeView: View {
                     VStack(spacing: 24) {
                         // MARK: - Peer & Date
                         VStack(spacing: 8) {
-                            Circle()
-                                .frame(width: 44, height: 44)
-                                .foregroundStyle(.gray.opacity(0.3))
+                            if let iconName = chaap.peers.first?.iconName {
+                                Image(iconName)
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        minHeight: 44,
+                                        maxHeight: 44,
+                                        alignment: .center
+                                    )
+                                    .background(.white)
+                                    .clipShape(Circle())
+                            } else {
+                                Image(.profileButterfly)
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        minHeight: 44,
+                                        maxHeight: 44,
+                                        alignment: .center
+                                    )
+                                    .background(.white)
+                                    .clipShape(Circle())
+                            }
                             
                             Text("with \(chaap.peers.first?.displayName ?? "이름 없음")")
                                 .font(.chBodyBold)
