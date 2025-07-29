@@ -197,7 +197,7 @@ struct ProfileView: View {
                 }
                 
                 TextField("", text: $viewModel.nickname)
-                    .font(.chPrimaryCaptionRegular)
+                    .font(.chPrimaryCaptionMedium)
                     .foregroundColor(.chLabelWhitePrimary)
                     .padding(.horizontal, 20)
                     .frame(height: 52)
