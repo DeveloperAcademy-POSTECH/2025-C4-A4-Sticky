@@ -15,9 +15,7 @@ struct CHMainButton: View {
     
     var body: some View {
         ZStack {
-            Button(action: {
-                
-            }, label: {
+            Button(action: action) {
                 HStack(alignment: .center) {
                     Text(actionType.title)
                         .font(actionType.font)
@@ -49,7 +47,7 @@ struct CHMainButton: View {
                         .inset(by: 0.46)
                         .stroke(.white.opacity(0), lineWidth: 0.92174)
                 )
-            })
+            }
         }
     }
     
