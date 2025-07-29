@@ -22,7 +22,18 @@ struct CalendarSegmentView: View {
     var body: some View {
         ZStack {
             /// 전체화면 배경
-            Color.gray.opacity(0.2)
+            Rectangle()
+                .foregroundColor(.clear)
+                .background(.black.opacity(0.05))
+                .background(
+                    EllipticalGradient(
+                        colors: [Color.chPrimary, Color.chSecondary],
+                        center: .topLeading,
+                        startRadiusFraction: 0.2,
+                        endRadiusFraction: 1.0
+                    )
+                    .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                )
                 .ignoresSafeArea(.all)
 
             VStack(spacing: 0) {
@@ -190,8 +201,8 @@ struct CalendarSegmentView: View {
                 /// 오늘 날짜 표시 (선택되지 않았을 때만)
                 if isToday && isCurrentMonth && !isSelected {
                     Text("오늘")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundColor(.chPrimary)
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.pointColorPurple)
                 } else {
                     /// 빈 공간 유지
                     Text("")

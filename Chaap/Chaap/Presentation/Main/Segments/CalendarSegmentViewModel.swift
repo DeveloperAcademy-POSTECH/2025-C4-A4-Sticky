@@ -175,22 +175,27 @@ class CalendarSegmentViewModel: ObservableObject {
         isToday: Bool,
         isCurrentMonth: Bool
     ) -> Color {
+        // 선택된 날짜는 흰색
         if isSelected {
             return .white
         }
         
+        // 현재 월이 아닌 날짜는 회색 투명
         if !isCurrentMonth {
             return Color(hex: "#919191").opacity(0.3)
         }
         
+        // 오늘 날짜는 보라색
         if isToday {
-            return .chPrimary
+            return .pointColorPurple
         }
         
+        // 이벤트가 있는 날짜는 흰색
         if hasEvents(on: date) {
             return .white
         }
         
+        // 기본 색상은 회색
         return Color(hex: "#919191")
     }
     
