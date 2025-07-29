@@ -32,10 +32,31 @@ struct CHCardShow: View {
     var topContent: some View {
         VStack(spacing: 8) {
             // 상대 프로필 이미지
-            Circle()
-                .frame(width: 44, height: 44)
-                .foregroundStyle(.white)
-            
+            if let iconName = chaap.peers.first?.iconName {
+                Image(iconName)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: 44,
+                        maxHeight: 44,
+                        alignment: .center
+                    )
+                    .background(.white)
+                    .clipShape(Circle())
+            } else {
+                Image(.profileButterfly)
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: 44,
+                        maxHeight: 44,
+                        alignment: .center
+                    )
+                    .background(.white)
+                    .clipShape(Circle())
+            }
             // 상대 프로필 닉네임
             Text("with \(chaap.peers.first?.displayName ?? "이름 없음")")
                 .font(.chBodyBold)
