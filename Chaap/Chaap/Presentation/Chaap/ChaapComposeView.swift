@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ChaapComposeView: View {
     @Bindable var chaap: Chaap
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigationManager: CHNavigationManager
+    
+    var modelContext: ModelContext
+    
+    @State private var showDeleteAlert = false
     
     var body: some View {
         ZStack {
@@ -28,7 +33,20 @@ struct ChaapComposeView: View {
                 )
                 .ignoresSafeArea(.all)
             VStack {
-                // TODO: 카드 크기, 입력 배경 이상함...
+                HStack{
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(.chBackButton)
+                    }
+                    Spacer()
+                    Button {
+                        showDeleteAlert = true
+                    } label: {
+                        Image(.chDeleteButton)
+                    }
+                }
+                .safeAreaPadding(.top, 9)
                 Spacer()
                 // MARK: - Card 부분
                 ZStack {
@@ -183,22 +201,7 @@ struct ChaapComposeView: View {
                                         .opacity(0.08)
                                 })
                         }
-                        // TODO: 장소 수정 어떤 방식으로 진행?
-                        //                        ZStack {
-                        //                            RoundedRectangle(cornerRadius: 12)
-                        //                                .background(Color(hex: "#808080").opacity(0.25))
-                        //                                .overlay(
-                        //                                    RoundedRectangle(cornerRadius: 12)
-                        //                                        .inset(by: 0.46)
-                        //                                        .stroke(Color(red: 0.93, green: 0.93, blue: 0.93).opacity(0.8), lineWidth: 0.92174)
-                        //                                        .background(Color.clear)
-                        //                                )
-                        //                                .overlay(
-                        //                                    RoundedRectangle(cornerRadius: 12)
-                        //                                        .inset(by: 0.46)
-                        //                                        .stroke(.white.opacity(0), lineWidth: 0.92174)
-                        //                                        .background(Color.clear)
-                        //                                )
+                        /// 장소 수정 및 입력
                         HStack {
                             Spacer()
                             HStack(alignment: .top, spacing: 4){
@@ -248,22 +251,11 @@ struct ChaapComposeView: View {
                                                 lineWidth: 0.92
                                             )
                                     )
-                                
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
                                     .opacity(0.08)
                             })
                     }
-//                        HStack(alignment: .top) {
-//                            Spacer()
-//                            Image(.placeMarker)
-//                            Text(chaap.place)
-//                                .font(.chPrimaryCaptionRegular)
-//                                .foregroundStyle(Color.chLabelWhitePrimary)
-//                            Spacer()
-//                        }
-//                    }
-                        
                     .padding(.horizontal, 20)
                     .padding(.vertical, 24)
                 }
@@ -281,5 +273,21 @@ struct ChaapComposeView: View {
             .safeAreaPadding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden(true)
+        .alert("정말 삭제하시겠습니까?", isPresented: $showDeleteAlert) {
+            Button("삭제", role: .destructive, action: deleteChaap)
+            Button("취소", role: .cancel) { }
+        } message: {
+            Text("이 기록은 완전히 삭제되며 되돌릴 수 없습니다.")
+        }
+    }
+    
+    private func deleteChaap() {
+        modelContext.delete(chaap)
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            print("❌ 삭제 실패: \(error.localizedDescription)")
+        }
     }
 }
