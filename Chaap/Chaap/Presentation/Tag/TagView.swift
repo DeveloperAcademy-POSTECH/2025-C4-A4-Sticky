@@ -33,7 +33,6 @@ struct TagView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
-                .background(.black.opacity(0.05))
                 .background(
                     EllipticalGradient(
                         colors: [Color(hex: "#0A0E18"), Color(hex: "0F2471")],

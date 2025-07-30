@@ -36,7 +36,6 @@ struct PeopleDetailView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
-                .background(.black.opacity(0.05))
                 .background(
                     EllipticalGradient(
                         colors: [Color.chPrimary, Color.chSecondary],
@@ -45,6 +44,12 @@ struct PeopleDetailView: View {
                         endRadiusFraction: 1.0
                     )
                     .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                )
+                .ignoresSafeArea(.all)
+            Rectangle()
+                .foregroundColor(.clear)
+                .background(
+                    Color.black.opacity(0.25)
                 )
                 .ignoresSafeArea(.all)
             

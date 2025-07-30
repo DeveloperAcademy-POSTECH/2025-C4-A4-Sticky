@@ -30,7 +30,6 @@ struct MainView: View {
                         .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                     )
                     .ignoresSafeArea(.all)
-                
                 Rectangle()
                     .foregroundColor(.clear)
                     .background(
