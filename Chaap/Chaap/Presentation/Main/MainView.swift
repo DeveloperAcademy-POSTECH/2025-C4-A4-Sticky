@@ -78,7 +78,13 @@ struct MainView: View {
                     EditProfileView(selectedImageName: $selectedImageName)
                         .environmentObject(navigationManager)
                 case .compose(let chaap):
-                    ChaapComposeView(chaap: chaap)
+                    ChaapComposeView(chaap: chaap, modelContext: modelContext)
+                        .environmentObject(navigationManager)
+                case .detail(let chaap):
+                    ChaapDetailView(chaap: chaap, modelContext: modelContext)
+                        .environmentObject(navigationManager)
+                case .people(let name, let peers):
+                    PeopleDetailView(displayName: name, peers: peers)
                         .environmentObject(navigationManager)
                 }
                 
@@ -95,10 +101,13 @@ struct MainView: View {
                 .environmentObject(navigationManager)
         case .peopleSegment:
             PeopleSegmentView()
+                .environmentObject(navigationManager)
         case .calendarSegment:
             CalendarSegmentView(modelContext: modelContext)
+                .environmentObject(navigationManager)
         case .mapSegment:
             MapSegmentView()
+                .environmentObject(navigationManager)
         }
     }
 }
