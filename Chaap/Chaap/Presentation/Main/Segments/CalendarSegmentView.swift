@@ -13,6 +13,8 @@ struct CalendarSegmentView: View {
     @StateObject private var viewModel: CalendarSegmentViewModel
     @State private var isModalPresented: Bool = false
     
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     init(modelContext: ModelContext) {
         _viewModel = StateObject(
             wrappedValue: CalendarSegmentViewModel(modelContext: modelContext)
@@ -175,15 +177,13 @@ struct CalendarSegmentView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.eventsForSelectedDate, id: \.id) { chaap in
-                        PeerChaapRow(chaap: chaap)
-                            .padding(.horizontal, 4)
-                            .padding(.vertical, 12)
-                        
-//                        if chaap.id != viewModel.eventsForSelectedDate.last?.id {
-//                            Divider()
-//                                .background(Color.white.opacity(0.2))
-//                                .padding(.horizontal, 4)
-//                        }
+                        Button {
+                            navigationManager.push(.detail(chaap))
+                        } label: {
+                            PeerChaapRow(chaap: chaap)
+                                .padding(.horizontal, 4)
+                                .padding(.vertical, 12)
+                        }
                     }
                 }
             }

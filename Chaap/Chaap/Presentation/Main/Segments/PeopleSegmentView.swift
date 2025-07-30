@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct PeopleSegmentView: View {
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)])
     var allChaaps: [Chaap]
     
@@ -30,23 +32,22 @@ struct PeopleSegmentView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 32) {
-                    ForEach(displayNames, id: \.self) { name in
-                        if let peersForName = groupedPeers[name],
-                           let iconName = peersForName.first?.iconName {
-                            NavigationLink(destination: PeopleDetailView(displayName: name, peers: peersForName)) {
-                                PeopleCircle(name: name, iconName: iconName)
-                            }
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 32) {
+                ForEach(displayNames, id: \.self) { name in
+                    if let peersForName = groupedPeers[name],
+                       let iconName = peersForName.first?.iconName {
+                        Button {
+                            navigationManager.push(.people(name, peersForName))
+                        } label: {
+                            PeopleCircle(name: name, iconName: iconName)
                         }
                     }
                 }
-                .padding(.horizontal, 22)
             }
-            .padding(.top, 155)
+            .padding(.horizontal, 22)
         }
-        
+        .padding(.top, 155)
     }
 }
 

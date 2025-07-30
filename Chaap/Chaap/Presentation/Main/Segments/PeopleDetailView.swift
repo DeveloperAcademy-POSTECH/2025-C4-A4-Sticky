@@ -12,6 +12,8 @@ struct PeopleDetailView: View {
     let displayName: String
     let peers: [Peer]
     
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     @Environment(\.presentationMode) var presentationMode
     @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)]) var allChaaps: [Chaap]
     
@@ -98,11 +100,15 @@ struct PeopleDetailView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 13) {
                 ForEach(filteredChaaps.indices, id: \.self) { index in
-                    CHCardShow(chaap: filteredChaaps[index])
-                        .frame(width: 319, height: 389)
-                        .animation(.spring(), value: currentIndex)
-                        .containerRelativeFrame(.horizontal)
-                        .tag(index)
+                    Button {
+                        navigationManager.push(.detail(filteredChaaps[index]))
+                    } label: {
+                        CHCardShow(chaap: filteredChaaps[index])
+                            .frame(width: 319, height: 389)
+                            .animation(.spring(), value: currentIndex)
+                            .containerRelativeFrame(.horizontal)
+                            .tag(index)
+                    }
                 }
             }
             .scrollTargetLayout()

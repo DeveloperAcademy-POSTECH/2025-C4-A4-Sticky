@@ -60,18 +60,10 @@ struct PeerChaapRow: View {
                 }
                 
                 // 제목
-//                if let title = chaap.title, !title.isEmpty {
                 Text(chaap.title)
                         .font(.chBodyMedium)
                         .foregroundStyle(Color.chLabelWhitePrimary)
                         .lineLimit(1)
-//                } else {
-//                    /// title 빈 경우 공백으로 자리 차지
-//                    Text("")
-//                        .font(.chBodyMedium)
-//                        .foregroundStyle(Color.chLabelWhitePrimary)
-//                        .lineLimit(1)
-//                }
             }
             
             Spacer()
@@ -83,17 +75,10 @@ struct PeerChaapRow: View {
                     .foregroundStyle(Color.chLabelWhiteSecondary)
                 
                 // 장소
-//                if let place = chaap.place, !place.isEmpty {
                 Text(chaap.place)
                         .font(.chSecondaryCaptionMedium)
                         .foregroundStyle(Color.chLabelWhiteSecondary)
                         .lineLimit(1)
-//                } else {
-//                    Text("")
-//                        .font(.chSecondaryCaptionRegular)
-//                        .foregroundStyle(Color.chLabelWhiteSecondary)
-//                        .lineLimit(1)
-//                }
             }
         }
         .padding(.vertical, 4)

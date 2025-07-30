@@ -18,6 +18,8 @@ struct MapSegmentView: View {
     
     @Namespace var mapScope
     
+    @EnvironmentObject private var navigationManager: CHNavigationManager
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -55,7 +57,14 @@ struct MapSegmentView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(chaaps) { chaap in
-                            PeerChaapRow(chaap: chaap)
+                            Button {
+                                navigationManager.push(.detail(chaap))
+                            } label: {
+                                PeerChaapRow(chaap: chaap)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 12)
+                            }
+//                            PeerChaapRow(chaap: chaap)
                         }
                     }
                     Spacer()
