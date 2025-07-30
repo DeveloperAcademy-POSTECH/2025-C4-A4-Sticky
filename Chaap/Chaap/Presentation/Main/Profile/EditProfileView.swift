@@ -186,11 +186,11 @@ struct EditProfileView: View {
                 
                 TextField("\($viewModel.originalNickname)", text: $viewModel.nickname)
                     .font(.chPrimaryCaptionMedium)
-                // 수정 시작하면 Primary-Black, 아니면 회색
                     .foregroundColor(
                         viewModel.hasUserEdited ? .chLabelBlackPrimary : .chLabelBlackSecondary
                     )
                     .padding(.horizontal, 20)
+                    .tint(.chPrimary)
             }
         }
         .safeAreaPadding(.horizontal, 22)

@@ -16,20 +16,11 @@ struct TagPeerListView: View {
         ScrollView {
             LazyVStack {
                 ForEach(mpcManager.nearbyPeers, id: \.self) { peer in
-                    HStack(spacing: 16) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 54, height: 54)
-                            Image(systemName: "fossil.shell")
-                                .foregroundStyle(Color.black.opacity(0.5))
-                        }
+                    HStack {
                         Text(peer.displayName)
-                            .font(.chBodyMedium)
+                            .font(.chTitleSemibold)
                             .foregroundStyle(Color.chLabelWhitePrimary)
-                        
                         Spacer()
-                        
                         CHMainButton(
                             actionType: .connect,
                             action: {
@@ -40,8 +31,10 @@ struct TagPeerListView: View {
                         )
                         .frame(width: 89)
                     }
+                    .frame(height: 46)
                 }
             }
+            .padding(.top, 8)
         }
         .scrollContentBackground(.hidden)
         .background(Color.clear)

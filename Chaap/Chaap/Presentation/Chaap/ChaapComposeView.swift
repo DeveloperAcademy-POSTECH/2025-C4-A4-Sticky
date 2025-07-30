@@ -21,7 +21,6 @@ struct ChaapComposeView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
-                .background(.black.opacity(0.05))
                 .background(
                     EllipticalGradient(
                         colors: [Color.chPrimary, Color.chSecondary],
@@ -30,6 +29,12 @@ struct ChaapComposeView: View {
                         endRadiusFraction: 1.0
                     )
                     .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
+                )
+                .ignoresSafeArea(.all)
+            Rectangle()
+                .foregroundColor(.clear)
+                .background(
+                    Color.black.opacity(0.25)
                 )
                 .ignoresSafeArea(.all)
             VStack {
@@ -106,6 +111,7 @@ struct ChaapComposeView: View {
                                     .textInputAutocapitalization(.never)
                                     .disableAutocorrection(true)
                                     .multilineTextAlignment(.center)
+                                    .tint(Color.chLabelWhitePrimary)
                             }
                             .frame(height: 57)
                             .background(
@@ -163,6 +169,7 @@ struct ChaapComposeView: View {
                                     .textInputAutocapitalization(.never)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(3)
+                                    .tint(Color.chLabelWhitePrimary)
                             }
                             .frame(height: 136)
                             .background(
@@ -209,13 +216,13 @@ struct ChaapComposeView: View {
                                 TextField("\(chaap.place)", text: $chaap.place)
                                     .font(.chPrimaryCaptionRegular)
                                     .foregroundStyle(Color.chLabelWhiteSecondary)
-                                //                                        .frame(minWidth: 100, maxWidth: 140)
                                     .lineLimit(1)
                                     .background(Color.clear)
                                     .autocorrectionDisabled(true)
                                     .textInputAutocapitalization(.never)
                                     .disableAutocorrection(true)
                                     .multilineTextAlignment(.center)
+                                    .tint(Color.chLabelWhitePrimary)
                             }
                             Spacer()
                         }

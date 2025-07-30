@@ -33,7 +33,6 @@ struct TagView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
-                .background(.black.opacity(0.05))
                 .background(
                     EllipticalGradient(
                         colors: [Color(hex: "#0A0E18"), Color(hex: "0F2471")],
@@ -123,13 +122,7 @@ struct TagView: View {
         .chBottomModal(isPresented: $showInvitationAlert) {
             if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
                 VStack(spacing: 28) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 96, height: 96)
-                        Image(systemName: "fossil.shell")
-                            .foregroundStyle(Color.black.opacity(0.5))
-                    }
+                    Image(.chaapLogo)
                     Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
                         .font(.chTitle)
                         .foregroundStyle(Color.chLabelWhitePrimary)
@@ -172,13 +165,7 @@ struct TagView: View {
         .chBottomModal(isPresented: $showDistanceWithPeer){
             if let distance = viewModel.distance {
                 VStack(spacing: 18) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 96, height: 96)
-                        Image(systemName: "fossil.shell")
-                            .foregroundStyle(Color.black.opacity(0.5))
-                    }
+                    Image(.chaapLogo)
                     VStack(spacing: 4) {
                         Text(String(format: "%.1fm", distance))
                             .font(.pretend(type: .bold, size: 35))

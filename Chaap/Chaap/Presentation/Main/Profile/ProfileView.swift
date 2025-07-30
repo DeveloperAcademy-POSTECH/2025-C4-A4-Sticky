@@ -29,7 +29,6 @@ struct ProfileView: View {
                         .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                     )
                     .ignoresSafeArea(.all)
-                
                 Rectangle()
                     .foregroundColor(.clear)
                     .background(
@@ -202,6 +201,12 @@ struct ProfileView: View {
                     .padding(.horizontal, 20)
                     .frame(height: 52)
                     .cornerRadius(100)
+                    .tint(Color.chLabelWhitePrimary)
+                    .lineLimit(1)
+                    .background(Color.clear)
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
             }
         }
         .safeAreaPadding(.horizontal, 22)
