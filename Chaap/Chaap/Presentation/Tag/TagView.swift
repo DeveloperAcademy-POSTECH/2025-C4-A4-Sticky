@@ -22,6 +22,8 @@ struct TagView: View {
     @State private var showDistanceWithPeer = false
     @State private var hasDetectedDistanceChange = false
     
+    @State private var showRotatingAnimation = true
+    @State private var showSendAnimation = false
     
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TagViewModel(modelContext: modelContext))
@@ -43,15 +45,18 @@ struct TagView: View {
                 )
                 .ignoresSafeArea(.all)
             
-            if !hasDetectedDistanceChange {
+            if showRotatingAnimation {
                 LottieView(animation: .named("findingPeer"))
                     .playing(loopMode: .loop)
                     .ignoresSafeArea(.all)
-            } else {
+            }
+            
+            if showSendAnimation {
                 LottieView(animation: .named("creatingChaap"))
                     .playing(loopMode: .playOnce)
                     .ignoresSafeArea(.all)
             }
+            
             
             VStack {
                 Spacer()
@@ -73,6 +78,8 @@ struct TagView: View {
                     .frame(height: 64)
                 Button {
                     print("닫기 버튼 누름")
+                    viewModel.stopNI()
+                    viewModel.stopMPC()
                     dismiss()
                 } label: {
                     Image(.taggingCloseButton)
@@ -96,24 +103,26 @@ struct TagView: View {
                     showPeerList = false
                     showInvitationPending = true
                 }
-            } else {
-                VStack {
-                    Text("UNAVAILABLE")
-                }
             }
         }
         .chBottomModal(isPresented: $showInvitationPending) {
-            if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
-                VStack {
+            VStack {
+                Spacer()
+                if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
                     Text("\(peerName)님의 수락을 기다리는 중")
                         .font(.chTitle)
                         .foregroundStyle(Color.chLabelWhitePrimary)
+                } else {
+                    Text("수락을 기다리는 중")
+                        .font(.chTitle)
+                        .foregroundStyle(Color.chLabelWhitePrimary)
                 }
+                Spacer()
             }
         }
         .chBottomModal(isPresented: $showInvitationAlert) {
             if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
-                VStack {
+                VStack(spacing: 28) {
                     ZStack {
                         Circle()
                             .fill(Color.white)
@@ -121,22 +130,11 @@ struct TagView: View {
                         Image(systemName: "fossil.shell")
                             .foregroundStyle(Color.black.opacity(0.5))
                     }
-                    
                     Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
                         .font(.chTitle)
                         .foregroundStyle(Color.chLabelWhitePrimary)
                         .multilineTextAlignment(.center)
-            
                     HStack {
-                        // TODO: Component 적용 해야 함.
-//                        Button {
-//                            viewModel.rejectInvitation()
-//                            showInvitationAlert = false
-//                        } label: {
-//                            Text("거절")
-//                                .font(.chTitleSemibold)
-//                                .foregroundStyle(Color.chLabelWhitePrimary)
-//                        }
                         CHMainButton(
                             actionType: .decline,
                             action: {
@@ -145,14 +143,6 @@ struct TagView: View {
                             }
                         )
                         Spacer()
-//                        Button {
-//                            viewModel.acceptInvitation()
-//                            showInvitationAlert = false
-//                        } label: {
-//                            Text("수락")
-//                                .font(.chTitleSemibold)
-//                                .foregroundStyle(Color.chLabelWhitePrimary)
-//                        }
                         CHMainButton(
                             actionType: .accept,
                             action: {
@@ -162,9 +152,10 @@ struct TagView: View {
                         )
                     }
                 }
+                .padding(.top, 36)
+                .safeAreaPadding(.bottom, 2)
             }
         }
-        
         .onChange(of: viewModel.distance) { oldValue, newValue in
             if !hasDetectedDistanceChange {
                 hasDetectedDistanceChange = true
@@ -172,19 +163,52 @@ struct TagView: View {
                 showInvitationAlert = false
                 showInvitationPending = false
                 showDistanceWithPeer = true
+                
+                showRotatingAnimation = false
+                showSendAnimation = true
             }
         }
         
         .chBottomModal(isPresented: $showDistanceWithPeer){
             if let distance = viewModel.distance {
-                Text(String(format: "%.1fm", distance))
-                    .font(.pretend(type: .bold, size: 35))
-                    .foregroundStyle(Color.chLabelWhitePrimary)
-                if !viewModel.isNearby(distance) {
-                    Text("조금 더 가까이 다가가세요!")
-                        .font(.pretend(type: .bold, size: 35))
-                        .foregroundStyle(Color.chLabelWhitePrimary)
+                VStack(spacing: 18) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 96, height: 96)
+                        Image(systemName: "fossil.shell")
+                            .foregroundStyle(Color.black.opacity(0.5))
+                    }
+                    VStack(spacing: 4) {
+                        Text(String(format: "%.1fm", distance))
+                            .font(.pretend(type: .bold, size: 35))
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                        if !viewModel.isNearby(distance) {
+                            Text("조금 더 가까이 다가가세요!")
+                                .font(.chTitle)
+                                .foregroundStyle(Color.chLabelWhitePrimary)
+                        } else {
+                            Text("")
+                                .font(.chTitle)
+                                .foregroundStyle(Color.chLabelWhitePrimary)
+                        }
+                    }
+                    CHMainButton(
+                        actionType: .cancel,
+                        action: {
+                            viewModel.stopNI()
+                            viewModel.stopMPC()
+                            showDistanceWithPeer = false
+                            showPeerList = false
+                            viewModel.startMPC()
+                            
+                            showRotatingAnimation = true
+                            showSendAnimation = false
+                        }
+                    )
                 }
+                .padding(.top, 36)
+                .safeAreaPadding(.bottom, 2)
             }
         }
         

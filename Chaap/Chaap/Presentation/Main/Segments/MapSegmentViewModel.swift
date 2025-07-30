@@ -26,10 +26,10 @@ extension MapSegmentViewModel {
             $0.latitude != nil && $0.longitude != nil
         }
 
-        // 2. 반올림한 좌표로 그룹핑 (10m 단위)
+        // 2. 반올림한 좌표로 그룹핑 (50m 단위)
         let grouped = Dictionary(grouping: chaapsWithCoordinates) { chaap in
-            let latKey = round((chaap.latitude ?? 0) * 10_000) / 10_000
-            let lonKey = round((chaap.longitude ?? 0) * 10_000) / 10_000
+            let latKey = round((chaap.latitude ?? 0) * 2_000) / 2_000
+            let lonKey = round((chaap.longitude ?? 0) * 2_000) / 2_000
             return CoordinateKey(lat: latKey, lon: lonKey)
         }
 
