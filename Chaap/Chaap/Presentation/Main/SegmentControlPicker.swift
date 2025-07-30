@@ -32,6 +32,9 @@ struct SegmentControlPicker: View {
                             )
                     
                         Image(systemName: item.iconName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 20)
                             .frame(width: 85.25, height: 47)
                             .foregroundStyle(selected == item ? .white.opacity(0.96) : .white.opacity(0.23))
                     }
