@@ -86,6 +86,9 @@ struct MainView: View {
                 case .people(let name, let peers):
                     PeopleDetailView(displayName: name, peers: peers)
                         .environmentObject(navigationManager)
+                case .detail(let chaap):
+                    ChaapDetailView(chaap: chaap)
+                        .environmentObject(navigationManager)
                 }
                 
             }

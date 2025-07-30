@@ -40,15 +40,17 @@ struct SearchBar: View {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(Color.chLabelBlackSecondary)
                     
-                    
-                    if text.isEmpty{
-                        Text("사람, 장소, 내용 등")
+                    ZStack(alignment: .leading) {
+                        if text.isEmpty{
+                            Text("사람, 장소, 내용 등")
+                                .font(.chPrimaryCaptionMedium)
+                                .foregroundStyle(Color.chLabelBlackSecondary)
+                        }
+                        TextField("", text: $text)
                             .font(.chPrimaryCaptionMedium)
-                            .foregroundStyle(Color.chLabelBlackSecondary)
+                            .foregroundStyle(Color.chLabelBlackPrimary)
+                            .tint(.chPrimary)
                     }
-                    TextField("", text: $text)
-                        .font(.chPrimaryCaptionMedium)
-                        .foregroundStyle(Color.chLabelBlackPrimary)
                 }
                 .padding(.vertical, 11)
                 .padding(.horizontal, 16)
