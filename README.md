@@ -16,8 +16,7 @@
 ## 👥 멤버
 | Enoch | Mumin | Minbol | Jacob | Hari | Peppr |
 |:------:|:------:|:------:|:------:|:------:|:------:|
-| <img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/e3202b85-8c39-4bf0-aa93-8c9319b4d4b1" /> | <img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/ab392e72-1968-4f07-a105-714aeed351a3" /> | ![IMG_5799](https://github.com/user-attachments/assets/a25062ff-19bd-46a0-a3a7-2bc48b4b28bc) | <img width="300" height="304" alt="image" src="https://github.com/user-attachments/assets/4426b2cd-b9ee-4d8a-9017-0a720ec78c98" /> | <img width="480" height="480" alt="KakaoTalk_Photo_2025-08-01-11-51-35" src="https://github.com/user-attachments/assets/f44f36cd-841e-41a6-95f1-c562a3ac04d0" /> | ![HEIF Image](https://github.com/user-attachments/assets/5a75e054-1d25-4613-8c00-4676216787c9)
- |
+| <img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/e3202b85-8c39-4bf0-aa93-8c9319b4d4b1" /> | <img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/ab392e72-1968-4f07-a105-714aeed351a3" /> | ![IMG_5799](https://github.com/user-attachments/assets/a25062ff-19bd-46a0-a3a7-2bc48b4b28bc) | <img width="300" height="304" alt="image" src="https://github.com/user-attachments/assets/4426b2cd-b9ee-4d8a-9017-0a720ec78c98" /> | <img width="480" height="480" alt="KakaoTalk_Photo_2025-08-01-11-51-35" src="https://github.com/user-attachments/assets/f44f36cd-841e-41a6-95f1-c562a3ac04d0" /> | ![HEIF Image](https://github.com/user-attachments/assets/5a75e054-1d25-4613-8c00-4676216787c9) |
 | iOS | iOS | iOS | Design | Design | Design |
 | [GitHub](https://github.com/HanHyeBeen) | [GitHub](https://github.com/namoomin) | [GitHub](https://github.com/m1nbol) | [GitHub](https://github.com/Gimgang00) | [GitHub](https://github.com/jell1237) | [GitHub](https://github.com/jell1237) |
 
