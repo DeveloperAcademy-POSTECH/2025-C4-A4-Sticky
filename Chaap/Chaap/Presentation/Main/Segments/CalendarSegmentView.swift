@@ -83,13 +83,11 @@ struct CalendarSegmentView: View {
     }
     
     private var weekdayHeader: some View {
-        HStack(alignment: .center, spacing: -35) {
+        HStack(alignment: .center, spacing: 33) {
             ForEach(viewModel.weekdays, id: \.self) { weekday in
-                Spacer()
                 Text(weekday)
                     .font(.chPrimaryCaptionRegular)
                     .foregroundColor(Color(hex: "#919191"))
-                Spacer()
             }
         }
     }
@@ -99,14 +97,12 @@ struct CalendarSegmentView: View {
 
         return VStack(alignment: .center, spacing: 20) {
             ForEach(0..<rowCount, id: \.self) { week in
-                HStack(alignment: .center, spacing: -35) {
+                HStack(alignment: .center, spacing: 12) {
                     ForEach(0..<7, id: \.self) { day in
-                        Spacer()
                         let index = week * 7 + day
                         if index < viewModel.daysInMonth.count {
                             dayCell(date: viewModel.daysInMonth[index])
                         }
-                        Spacer()
                     }
                 }
                 .frame(
