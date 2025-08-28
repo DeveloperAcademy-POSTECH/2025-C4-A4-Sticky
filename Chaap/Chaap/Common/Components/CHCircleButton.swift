@@ -37,8 +37,9 @@ struct CHCircleButton: View {
         
             Image(systemName: buttonImageName)
                 .resizable()
+                .scaledToFit()
                 .foregroundStyle(Color.chLabelWhitePrimary)
-                .frame(width: 9.94, height: 17.29)
+                .frame(height: 20)
         }
     }
 }
