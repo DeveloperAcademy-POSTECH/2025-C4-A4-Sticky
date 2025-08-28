@@ -58,26 +58,6 @@ struct TagView: View {
             
             
             VStack {
-                ZStack {
-                    Text("임시 텍스트")
-                        .font(.pretend(type: .semibold, size: 17))
-                        .foregroundStyle(.white)
-                    
-                    HStack {
-                        /// Back button
-                        Button(action: {
-                            print("닫기 버튼 누름")
-                            viewModel.stopNI()
-                            viewModel.stopMPC()
-                            dismiss()
-                        }, label: {
-                            CHCircleButton(buttonImageName: "chevron.backward")
-                        })
-                        Spacer()
-                    }
-                }
-                .padding(.bottom, 10)
-                .safeAreaPadding(.horizontal, 16)
                 Spacer()
                 LottieView(animation: .named("loadingDots"))
                     .playing(loopMode: .loop)
@@ -94,7 +74,16 @@ struct TagView: View {
                     .font(.chPrimaryCaptionMedium)
                     .foregroundStyle(Color(hex: "#D9D9D9"))
                 Spacer()
-                    .frame(height: 150)
+                    .frame(height: 64)
+                Button {
+                    print("닫기 버튼 누름")
+                    viewModel.stopNI()
+                    viewModel.stopMPC()
+                    dismiss()
+                } label: {
+                    Image(.taggingCloseButton)
+                }
+                .padding(.bottom, 57)
             }
         }
         .onAppear {

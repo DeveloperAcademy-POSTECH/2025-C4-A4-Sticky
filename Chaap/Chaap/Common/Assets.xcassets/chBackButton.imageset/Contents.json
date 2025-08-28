@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "chBackButton.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -26,9 +26,44 @@ struct CHNavBar: View {
             didPressSearchButton()
         }, label: {
             VStack {
-                CHCircleButton(buttonImageName: "magnifyingglass")
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .foregroundStyle(Color(hex: "#CECECE"))
+                    .mask({
+                        Color.white
+                            .blendMode(.lighten)
+                    })
+                    .frame(width: 16.39, height: 16.54)
+                    .padding(.horizontal,11.80)
+                    .padding(.vertical, 11.73)
+                    .frame(width: 44, height: 44)
+                    .clipShape(Circle())
             }
         })
+        /// Inner Shadow
+        .background(
+            ZStack {
+                Circle()
+                    .fill(Color(red: 0.82, green: 0.82, blue: 0.82).opacity(0.5))
+                    .fill(Color.black.opacity(0.15))
+                
+                Circle()
+                    .fill(.shadow(.inner(color: .white, radius: 1, x: 0, y: -0.5)))
+                    .opacity(0.3)
+                
+                Circle()
+                    .fill(.shadow(.inner(color: .white, radius: 1, x: 0, y: -0.5)))
+                    .opacity(0.25)
+                
+                Circle()
+                    .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
+                    .opacity(0.08)
+                
+                Circle()
+                    .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
+                    .opacity(0.1)
+                
+            })
     }
     
     // MARK: - Profile Button
