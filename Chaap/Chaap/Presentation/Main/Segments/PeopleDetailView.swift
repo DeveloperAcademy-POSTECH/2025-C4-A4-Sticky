@@ -12,6 +12,7 @@ struct PeopleDetailView: View {
     let displayName: String
     let peers: [Peer]
     
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
     @Environment(\.presentationMode) var presentationMode
