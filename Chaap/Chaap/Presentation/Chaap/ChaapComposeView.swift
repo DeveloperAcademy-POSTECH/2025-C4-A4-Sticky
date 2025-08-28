@@ -42,13 +42,13 @@ struct ChaapComposeView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Image(.chBackButton)
+                        CHCircleButton(buttonImageName: "chevron.backward")
                     }
                     Spacer()
                     Button {
                         showDeleteAlert = true
                     } label: {
-                        Image(.chDeleteButton)
+                        CHCircleButton(buttonImageName: "trash")
                     }
                 }
                 .safeAreaPadding(.top, 9)
