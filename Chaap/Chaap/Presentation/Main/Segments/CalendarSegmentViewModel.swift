@@ -209,7 +209,7 @@ class CalendarSegmentViewModel: ObservableObject {
         
         // 오늘 날짜는 보라색
         if isToday {
-            return .pointColorPurple
+            return .chPointColorPurple
         }
         
         // 이벤트가 있는 날짜는 흰색

@@ -59,5 +59,9 @@ extension Color {
     static let chLabelWhiteSecondary = Color(hex: "#EBEDF0")
     
     /// Point Colors
-    static let pointColorPurple = Color(hex: "#8B5CF6")
+    static let chPointColorPurple = Color(hex: "#8B5CF6")
+    
+    /// chBackground
+    static let chBackgroundPrimary = Color(hex: "000000").opacity(0.4)
+    static let chBackgroundSecondary = Color(hex: "#000000").opacity(0.15)
 }

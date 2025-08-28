@@ -159,7 +159,7 @@ struct CalendarSegmentView: View {
                 if isToday && isCurrentMonth && !isSelected {
                     Text("오늘")
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.pointColorPurple)
+                        .foregroundColor(.chPointColorPurple)
                 } else {
                     /// 빈 공간 유지
                     Text("")

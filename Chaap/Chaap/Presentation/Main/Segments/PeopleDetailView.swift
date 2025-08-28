@@ -12,6 +12,7 @@ struct PeopleDetailView: View {
     let displayName: String
     let peers: [Peer]
     
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
     @Environment(\.presentationMode) var presentationMode
@@ -72,13 +73,10 @@ struct PeopleDetailView: View {
             
             HStack {
                 /// Back button
-                Button(action: backTapped) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20))
-                        .foregroundColor(.white)
-                        .frame(width: 40, height: 40)
-                        .background(Color.black.opacity(0.4))
-                        .clipShape(Circle())
+                Button {
+                    dismiss()
+                } label: {
+                    CHCircleButton(buttonImageName: "chevron.backward")
                 }
                 Spacer()
 
@@ -126,10 +124,5 @@ struct PeopleDetailView: View {
         .scrollPosition(id: $currentIndex)
         .contentMargins(.horizontal, (UIScreen.main.bounds.width - cardWidth) / 2, for: .scrollContent)
         
-    }
-    
-    // TODO: 네비게이션 연결 방식에 따라 변경
-    private func backTapped() {
-        presentationMode.wrappedValue.dismiss()
     }
 }
