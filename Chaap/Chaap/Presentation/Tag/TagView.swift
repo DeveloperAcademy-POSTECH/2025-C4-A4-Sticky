@@ -25,6 +25,8 @@ struct TagView: View {
     @State private var showRotatingAnimation = true
     @State private var showSendAnimation = false
     
+    var userNickname: String = UserDefaults.standard.string(forKey: UserDefaultsKey.nickname) ?? ""
+    
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TagViewModel(modelContext: modelContext))
     }
@@ -59,7 +61,7 @@ struct TagView: View {
             
             VStack {
                 ZStack {
-                    Text("임시 텍스트")
+                    Text(userNickname)
                         .font(.pretend(type: .semibold, size: 17))
                         .foregroundStyle(.white)
                     
