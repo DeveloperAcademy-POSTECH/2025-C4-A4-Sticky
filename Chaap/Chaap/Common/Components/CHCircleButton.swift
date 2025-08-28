@@ -1,13 +1,15 @@
 //
-//  CHBackButton.swift
+//  CHCircleButton.swift
 //  Chaap
 //
-//  Created by Enoch on 8/25/25.
+//  Created by Enoch on 8/28/25.
 //
 
 import SwiftUI
 
-struct CHBackButton: View {
+struct CHCircleButton: View {
+    var buttonImageName: String
+    
     var body: some View {
         ZStack {
             Circle()
@@ -33,7 +35,7 @@ struct CHBackButton: View {
                 )
                 .frame(width: 44, height: 44)
         
-            Image(systemName: "chevron.backward")
+            Image(systemName: buttonImageName)
                 .resizable()
                 .foregroundStyle(Color.chLabelWhitePrimary)
                 .frame(width: 9.94, height: 17.29)
@@ -42,5 +44,5 @@ struct CHBackButton: View {
 }
 
 #Preview {
-    CHBackButton()
+    CHCircleButton(buttonImageName: "chevron.backward")
 }
