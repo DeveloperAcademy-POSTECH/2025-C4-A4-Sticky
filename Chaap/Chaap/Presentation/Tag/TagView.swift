@@ -151,12 +151,21 @@ struct TagView: View {
         }
         .chBottomModal(isPresented: $showInvitationAlert) {
             if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
-                VStack(spacing: 28) {
-                    Image(.chaapLogo)
-                    Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
-                        .font(.chTitle)
-                        .foregroundStyle(Color.chLabelWhitePrimary)
-                        .multilineTextAlignment(.center)
+                VStack {
+                    Spacer()
+                    VStack(spacing: 20){
+                        Image(.chaapLogo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 90)
+                        
+                        Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
+                    }
+                    Spacer()
                     HStack {
                         CHMainButton(
                             actionType: .decline,
