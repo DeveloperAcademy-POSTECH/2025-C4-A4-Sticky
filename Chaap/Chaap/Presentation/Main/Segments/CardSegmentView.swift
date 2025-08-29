@@ -11,8 +11,9 @@ import SwiftData
 struct CardSegmentView: View {
     @Query(sort: [SortDescriptor(\Chaap.createdAt, order: .reverse)]) var allChaaps: [Chaap]
     
-    @State private var currentIndex: Int = 0
-    @GestureState private var dragOffset: CGFloat = 0
+    @State private var currentIndex: Int? = 0
+    
+    private let cardWidth = UIScreen.main.bounds.width * 0.816
     
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
@@ -22,7 +23,6 @@ struct CardSegmentView: View {
     }
     
     var body: some View {
-        ZStack {
 //            Rectangle()
 //                .foregroundColor(.clear)
 //                .background(
@@ -42,79 +42,33 @@ struct CardSegmentView: View {
 //                    Color.black.opacity(0.25)
 //                )
 //                .ignoresSafeArea(.all)
-            
-            GeometryReader { proxy in
-                ZStack {
-                    ForEach(recentFiveChaaps.indices, id: \.self) { index in
-                        let chaap = recentFiveChaaps[index]
-                        
-                        if abs(index - currentIndex) <= 1 {
-                            CHCardShow(chaap: chaap)
-                                .frame(width: 319, height: 389)
-                                .offset(y: cardOffset(for: index))
-                                .scaleEffect(scale(for: index))
-                                .opacity(scale(for: index))
-                                .zIndex(zIndex(for: index))
-                                .animation(.spring(), value: currentIndex)
-                                .gesture(
-                                    DragGesture()
-                                        .updating($dragOffset) { value, state, _ in
-                                            if index == currentIndex {
-                                                let direction = value.translation.height
-                                                if (currentIndex > 0 && direction > 0) || (currentIndex < recentFiveChaaps.count - 1 && direction < 0) {
-                                                    state = value.translation.height
-                                                }
-                                            }
-                                        }
-                                        .onEnded { value in
-                                            if value.translation.height < -10 && currentIndex < recentFiveChaaps.count - 1 {
-                                                currentIndex += 1
-                                            } else if value.translation.height > 10 && currentIndex > 0 {
-                                                currentIndex -= 1
-                                            }
-                                        }
-                                )
-                                .gesture(
-                                    TapGesture()
-                                        .onEnded { _ in
-                                            if chaap.isEditable {
-                                                navigationManager.push(.compose(chaap))
-                                            } else {
-                                                navigationManager.push(.detail(chaap))
-                                            }
-                                        }
-                                )
+        cardCarouselView
+    }
+    
+    var cardCarouselView: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 13) {
+                ForEach(recentFiveChaaps.indices, id: \.self) { index in
+                    Button {
+                        if recentFiveChaaps[index].isEditable {
+                            navigationManager.push(.compose(recentFiveChaaps[index]))
+                        } else {
+                            navigationManager.push(.detail(recentFiveChaaps[index]))
                         }
+                    } label: {
+                        CHCardShow(chaap: recentFiveChaaps[index])
+                            .frame(width: 319, height: 389)
+                            .animation(.spring(), value: currentIndex)
+                            .containerRelativeFrame(.horizontal)
+                            .tag(index)
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaPadding(.horizontal, 37)
-                .safeAreaPadding(.top, 203)
-                .safeAreaPadding(.bottom, 176)
             }
+            .scrollTargetLayout()
         }
-    }
-    
-    func cardOffset(for index: Int) -> CGFloat {
-        if index == currentIndex {
-            return dragOffset
-        } else if index < currentIndex {
-            return -45
-        } else {
-            return 45
-        }
-    }
-    
-    func scale(for index: Int) -> CGFloat {
-        index == currentIndex ? 1.0 : 0.9
-    }
-    
-    func opacity(for index: Int) -> Double {
-        index == currentIndex ? 1.0 : 0.9
-    }
-    
-    func zIndex(for index: Int) -> Double {
-        index == currentIndex ? 2 : 1
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $currentIndex)
+        .contentMargins(.horizontal, (UIScreen.main.bounds.width - cardWidth) / 2, for: .scrollContent)
     }
 }
 
