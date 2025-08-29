@@ -184,8 +184,7 @@ struct TagView: View {
                         )
                     }
                 }
-                .padding(.top, 36)
-                .safeAreaPadding(.bottom, 2)
+                .safeAreaPadding(.bottom, 23)
             }
         }
         .onChange(of: viewModel.distance) { oldValue, newValue in
