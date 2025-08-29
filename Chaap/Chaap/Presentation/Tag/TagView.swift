@@ -120,7 +120,6 @@ struct TagView: View {
         .chBottomModal(isPresented: $showInvitationPending) {
             VStack {
                 Spacer()
-                if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
                     Text("\(peerName)님의 수락을 기다리는 중")
                         .font(.chTitle)
                         .foregroundStyle(Color.chLabelWhitePrimary)
@@ -130,7 +129,9 @@ struct TagView: View {
                         .foregroundStyle(Color.chLabelWhitePrimary)
                 }
                 Spacer()
+                LottieView(animation: .named("loadingDots"))
             }
+            .safeAreaPadding(.bottom, 23)
         }
         .chBottomModal(isPresented: $showInvitationAlert) {
             if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
