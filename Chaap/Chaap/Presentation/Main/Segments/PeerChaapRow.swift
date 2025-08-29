@@ -56,12 +56,14 @@ struct PeerChaapRow: View {
                 if !chaap.peers.isEmpty {
                     Text(chaap.peers.map { $0.displayName }.joined(separator: ", "))
                         .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 11)
                         .foregroundStyle(Color.chLabelWhiteSecondary)
                 }
                 
                 // 제목
                 Text(chaap.title)
                         .font(.chBodyMedium)
+                        .lineHeight(1.4, fontSize: 18)
                         .foregroundStyle(Color.chLabelWhitePrimary)
                         .lineLimit(1)
             }
@@ -72,13 +74,15 @@ struct PeerChaapRow: View {
                 // 날짜 시간
                 Text(formatDateTime(chaap.createdAt))
                     .font(.chSecondaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 11)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
                 
                 // 장소
                 Text(chaap.place)
-                        .font(.chSecondaryCaptionMedium)
-                        .foregroundStyle(Color.chLabelWhiteSecondary)
-                        .lineLimit(1)
+                    .font(.chSecondaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 11)
+                    .foregroundStyle(Color.chLabelWhiteSecondary)
+                    .lineLimit(1)
             }
         }
         .padding(.vertical, 4)

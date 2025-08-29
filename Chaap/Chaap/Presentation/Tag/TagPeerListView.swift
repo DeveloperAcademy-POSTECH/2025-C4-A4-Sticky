@@ -19,6 +19,7 @@ struct TagPeerListView: View {
                     HStack {
                         Text(peer.displayName)
                             .font(.chTitleSemibold)
+                            .lineHeight(1.4, fontSize: 22)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                         Spacer()
                         CHMainButton(

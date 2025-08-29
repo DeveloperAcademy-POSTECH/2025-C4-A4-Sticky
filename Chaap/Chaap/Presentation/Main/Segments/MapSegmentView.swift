@@ -37,6 +37,7 @@ struct MapSegmentView: View {
                                 if marker.count > 1{
                                     Text("\(marker.count)")
                                         .font(.chBodyBold)
+                                        .lineHeight(1.4, fontSize: 18)
                                         .foregroundStyle(Color.chLabelWhitePrimary)
                                         .padding(.top, 10)
                                 }

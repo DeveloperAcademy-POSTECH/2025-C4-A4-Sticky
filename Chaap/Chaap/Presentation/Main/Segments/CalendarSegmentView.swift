@@ -88,7 +88,8 @@ struct CalendarSegmentView: View {
                 Spacer()
                 Text(weekday)
                     .font(.chPrimaryCaptionRegular)
-                    .foregroundColor(Color(hex: "#919191"))
+                    .lineHeight(1.4, fontSize: 16)
+                    .foregroundColor(Color.chLabelBlackSecondary)
                 Spacer()
             }
         }
@@ -147,6 +148,7 @@ struct CalendarSegmentView: View {
 
                     Text("\(day)")
                         .font(.chPrimaryCaptionRegular)
+                        .lineHeight(1.4, fontSize: 16)
                         .foregroundColor(viewModel.cellTextColor(
                             for: date,
                             isSelected: isSelected,
@@ -158,13 +160,14 @@ struct CalendarSegmentView: View {
                 /// 오늘 날짜 표시 (선택되지 않았을 때만)
                 if isToday && isCurrentMonth && !isSelected {
                     Text("오늘")
-                        .font(.system(size: 11, weight: .bold))
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(11, fontSize: 1.4)
                         .foregroundColor(.chPointColorPurple)
                 } else {
                     /// 빈 공간 유지
                     Text("")
-                        .font(.system(size: 9, weight: .medium))
-                        .frame(height: 10)
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(11, fontSize: 1.4)
                 }
             }
             .frame(width: 35, height: 36)

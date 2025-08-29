@@ -19,6 +19,7 @@ struct CHMainButton: View {
                 HStack(alignment: .center) {
                     Text(actionType.title)
                         .font(actionType.font)
+                        .lineHeight(1.4, fontSize: actionType.fontSize)
                         .foregroundStyle(actionType.textColor)
                 }
                 .padding(.vertical, actionType.verticalPadding)

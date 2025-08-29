@@ -87,20 +87,24 @@ struct ChaapDetailView: View {
                             
                             Text("with \(chaap.peers.first?.displayName ?? "이름 없음")")
                                 .font(.chBodyBold)
+                                .lineHeight(1.4, fontSize: 18)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                             
                             Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
                                 .font(.chPrimaryCaptionRegular)
+                                .lineHeight(1.4, fontSize: 16)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                         }
                         VStack(spacing: 8) {
                             /// 제목
                             Text(chaap.title)
                                 .font(.chBodyBold)
+                                .lineHeight(1.4, fontSize: 18)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                             /// 메모
                             Text(chaap.memo)
                                 .font(.chBodyRegular)
+                                .lineHeight(1.4, fontSize: 18)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                         }
                         /// 장소
@@ -110,6 +114,7 @@ struct ChaapDetailView: View {
                                 Image(.placeMarker)
                                 Text(chaap.place)
                                     .font(.chPrimaryCaptionRegular)
+                                    .lineHeight(1.4, fontSize: 16)
                                     .foregroundStyle(Color.chLabelWhiteSecondary)
                             }
                             Spacer()

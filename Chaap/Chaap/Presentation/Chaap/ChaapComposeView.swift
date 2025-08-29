@@ -87,10 +87,12 @@ struct ChaapComposeView: View {
                             
                             Text("with \(chaap.peers.first?.displayName ?? "이름 없음")")
                                 .font(.chBodyBold)
+                                .lineHeight(1.4, fontSize: 18)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                             
                             Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
                                 .font(.chPrimaryCaptionRegular)
+                                .lineHeight(1.4, fontSize: 16)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                         }
                         // MARK: - 입력
@@ -100,6 +102,7 @@ struct ChaapComposeView: View {
                                 if chaap.title.isEmpty {
                                     Text("제목을 입력하세요")
                                         .font(.chBodyRegular)
+                                        .lineHeight(1.4, fontSize: 18)
                                         .foregroundStyle(Color.chLabelWhiteSecondary)
                                 }
                                 TextField("", text: $chaap.title)
@@ -155,6 +158,7 @@ struct ChaapComposeView: View {
                                 if chaap.memo.isEmpty {
                                     Text("내용을 입력하세요")
                                         .font(.chBodyRegular)
+                                        .lineHeight(1.4, fontSize: 18)
                                         .foregroundStyle(Color.chLabelWhiteSecondary)
                                 }
                                 
@@ -215,6 +219,7 @@ struct ChaapComposeView: View {
                                 Image(.placeMarker)
                                 TextField("\(chaap.place)", text: $chaap.place)
                                     .font(.chPrimaryCaptionRegular)
+                                    .lineHeight(1.4, fontSize: 16)
                                     .foregroundStyle(Color.chLabelWhiteSecondary)
                                     .lineLimit(1)
                                     .background(Color.clear)

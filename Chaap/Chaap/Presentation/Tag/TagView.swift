@@ -90,11 +90,13 @@ struct TagView: View {
                     .frame(height: 21)
                 Text("사용자를 찾는중")
                     .font(.chTitle)
+                    .lineHeight(1.4, fontSize: 24)
                     .foregroundStyle(Color.chLabelWhitePrimary)
                 Spacer()
                     .frame(height: 11)
                 Text("상대도 서칭중인지 확인하세요.")
                     .font(.chPrimaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 16)
                     .foregroundStyle(Color(hex: "#D9D9D9"))
                 Spacer()
                     .frame(height: 150)
@@ -130,15 +132,15 @@ struct TagView: View {
                     if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
                         Text("\(peerName)의 수락을\n기다리는 중입니다.")
                             .font(.chTitle)
+                            .lineHeight(1.4, fontSize: 24)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                             .multilineTextAlignment(.center)
-//                            .padding(.bottom, 20)
                     } else {
                         Text("수락을\n기다리는 중입니다.")
                             .font(.chTitle)
+                            .lineHeight(1.4, fontSize: 24)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                             .multilineTextAlignment(.center)
-//                            .padding(.bottom, 20)
                     }
                 }
                 Spacer()
@@ -162,6 +164,7 @@ struct TagView: View {
                         
                         Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
                             .font(.chTitle)
+                            .lineHeight(1.4, fontSize: 24)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
@@ -213,15 +216,15 @@ struct TagView: View {
                     if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
                         Text("\(peerName)와\n연결 중입니다.")
                             .font(.chTitle)
+                            .lineHeight(1.4, fontSize: 24)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                             .multilineTextAlignment(.center)
-//                            .padding(.bottom, 20)
                     } else {
                         Text("연결 중입니다.")
                             .font(.chTitle)
+                            .lineHeight(1.4, fontSize: 24)
                             .foregroundStyle(Color.chLabelWhitePrimary)
                             .multilineTextAlignment(.center)
-//                            .padding(.bottom, 20)
                     }
                 }
                 Spacer()
@@ -246,14 +249,17 @@ struct TagView: View {
                         VStack(spacing: 4) {
                             Text(String(format: "%.1fm", distance))
                                 .font(.pretend(type: .bold, size: 35))
+                                .lineHeight(1.4, fontSize: 35)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
                             if !viewModel.isNearby(distance) {
                                 Text("조금 더 가까이 다가가세요!")
                                     .font(.chTitle)
+                                    .lineHeight(1.4, fontSize: 24)
                                     .foregroundStyle(Color.chLabelWhitePrimary)
                             } else {
                                 Text("")
                                     .font(.chTitle)
+                                    .lineHeight(1.4, fontSize: 24)
                                     .foregroundStyle(Color.chLabelWhitePrimary)
                             }
                         }

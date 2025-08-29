@@ -38,6 +38,17 @@ enum MainButtonAction {
         }
     }
     
+    var fontSize: CGFloat {
+        switch self {
+        case .cancel, .accept, .decline:
+            return 20
+        case .save:
+            return 18
+        case .connect:
+            return 16
+        }
+    }
+    
     // MARK: - button text color
     var textColor: Color {
         switch self {
