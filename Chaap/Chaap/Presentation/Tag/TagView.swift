@@ -19,11 +19,14 @@ struct TagView: View {
     @State private var showPeerList = false
     @State private var showInvitationPending = false
     @State private var showInvitationAlert = false
+    @State private var showConnecting = false
     @State private var showDistanceWithPeer = false
     @State private var hasDetectedDistanceChange = false
     
     @State private var showRotatingAnimation = true
     @State private var showSendAnimation = false
+    
+    var userNickname: String = UserDefaults.standard.string(forKey: UserDefaultsKey.nickname) ?? ""
     
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TagViewModel(modelContext: modelContext))
@@ -59,7 +62,7 @@ struct TagView: View {
             
             VStack {
                 ZStack {
-                    Text("임시 텍스트")
+                    Text(userNickname)
                         .font(.pretend(type: .semibold, size: 17))
                         .foregroundStyle(.white)
                     
@@ -118,26 +121,52 @@ struct TagView: View {
         .chBottomModal(isPresented: $showInvitationPending) {
             VStack {
                 Spacer()
-                if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
-                    Text("\(peerName)님의 수락을 기다리는 중")
-                        .font(.chTitle)
-                        .foregroundStyle(Color.chLabelWhitePrimary)
-                } else {
-                    Text("수락을 기다리는 중")
-                        .font(.chTitle)
-                        .foregroundStyle(Color.chLabelWhitePrimary)
+                VStack(spacing: 20) {
+                    Image(.chaapLogo)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 90)
+                    
+                    if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
+                        Text("\(peerName)의 수락을\n기다리는 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    } else {
+                        Text("수락을\n기다리는 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    }
                 }
                 Spacer()
+                LottieView(animation: .named("loadingDots"))
+                    .playing(loopMode: .loop)
+                    .frame(maxWidth: 50, maxHeight: 15)
+                    .padding(.top, 13)
+                    .padding(.bottom, 37)
             }
+            .safeAreaPadding(.bottom, 23)
         }
         .chBottomModal(isPresented: $showInvitationAlert) {
             if let peerName = viewModel.mpcManager?.pendingInvitation?.peerID.displayName {
-                VStack(spacing: 28) {
-                    Image(.chaapLogo)
-                    Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
-                        .font(.chTitle)
-                        .foregroundStyle(Color.chLabelWhitePrimary)
-                        .multilineTextAlignment(.center)
+                VStack {
+                    Spacer()
+                    VStack(spacing: 20){
+                        Image(.chaapLogo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 90)
+                        
+                        Text("\(peerName)을 찾았습니다.\n연결하시겠습니까?")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
+                    }
+                    Spacer()
                     HStack {
                         CHMainButton(
                             actionType: .decline,
@@ -152,12 +181,12 @@ struct TagView: View {
                             action: {
                                 viewModel.acceptInvitation()
                                 showInvitationAlert = false
+                                showConnecting = true
                             }
                         )
                     }
                 }
-                .padding(.top, 36)
-                .safeAreaPadding(.bottom, 2)
+                .safeAreaPadding(.bottom, 23)
             }
         }
         .onChange(of: viewModel.distance) { oldValue, newValue in
@@ -172,25 +201,64 @@ struct TagView: View {
                 showSendAnimation = true
             }
         }
-        
+        .chBottomModal(isPresented: $showConnecting) {
+            VStack {
+                Spacer()
+                VStack(spacing: 20) {
+                    Image(.chaapLogo)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 90)
+                    
+                    if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
+                        Text("\(peerName)와\n연결 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    } else {
+                        Text("연결 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    }
+                }
+                Spacer()
+                LottieView(animation: .named("loadingDots"))
+                    .playing(loopMode: .loop)
+                    .frame(maxWidth: 50, maxHeight: 15)
+                    .padding(.top, 13)
+                    .padding(.bottom, 37)
+            }
+            .safeAreaPadding(.bottom, 23)
+        }
         .chBottomModal(isPresented: $showDistanceWithPeer){
             if let distance = viewModel.distance {
-                VStack(spacing: 18) {
-                    Image(.chaapLogo)
-                    VStack(spacing: 4) {
-                        Text(String(format: "%.1fm", distance))
-                            .font(.pretend(type: .bold, size: 35))
-                            .foregroundStyle(Color.chLabelWhitePrimary)
-                        if !viewModel.isNearby(distance) {
-                            Text("조금 더 가까이 다가가세요!")
-                                .font(.chTitle)
+                VStack {
+                    Spacer()
+                    VStack(spacing: 11) {
+                        Image(.chaapLogo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 90)
+                        
+                        VStack(spacing: 4) {
+                            Text(String(format: "%.1fm", distance))
+                                .font(.pretend(type: .bold, size: 35))
                                 .foregroundStyle(Color.chLabelWhitePrimary)
-                        } else {
-                            Text("")
-                                .font(.chTitle)
-                                .foregroundStyle(Color.chLabelWhitePrimary)
+                            if !viewModel.isNearby(distance) {
+                                Text("조금 더 가까이 다가가세요!")
+                                    .font(.chTitle)
+                                    .foregroundStyle(Color.chLabelWhitePrimary)
+                            } else {
+                                Text("")
+                                    .font(.chTitle)
+                                    .foregroundStyle(Color.chLabelWhitePrimary)
+                            }
                         }
                     }
+                    Spacer()
                     CHMainButton(
                         actionType: .cancel,
                         action: {
@@ -205,8 +273,7 @@ struct TagView: View {
                         }
                     )
                 }
-                .padding(.top, 36)
-                .safeAreaPadding(.bottom, 2)
+                .safeAreaPadding(.bottom, 23)
             }
         }
         

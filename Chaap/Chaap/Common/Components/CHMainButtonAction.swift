@@ -54,7 +54,7 @@ enum MainButtonAction {
         case .save:
             return 13
         case .cancel, .accept, .decline:
-            return 17
+            return 21.5
         case .connect:
             return 7.5
         }
