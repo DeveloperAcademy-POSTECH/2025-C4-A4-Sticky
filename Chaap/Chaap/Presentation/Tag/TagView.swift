@@ -19,6 +19,7 @@ struct TagView: View {
     @State private var showPeerList = false
     @State private var showInvitationPending = false
     @State private var showInvitationAlert = false
+    @State private var showConnecting = false
     @State private var showDistanceWithPeer = false
     @State private var hasDetectedDistanceChange = false
     
@@ -199,25 +200,64 @@ struct TagView: View {
                 showSendAnimation = true
             }
         }
-        
+        .chBottomModal(isPresented: $showConnecting) {
+            VStack {
+                Spacer()
+                VStack(spacing: 20) {
+                    Image(.chaapLogo)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 90)
+                    
+                    if let peerName = viewModel.mpcManager?.connectedPeer?.displayName {
+                        Text("\(peerName)와\n연결 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    } else {
+                        Text("연결 중입니다.")
+                            .font(.chTitle)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                            .multilineTextAlignment(.center)
+//                            .padding(.bottom, 20)
+                    }
+                }
+                Spacer()
+                LottieView(animation: .named("loadingDots"))
+                    .playing(loopMode: .loop)
+                    .frame(maxWidth: 50, maxHeight: 15)
+                    .padding(.top, 13)
+                    .padding(.bottom, 37)
+            }
+            .safeAreaPadding(.bottom, 23)
+        }
         .chBottomModal(isPresented: $showDistanceWithPeer){
             if let distance = viewModel.distance {
-                VStack(spacing: 18) {
-                    Image(.chaapLogo)
-                    VStack(spacing: 4) {
-                        Text(String(format: "%.1fm", distance))
-                            .font(.pretend(type: .bold, size: 35))
-                            .foregroundStyle(Color.chLabelWhitePrimary)
-                        if !viewModel.isNearby(distance) {
-                            Text("조금 더 가까이 다가가세요!")
-                                .font(.chTitle)
+                VStack {
+                    Spacer()
+                    VStack(spacing: 11) {
+                        Image(.chaapLogo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 90)
+                        
+                        VStack(spacing: 4) {
+                            Text(String(format: "%.1fm", distance))
+                                .font(.pretend(type: .bold, size: 35))
                                 .foregroundStyle(Color.chLabelWhitePrimary)
-                        } else {
-                            Text("")
-                                .font(.chTitle)
-                                .foregroundStyle(Color.chLabelWhitePrimary)
+                            if !viewModel.isNearby(distance) {
+                                Text("조금 더 가까이 다가가세요!")
+                                    .font(.chTitle)
+                                    .foregroundStyle(Color.chLabelWhitePrimary)
+                            } else {
+                                Text("")
+                                    .font(.chTitle)
+                                    .foregroundStyle(Color.chLabelWhitePrimary)
+                            }
                         }
                     }
+                    Spacer()
                     CHMainButton(
                         actionType: .cancel,
                         action: {
@@ -232,8 +272,7 @@ struct TagView: View {
                         }
                     )
                 }
-                .padding(.top, 36)
-                .safeAreaPadding(.bottom, 2)
+                .safeAreaPadding(.bottom, 23)
             }
         }
         
