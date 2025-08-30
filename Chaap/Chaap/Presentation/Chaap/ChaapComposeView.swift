@@ -14,6 +14,7 @@ struct ChaapComposeView: View {
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
     var modelContext: ModelContext
+    @StateObject private var viewModel = ChaapComposeViewModel()
     
     @State private var showDeleteAlert = false
     
