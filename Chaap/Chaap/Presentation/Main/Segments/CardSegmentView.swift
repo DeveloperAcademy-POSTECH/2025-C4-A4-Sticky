@@ -23,7 +23,18 @@ struct CardSegmentView: View {
     }
     
     var body: some View {
-        cardCarouselView
+        ZStack {
+            if let index = currentIndex, let data = recentFiveChaaps[index].photoData, let chaapImage = UIImage(data: data) {
+                Image(uiImage: chaapImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(minWidth: .zero, maxWidth: .infinity, alignment: .center)
+                    .ignoresSafeArea(.all)
+                Color.chBlack.opacity(0.2)
+                    .ignoresSafeArea(.all)
+            }
+            cardCarouselView
+        }
     }
     
     var cardCarouselView: some View {
