@@ -12,6 +12,28 @@ struct PeopleDetailView: View {
     let displayName: String
     let peers: [Peer]
     
+    enum SortOption: String, CaseIterable, Identifiable {
+        case newest = "최근순"
+        case oldest = "오래된 순"
+        
+        var id: Self { self }
+    }
+    
+    @State private var sortOption: SortOption = .newest
+    
+    var sortedChaaps: [Chaap] {
+        switch sortOption {
+        case .newest:
+            return filteredChaaps.sorted {
+                $0.createdAt > $1.createdAt
+            }
+        case .oldest:
+            return filteredChaaps.sorted {
+                $0.createdAt < $1.createdAt
+            }
+        }
+    }
+    
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
@@ -66,25 +88,53 @@ struct PeopleDetailView: View {
     
     // MARK: - Top navigation
     var topNavigation: some View {
-        ZStack {
+        HStack {
+            /// Back button
+            Button {
+                dismiss()
+            } label: {
+                CHCircleButton(buttonImageName: "chevron.backward")
+            }
+            
+            Spacer()
+            
             Text(displayName)
                 .font(.systemEmphasized)
                 .foregroundColor(.white)
             
-            HStack {
-                /// Back button
+            Spacer()
+            
+            /// Filter button
+            Menu {
                 Button {
-                    dismiss()
+                    sortOption = .newest
                 } label: {
-                    CHCircleButton(buttonImageName: "chevron.backward")
+                    HStack {
+                        Text("최신순")
+                        Spacer()
+                        if sortOption == .newest {
+                            Image(systemName: "checkmark")
+                        }
+                    }
                 }
-                Spacer()
-
-//                CHNavBar()
+                
+                Button {
+                    sortOption = .oldest
+                } label: {
+                    HStack {
+                        Text("오래된 순")
+                        Spacer()
+                        if sortOption == .oldest {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            } label: {
+                CHCircleButton(buttonImageName: "slider.horizontal.3")
             }
         }
         .padding(.bottom, 10)
-        .safeAreaPadding(.horizontal, 16)
+        .safeAreaPadding(.top, 9)
     }
     
     // MARK: - Card counter
