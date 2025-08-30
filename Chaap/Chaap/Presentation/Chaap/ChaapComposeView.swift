@@ -19,14 +19,25 @@ struct ChaapComposeView: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .foregroundColor(.clear)
-                .background(
-                    EllipticalGradient(
-                        colors: [Color.chPrimary, Color.chSecondary],
-                        center: .topLeading,
-                        startRadiusFraction: 0.2,
-                        endRadiusFraction: 1.0
+            if let data = chaap.photoData, let chaapImage = UIImage(data: data) {
+                Image(uiImage: chaapImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(minWidth: .zero, maxWidth: .infinity, alignment: .center)
+                    .ignoresSafeArea(.all)
+                Color.chBlack.opacity(0.2)
+                    .ignoresSafeArea(.all)
+            } else {
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .background(
+                        EllipticalGradient(
+                            colors: [Color.chPrimary, Color.chSecondary],
+                            center: .topLeading,
+                            startRadiusFraction: 0.2,
+                            endRadiusFraction: 1.0
+                        )
+                        .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                     )
                     .scaleEffect(x: 1.6, y: 1.0, anchor: .topLeading)
                 )
