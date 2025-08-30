@@ -98,7 +98,8 @@ struct PeopleDetailView: View {
             Spacer()
             
             Text(displayName)
-                .font(.systemEmphasized)
+                .font(.chTitleSemibold)
+                .lineHeight(1.4, fontSize: 22)
                 .foregroundColor(.white)
             
             Spacer()
@@ -109,7 +110,7 @@ struct PeopleDetailView: View {
                     sortOption = .newest
                 } label: {
                     HStack {
-                        Text("최신순")
+                        Text("최근순")
                         Spacer()
                         if sortOption == .newest {
                             Image(systemName: "checkmark")
@@ -174,6 +175,7 @@ struct PeopleDetailView: View {
             
             Text(chaap.title.isEmpty ? "제목 없음" : chaap.title)
                 .font(.chBodyMedium)
+                .lineHeight(1.4, fontSize: 18)
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
                 .lineLimit(1)
@@ -184,10 +186,12 @@ struct PeopleDetailView: View {
                 VStack(alignment: .trailing) {
                     Text(chaap.createdAt, style: .date)
                         .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 11)
                         .foregroundStyle(Color.chLabelWhiteSecondary)
                     Spacer()
                     Text(chaap.place.isEmpty ? "장소 없음" : chaap.place)
                         .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 11)
                         .foregroundStyle(Color.chLabelWhiteSecondary)
                 }
                 .frame(height: 33, alignment: .topTrailing)
