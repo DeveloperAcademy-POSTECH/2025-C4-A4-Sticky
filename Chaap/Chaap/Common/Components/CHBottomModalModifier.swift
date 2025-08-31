@@ -38,10 +38,6 @@ struct CHBottomModalModifier<SheetContent: View>: ViewModifier {
             VStack {
                 Spacer()
                 VStack {
-                    Capsule()
-                        .frame(width: 40, height: 4)
-                        .foregroundColor(.white)
-                        .padding(.top, 12)
                     self.content()
                         .padding()
                 }

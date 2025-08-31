@@ -114,9 +114,17 @@ struct TagView: View {
         }
         .chBottomModal(isPresented: $showPeerList) {
             if let mpcManager = viewModel.mpcManager {
-                TagPeerListView(mpcManager: mpcManager) { mcPeerID in
-                    showPeerList = false
-                    showInvitationPending = true
+                VStack {
+                    Capsule()
+                        .frame(width: 40, height: 4)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    TagPeerListView(mpcManager: mpcManager) { mcPeerID in
+                        showPeerList = false
+                        showInvitationPending = true
+                    }
                 }
             }
         }
