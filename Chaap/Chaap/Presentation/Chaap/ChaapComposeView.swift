@@ -49,23 +49,28 @@ struct ChaapComposeView: View {
                         Color.black.opacity(0.25)
                     )
             }
-            ScrollView {
-                VStack {
-                    topNavigationView
-                    Spacer().frame(height: 50)
-                    cardView
-                    Spacer().frame(height: 80)
-                    /// 저장 버튼
-                    CHMainButton(
-                        actionType: .save,
-                        action: {
-                            navigationManager.goToRoot()
-                        }
-                    )
+            VStack {
+                topNavigationView
+                
+                ScrollView {
+                    VStack {
+                        Spacer().frame(height: 34)
+                        cardView
+                            .safeAreaPadding(.horizontal, 24)
+                        Spacer().frame(height: 80)
+                    }
                 }
-                .safeAreaPadding(.horizontal, 16)
+                .scrollIndicators(.hidden)
+                
+                /// 저장 버튼
+                CHMainButton(
+                    actionType: .save,
+                    action: {
+                        navigationManager.goToRoot()
+                    }
+                )
             }
-            .scrollIndicators(.hidden)
+            .safeAreaPadding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden(true)
         .alert("정말 삭제하시겠습니까?", isPresented: $showDeleteAlert) {
@@ -111,7 +116,7 @@ struct ChaapComposeView: View {
                 CHCircleButton(buttonImageName: "trash")
             }
         }
-        .safeAreaPadding(.top, 9)
+        .padding(.bottom, 8)
     }
     
     var cardView: some View {
@@ -126,13 +131,13 @@ struct ChaapComposeView: View {
                 }
                 photoInputView
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 16)
             .padding(.vertical, 24)
         }
     }
     
     var peerDateInfoView: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             if let iconName = chaap.peers.first?.iconName {
                 Image(iconName)
                     .resizable()
@@ -194,7 +199,9 @@ struct ChaapComposeView: View {
                 .tint(Color.chLabelWhitePrimary)
                 .focused($isFocused)
         }
-        .frame(height: 57)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
+//        .frame(height: 57)
         .background(
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
@@ -240,6 +247,7 @@ struct ChaapComposeView: View {
                     .font(.chBodyRegular)
                     .lineHeight(1.4, fontSize: 18)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
             
             TextEditor(text: $chaap.memo)
@@ -253,10 +261,11 @@ struct ChaapComposeView: View {
                 .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
                 .multilineTextAlignment(.center)
-                .lineLimit(3)
                 .tint(Color.chLabelWhitePrimary)
                 .focused($isFocused)
         }
+        .padding(.horizontal, 15)
+        .padding(.vertical, 1)
         .frame(height: 136)
         .background(
             ZStack {
@@ -318,8 +327,9 @@ struct ChaapComposeView: View {
             }
             Spacer()
         }
-        .padding(.horizontal, 20)
-        .frame(height: 54)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 14)
+        .frame(height: 57)
         .background(
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
