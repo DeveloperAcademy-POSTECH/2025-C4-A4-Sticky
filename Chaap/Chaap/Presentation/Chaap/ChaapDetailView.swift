@@ -58,13 +58,7 @@ struct ChaapDetailView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .navigationBarBackButtonHidden(true)
-        .alert("정말 삭제하시겠습니까?", isPresented: $showDeleteAlert) {
-            Button("삭제", role: .destructive, action: deleteChaap)
-            Button("취소", role: .cancel) { }
-        } message: {
-            Text("이 기록은 완전히 삭제되며 되돌릴 수 없습니다.")
-        }
+        .frame(width: 319, height: 389)
     }
     
     var topNavigationView: some View {

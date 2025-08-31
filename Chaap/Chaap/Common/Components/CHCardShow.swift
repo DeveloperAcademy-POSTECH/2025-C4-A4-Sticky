@@ -14,8 +14,6 @@ struct CHCardShow: View {
     var body: some View {
         ZStack {
             CHCardBG()
-            
-            // TODO: 데이터 가져와서 넣기
             VStack {
                 topContent
                 Spacer()

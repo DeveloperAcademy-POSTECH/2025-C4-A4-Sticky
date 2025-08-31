@@ -12,6 +12,28 @@ struct PeopleDetailView: View {
     let displayName: String
     let peers: [Peer]
     
+    enum SortOption: String, CaseIterable, Identifiable {
+        case newest = "최근순"
+        case oldest = "오래된 순"
+        
+        var id: Self { self }
+    }
+    
+    @State private var sortOption: SortOption = .newest
+    
+    var sortedChaaps: [Chaap] {
+        switch sortOption {
+        case .newest:
+            return filteredChaaps.sorted {
+                $0.createdAt > $1.createdAt
+            }
+        case .oldest:
+            return filteredChaaps.sorted {
+                $0.createdAt < $1.createdAt
+            }
+        }
+    }
+    
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
@@ -32,7 +54,7 @@ struct PeopleDetailView: View {
             }
         }
     }
-
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -54,75 +76,177 @@ struct PeopleDetailView: View {
                 )
                 .ignoresSafeArea(.all)
             
-            VStack(spacing: 62) {
+            VStack {
                 topNavigation
-                cardNumberView
-                slideCard
-                Spacer()
+                chaapList
             }
+            .safeAreaPadding(.horizontal, 16)
         }
         .navigationBarHidden(true)
     }
     
     // MARK: - Top navigation
     var topNavigation: some View {
-        ZStack {
+        HStack {
+            /// Back button
+            Button {
+                dismiss()
+            } label: {
+                CHCircleButton(buttonImageName: "chevron.backward")
+            }
+            
+            Spacer()
+            
             Text(displayName)
-                .font(.systemEmphasized)
+                .font(.chTitleSemibold)
+                .lineHeight(1.4, fontSize: 22)
                 .foregroundColor(.white)
             
-            HStack {
-                /// Back button
+            Spacer()
+            
+            /// Filter button
+            Menu {
                 Button {
-                    dismiss()
+                    sortOption = .newest
                 } label: {
-                    CHCircleButton(buttonImageName: "chevron.backward")
+                    HStack {
+                        Text("최근순")
+                        Spacer()
+                        if sortOption == .newest {
+                            Image(systemName: "checkmark")
+                        }
+                    }
                 }
-                Spacer()
-
-//                CHNavBar()
+                
+                Button {
+                    sortOption = .oldest
+                } label: {
+                    HStack {
+                        Text("오래된 순")
+                        Spacer()
+                        if sortOption == .oldest {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+            } label: {
+                CHCircleButton(buttonImageName: "slider.horizontal.3")
             }
         }
         .padding(.bottom, 10)
-        .safeAreaPadding(.horizontal, 16)
+        .safeAreaPadding(.top, 9)
     }
     
-    // MARK: - Card counter
-    private var cardNumberView: some View {
-        let displayIndex = min((currentIndex ?? 0) + 1, filteredChaaps.count)
-        
-        return
-            Text("\(displayIndex)/\(filteredChaaps.count)")
-                .font(.chBodyBold)
-                .foregroundStyle(.white)
-
-        
-    }
-    // MARK: - Card View
-    var slideCard: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 13) {
-                ForEach(filteredChaaps.indices, id: \.self) { index in
+    // MARK: - chaapList
+    var chaapList: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(sortedChaaps, id: \.self) { chaap in
+                    
                     Button {
-                        if filteredChaaps[index].isEditable {
-                            navigationManager.push(.compose(filteredChaaps[index]))
+                        if chaap.isEditable {
+                            navigationManager.push(.compose(chaap))
                         } else {
-                            navigationManager.push(.detail(filteredChaaps[index]))
+                            navigationManager.push(.detail(chaap))
                         }
                     } label: {
-                        CHCardShow(chaap: filteredChaaps[index])
-                            .frame(width: 319, height: 389)
-                            .animation(.spring(), value: currentIndex)
-                            .containerRelativeFrame(.horizontal)
-                            .tag(index)
+                        listRowView(for: chaap)
                     }
+                    .background(Color.clear)
+                    
+                    Rectangle()
+                        .foregroundColor(.chLabelBlackTeritary)
+                        .frame(height: 1)
                 }
             }
-            .scrollTargetLayout()
         }
-        .scrollTargetBehavior(.viewAligned)
-        .scrollPosition(id: $currentIndex)
-        .contentMargins(.horizontal, (UIScreen.main.bounds.width - cardWidth) / 2, for: .scrollContent)
-        
+    }
+    
+    private func listRowView(for chaap: Chaap) -> some View {
+        HStack(spacing: 12) {
+            // TODO: - Chaap 사진
+            ZStack {
+                if let data = chaap.photoData, let chaapImage = UIImage(data: data) {
+                    Color.clear
+                        .aspectRatio(1, contentMode: .fit)
+                    Image(uiImage: chaapImage)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fill)
+                        .clipShape(Circle())
+                        .shadow(color: Color.chBlack.opacity(0.25), radius: 4, x: 0, y: 4)
+                }
+                else {
+                    Circle()
+                        .fill(Color(hex: "#D9D9D9").opacity(0.25))
+                }
+                
+                imageCircleStroke
+            }
+            .frame(width: 54, height: 54)
+            
+            Text(chaap.title.isEmpty ? "제목 없음" : chaap.title)
+                .font(.chBodyMedium)
+                .lineHeight(1.4, fontSize: 18)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.leading)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 4)
+            
+            VStack {
+                VStack(alignment: .trailing) {
+                    Text(chaap.createdAt, style: .date)
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 11)
+                        .foregroundStyle(Color.chLabelWhiteSecondary)
+                    Spacer()
+                    Text(chaap.place.isEmpty ? "장소 없음" : chaap.place)
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 11)
+                        .foregroundStyle(Color.chLabelWhiteSecondary)
+                }
+                .frame(height: 33, alignment: .topTrailing)
+                Spacer()
+            }
+        }
+        .safeAreaPadding(.vertical, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    var imageCircleStroke: some View {
+            Circle()
+                .strokeBorder(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color.white.opacity(0),
+                            Color.white.opacity(0.6 * 0.2)
+                        ]),
+                        startPoint: .center,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                )
+                .strokeBorder(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color(hex: "#EEEEEE").opacity(0.8 * 0.2),
+                            Color(hex: "#EEEEEE").opacity(0)
+                        ]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ),
+                    lineWidth: 1
+                )
+                .strokeBorder(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color.white.opacity(0.6),
+                            Color.white.opacity(0.1 * 0.2)
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .center
+                    ),
+                    lineWidth: 1
+                )
     }
 }
