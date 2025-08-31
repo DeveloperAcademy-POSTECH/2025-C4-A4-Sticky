@@ -181,6 +181,7 @@ struct ChaapComposeView: View {
                     .foregroundStyle(Color.chLabelWhiteSecondary)
             }
             TextField("", text: $chaap.title)
+                .maxLength(text: $chaap.title, 15)
                 .font(.chBodyBold)
                 .lineHeight(1.4, fontSize: 18)
                 .foregroundStyle(Color.chLabelWhitePrimary)
@@ -242,6 +243,7 @@ struct ChaapComposeView: View {
             }
             
             TextEditor(text: $chaap.memo)
+                .maxLength(text: $chaap.memo, 70)
                 .font(.chBodyRegular)
                 .lineHeight(1.4, fontSize: 18)
                 .foregroundStyle(Color.chLabelWhitePrimary)
@@ -301,6 +303,7 @@ struct ChaapComposeView: View {
             HStack(alignment: .center, spacing: 4){
                 Image(.placeMarker)
                 TextField("\(chaap.place)", text: $chaap.place)
+                    .maxLength(text: $chaap.place, 15)
                     .font(.chPrimaryCaptionRegular)
                     .lineHeight(1.4, fontSize: 16)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
