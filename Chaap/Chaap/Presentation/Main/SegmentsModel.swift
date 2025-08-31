@@ -15,7 +15,7 @@ enum SegmentsModel: String, CaseIterable {
     
     var iconName: String {
         switch self {
-        case .cardSegment: return "quote.bubble.fill"
+        case .cardSegment: return "clock.fill"
         case .peopleSegment: return "person.2.fill"
         case .calendarSegment: return "calendar"
         case .mapSegment: return "map.fill"
