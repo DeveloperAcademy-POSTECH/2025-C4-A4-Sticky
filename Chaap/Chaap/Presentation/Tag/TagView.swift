@@ -255,28 +255,21 @@ struct TagView: View {
             if let distance = viewModel.distance {
                 VStack {
                     Spacer()
-                    VStack(spacing: 11) {
-                        Image(.chaapLogo)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 90)
-                        
-                        VStack(spacing: 4) {
-                            Text(String(format: "%.1fm", distance))
-                                .font(.pretend(type: .bold, size: 35))
-                                .lineHeight(1.4, fontSize: 35)
+                    VStack(spacing: 50) {
+                        Text(String(format: "%.1fm", distance))
+                            .font(.chTitle36)
+                            .lineHeight(1.4, fontSize: 36)
+                            .foregroundStyle(Color.chLabelWhitePrimary)
+                        if !viewModel.isNearby(distance) {
+                            Text("조금 더 가까이 다가가세요!")
+                                .font(.chTitle)
+                                .lineHeight(1.4, fontSize: 24)
                                 .foregroundStyle(Color.chLabelWhitePrimary)
-                            if !viewModel.isNearby(distance) {
-                                Text("조금 더 가까이 다가가세요!")
-                                    .font(.chTitle)
-                                    .lineHeight(1.4, fontSize: 24)
-                                    .foregroundStyle(Color.chLabelWhitePrimary)
-                            } else {
-                                Text("")
-                                    .font(.chTitle)
-                                    .lineHeight(1.4, fontSize: 24)
-                                    .foregroundStyle(Color.chLabelWhitePrimary)
-                            }
+                        } else {
+                            Text(" ")
+                                .font(.chTitle)
+                                .lineHeight(1.4, fontSize: 24)
+                                .foregroundStyle(Color.chLabelWhitePrimary)
                         }
                     }
                     Spacer()
