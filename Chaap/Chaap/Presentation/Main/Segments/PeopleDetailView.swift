@@ -166,8 +166,19 @@ struct PeopleDetailView: View {
         HStack(spacing: 12) {
             // TODO: - Chaap 사진
             ZStack {
-                Circle()
-                    .fill(Color(hex: "#D9D9D9").opacity(0.25))
+                if let data = chaap.photoData, let chaapImage = UIImage(data: data) {
+                    Color.clear
+                        .aspectRatio(1, contentMode: .fit)
+                    Image(uiImage: chaapImage)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fill)
+                        .clipShape(Circle())
+                        .shadow(color: Color.chBlack.opacity(0.25), radius: 4, x: 0, y: 4)
+                }
+                else {
+                    Circle()
+                        .fill(Color(hex: "#D9D9D9").opacity(0.25))
+                }
                 
                 imageCircleStroke
             }
