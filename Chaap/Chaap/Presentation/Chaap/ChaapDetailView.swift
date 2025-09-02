@@ -46,19 +46,19 @@ struct ChaapDetailView: View {
                         Color.black.opacity(0.25)
                     )
             }
-            ScrollView {
-                VStack {
-                    topNavigationView
-                    Spacer().frame(height: 50)
-                    cardView
-                    Spacer().frame(height: 80)
-                    
+            VStack(spacing: 0) {
+                topNavigationView
+                ScrollView {
+                    VStack {
+                        Spacer().frame(height: 50)
+                        cardView
+                    }
                 }
-                .safeAreaPadding(.horizontal, 16)
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
+            .safeAreaPadding(.horizontal, 16)
         }
-        .frame(width: 319, height: 389)
+        .navigationBarBackButtonHidden(true)
     }
     
     var topNavigationView: some View {
@@ -76,6 +76,10 @@ struct ChaapDetailView: View {
             }
         }
         .safeAreaPadding(.top, 9)
+        .background(
+            Color.clear
+                .blur(radius: 3)
+        )
     }
     
     var cardView: some View {
