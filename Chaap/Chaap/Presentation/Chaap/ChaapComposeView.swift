@@ -202,41 +202,7 @@ struct ChaapComposeView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
 //        .frame(height: 57)
-        .background(
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "#808080").opacity(0.25))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .inset(by: 0.46)
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.white.opacity(0),
-                                        Color.white.opacity(0.6 * 0.2)
-                                    ]),
-                                    startPoint: .center,
-                                    endPoint: .bottomTrailing
-                                ),
-                                lineWidth: 0.92
-                            )
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color(hex: "#EEEEEE").opacity(0.8 * 0.2),
-                                        Color(hex: "#EEEEEE").opacity(0)
-                                    ]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
-                                lineWidth: 0.92
-                            )
-                    )
-                
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
-                    .opacity(0.08)
-            })
+        .background( backgroundForInput )
     }
     
     var contextInputView: some View {
@@ -267,35 +233,19 @@ struct ChaapComposeView: View {
         .padding(.horizontal, 15)
         .padding(.vertical, 1)
         .frame(height: 136)
-        .background(
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "#808080").opacity(0.25))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .inset(by: 0.46)
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.white.opacity(0),
-                                        Color.white.opacity(0.6 * 0.2)
-                                    ]),
-                                    startPoint: .center,
-                                    endPoint: .bottomTrailing
-                                ),
-                                lineWidth: 0.92
-                            )
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color(hex: "#EEEEEE").opacity(0.8 * 0.2),
-                                        Color(hex: "#EEEEEE").opacity(0)
-                                    ]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
-                                lineWidth: 0.92
-                            )
+        .background( backgroundForInput )
+    }
+
+    private var memoEditorText: Binding<String> {
+        Binding(
+            get: {
+                memoPrimed && chaap.memo.isEmpty ? "\n\n" : chaap.memo
+            },
+            set: { newValue in
+                if memoPrimed {
+                    memoPrimed = false
+                    let stripped = newValue.replacingOccurrences(
+                        of: #"^\n{0,2}"#, with: "", options: .regularExpression
                     )
                 
                 RoundedRectangle(cornerRadius: 12)
@@ -330,40 +280,43 @@ struct ChaapComposeView: View {
         .padding(.vertical, 16)
         .padding(.horizontal, 14)
         .frame(height: 57)
-        .background(
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "#808080").opacity(0.25))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .inset(by: 0.46)
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.white.opacity(0),
-                                        Color.white.opacity(0.6 * 0.2)
-                                    ]),
-                                    startPoint: .center,
-                                    endPoint: .bottomTrailing
-                                ),
-                                lineWidth: 0.92
-                            )
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color(hex: "#EEEEEE").opacity(0.8 * 0.2),
-                                        Color(hex: "#EEEEEE").opacity(0)
-                                    ]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
-                                lineWidth: 0.92
-                            )
-                    )
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
-                    .opacity(0.08)
-            })
+        .background( backgroundForInput )
+    }
+    
+    private var backgroundForInput: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(hex: "#808080").opacity(0.25))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .inset(by: 0.46)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color.white.opacity(0),
+                                    Color.white.opacity(0.6 * 0.2)
+                                ]),
+                                startPoint: .center,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 0.92
+                        )
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color(hex: "#EEEEEE").opacity(0.8 * 0.2),
+                                    Color(hex: "#EEEEEE").opacity(0)
+                                ]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ),
+                            lineWidth: 0.92
+                        )
+                )
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
+                .opacity(0.08)
+        }
     }
     
     var photoInputView: some View {
