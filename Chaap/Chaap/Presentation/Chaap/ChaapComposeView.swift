@@ -17,6 +17,7 @@ struct ChaapComposeView: View {
     @StateObject private var viewModel = ChaapComposeViewModel()
     
     @FocusState private var isFocused: Bool
+    @State private var memoPrimed = true
     
     @State private var showDeleteAlert = false
     
@@ -179,25 +180,23 @@ struct ChaapComposeView: View {
     var titleInputView: some View {
         /// 제목 입력
         ZStack(alignment: .center) {
-            if chaap.title.isEmpty {
+            if chaap.title.isEmpty && !isFocused {
                 Text("제목을 입력하세요")
                     .font(.chBodyRegular)
                     .lineHeight(1.4, fontSize: 18)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
+                    .allowsHitTesting(false)
             }
             TextField("", text: $chaap.title)
                 .maxLength(text: $chaap.title, 15)
                 .font(.chBodyBold)
                 .lineHeight(1.4, fontSize: 18)
                 .foregroundStyle(Color.chLabelWhitePrimary)
-                .lineLimit(1)
-                .background(Color.clear)
-                .autocorrectionDisabled(true)
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
                 .multilineTextAlignment(.center)
-                .tint(Color.chLabelWhitePrimary)
+                .background(Color.clear)
                 .focused($isFocused)
+                .onTapGesture { isFocused = true }
+                .tint(.chLabelWhitePrimary)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
@@ -208,7 +207,7 @@ struct ChaapComposeView: View {
     var contextInputView: some View {
         /// 메모 입력
         ZStack(alignment: .center) {
-            if chaap.memo.isEmpty {
+            if chaap.memo.isEmpty && !isFocused {
                 Text("내용을 입력하세요")
                     .font(.chBodyRegular)
                     .lineHeight(1.4, fontSize: 18)
@@ -216,8 +215,7 @@ struct ChaapComposeView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
             
-            TextEditor(text: $chaap.memo)
-                .maxLength(text: $chaap.memo, 70)
+            TextEditor(text: memoEditorText)
                 .font(.chBodyRegular)
                 .lineHeight(1.4, fontSize: 18)
                 .foregroundStyle(Color.chLabelWhitePrimary)
@@ -229,6 +227,14 @@ struct ChaapComposeView: View {
                 .multilineTextAlignment(.center)
                 .tint(Color.chLabelWhitePrimary)
                 .focused($isFocused)
+                .onAppear {
+                    memoPrimed = chaap.memo.isEmpty
+                }
+                .onChange(of: isFocused) { _, focused in
+                    if !focused && chaap.memo.isEmpty {
+                        memoPrimed = true
+                    }
+                }
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 1)
@@ -247,10 +253,13 @@ struct ChaapComposeView: View {
                     let stripped = newValue.replacingOccurrences(
                         of: #"^\n{0,2}"#, with: "", options: .regularExpression
                     )
-                
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.shadow(.inner(color: .black, radius: 4, x: 1, y: 1.5)))
-                    .opacity(0.08)
+                    chaap.memo = stripped
+                } else {
+                    chaap.memo = newValue
+                }
+                if chaap.memo.count > 70 {
+                    chaap.memo = String(chaap.memo.prefix(70))
+                }
             }
         )
     }
