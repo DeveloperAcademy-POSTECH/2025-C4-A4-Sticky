@@ -63,7 +63,7 @@ enum MainButtonAction {
     var verticalPadding: CGFloat {
         switch self {
         case .save:
-            return 13
+            return 12
         case .cancel, .accept, .decline:
             return 17
         case .connect:

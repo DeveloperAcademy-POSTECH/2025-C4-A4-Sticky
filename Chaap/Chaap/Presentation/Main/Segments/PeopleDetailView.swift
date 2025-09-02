@@ -142,7 +142,6 @@ struct PeopleDetailView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(sortedChaaps, id: \.self) { chaap in
-                    
                     Button {
                         if chaap.isEditable {
                             navigationManager.push(.compose(chaap))
@@ -157,6 +156,7 @@ struct PeopleDetailView: View {
                     Rectangle()
                         .foregroundColor(.chLabelBlackTeritary)
                         .frame(height: 1)
+                        .padding(.vertical, 16)
                 }
             }
         }
@@ -183,6 +183,7 @@ struct PeopleDetailView: View {
                 imageCircleStroke
             }
             .frame(width: 54, height: 54)
+            .padding(.trailing, 4)
             
             Text(chaap.title.isEmpty ? "제목 없음" : chaap.title)
                 .font(.chBodyMedium)
@@ -190,27 +191,23 @@ struct PeopleDetailView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
                 .lineLimit(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 4)
+                .frame(width: 157, alignment: .leading)
             
-            VStack {
-                VStack(alignment: .trailing) {
-                    Text(chaap.createdAt, style: .date)
-                        .font(.chSecondaryCaptionMedium)
-                        .lineHeight(1.4, fontSize: 11)
-                        .foregroundStyle(Color.chLabelWhiteSecondary)
-                    Spacer()
-                    Text(chaap.place.isEmpty ? "장소 없음" : chaap.place)
-                        .font(.chSecondaryCaptionMedium)
-                        .lineHeight(1.4, fontSize: 11)
-                        .foregroundStyle(Color.chLabelWhiteSecondary)
-                }
-                .frame(height: 33, alignment: .topTrailing)
+            VStack(alignment: .trailing) {
+                Text(chaap.createdAt, style: .date)
+                    .font(.chSecondaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 11)
+                    .lineLimit(1)
+                    .foregroundStyle(Color.chLabelWhiteSecondary)
                 Spacer()
+                Text(chaap.place.isEmpty ? "장소 없음" : chaap.place)
+                    .font(.chSecondaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 11)
+                    .lineLimit(1)
+                    .foregroundStyle(Color.chLabelWhiteSecondary)
             }
+            .frame(width: 122, height: 33, alignment: .topTrailing)
         }
-        .safeAreaPadding(.vertical, 16)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     var imageCircleStroke: some View {
