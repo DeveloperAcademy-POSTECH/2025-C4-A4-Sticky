@@ -49,21 +49,26 @@ struct ChaapComposeView: View {
             }
             ScrollView {
                 VStack {
-                    topNavigationView
-                    Spacer().frame(height: 50)
+                    Spacer().frame(height: 94)
                     cardView
                     Spacer().frame(height: 80)
-                    /// 저장 버튼
-                    CHMainButton(
-                        actionType: .save,
-                        action: {
-                            navigationManager.goToRoot()
-                        }
-                    )
+                    
                 }
-                .safeAreaPadding(.horizontal, 16)
             }
             .scrollIndicators(.hidden)
+            .safeAreaPadding(.horizontal, 16)
+            VStack(spacing: 0) {
+                topNavigationView
+                
+                Spacer()
+                CHMainButton(
+                    actionType: .save,
+                    action: {
+                        navigationManager.goToRoot()
+                    }
+                )
+            }
+            .safeAreaPadding(.horizontal, 16)
         }
         .navigationBarBackButtonHidden(true)
         .alert("정말 삭제하시겠습니까?", isPresented: $showDeleteAlert) {
