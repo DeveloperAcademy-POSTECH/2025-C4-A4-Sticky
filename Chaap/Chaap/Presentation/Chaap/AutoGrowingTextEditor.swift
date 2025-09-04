@@ -55,8 +55,6 @@ struct AutoGrowingTextEditor: View {
                 .scrollDisabled(true)
                 .multilineTextAlignment(.center)
                 .background(Color.clear)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
                 .tint(textColor)
                 .focused($focused)
                 .opacity(text.isEmpty && !focused ? 0 : 1) // placeholder 시엔 숨김
