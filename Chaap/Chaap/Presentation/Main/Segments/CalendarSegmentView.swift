@@ -185,9 +185,13 @@ struct CalendarSegmentView: View {
 
     private var chaapListModal: some View {
         VStack(spacing: 0) {
-            // 챱 목록
+            Capsule()
+                .frame(width: 40, height: 4)
+                .foregroundColor(.white)
+                .padding(.bottom, 12)
+            
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(spacing: 12) {
                     ForEach(viewModel.eventsForSelectedDate, id: \.id) { chaap in
                         Button {
                             if chaap.isEditable {
@@ -197,12 +201,11 @@ struct CalendarSegmentView: View {
                             }
                         } label: {
                             PeerChaapRow(chaap: chaap)
-                                .padding(.horizontal, 4)
-                                .padding(.vertical, 12)
                         }
                     }
                 }
             }
+            .padding(.horizontal, 16)
             .scrollIndicators(.hidden)
         }
     }
