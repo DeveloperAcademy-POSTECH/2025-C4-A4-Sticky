@@ -172,6 +172,7 @@ struct EditProfileView: View {
                 }
                 
                 TextField("", text: $viewModel.nickname)
+                    .maxLength(text: $viewModel.nickname, 8)
                     .font(.chPrimaryCaptionMedium)
                     .lineHeight(1.4, fontSize: 16)
                     .foregroundColor(

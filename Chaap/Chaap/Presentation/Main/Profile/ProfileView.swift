@@ -182,6 +182,7 @@ struct ProfileView: View {
                 }
                 
                 TextField("", text: $viewModel.nickname)
+                    .maxLength(text: $viewModel.nickname, 8)
                     .font(.chPrimaryCaptionMedium)
                     .foregroundColor(.chLabelWhitePrimary)
                     .lineHeight(1.4, fontSize: 16)
