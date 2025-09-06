@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @Bindable var viewModel = EditProfileViewModel()
+    @Bindable var viewModel: UserProfileViewModel
     @EnvironmentObject private var navigationManager: CHNavigationManager
     
-    @Binding var selectedImageName: String?
     @State private var showImagePicker = false
     
     @Environment(\.dismiss) var dismiss
@@ -19,15 +18,9 @@ struct EditProfileView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 19) {
-                /// 상단 네비게이션
                 topNavigation
-                
-                /// 메인 컨텐츠
                 changeProfileImage
-                
-                
                 nicknameField
-                
                 Spacer()
             }
         }
@@ -35,6 +28,7 @@ struct EditProfileView: View {
             VStack(spacing: 20) {
                 Text("프로필 이미지 선택")
                     .font(.chBodyMedium)
+                    .lineHeight(1.4, fontSize: 18)
                     .foregroundStyle(Color.chLabelWhitePrimary)
                 
                 imageOption
@@ -65,21 +59,20 @@ struct EditProfileView: View {
                 
                 /// 오른쪽(저장) 버튼
                 Button("저장") {
-                    viewModel.saveNickname()
-                    viewModel.saveProfileImage()
-                    selectedImageName = viewModel.selectedImageName
+                    viewModel.saveProfile()
                     navigationManager.pop()
                 }
                 .font(.chPrimaryCaptionMedium)
-                .foregroundColor(.chLabelBlackPrimary)
-                //            .foregroundColor(viewModel.hasUserEdited ? .chLabelBlackPrimary : .chLabelBlackSecondary)
-                //            .disabled(!viewModel.hasUserEdited)
+                .lineHeight(1.4, fontSize: 16)
+                .foregroundColor(viewModel.hasUserEdited ? .chLabelBlackPrimary : .chLabelBlackSecondary)
+                .disabled(!viewModel.hasUserEdited)
             }
             
             /// 중앙 타이틀
             Text("프로필 수정")
                 .font(.systemEmphasized)
                 .foregroundColor(.black)
+                .lineHeight(1.4, fontSize: 17)
             
         }
         .safeAreaPadding(.horizontal, 16)
@@ -95,7 +88,7 @@ struct EditProfileView: View {
                 .shadow(color: .black.opacity(0.1), radius: 5, x: 1.5, y: 1.5)
                 .shadow(color: .black.opacity(0.05), radius: 2, x: 3, y: 3)
             
-            if let selectedImageName {
+            if let selectedImageName = viewModel.selectedImageName {
                 Image(selectedImageName)
                     .resizable()
                     .scaledToFill()
@@ -107,27 +100,12 @@ struct EditProfileView: View {
                     .frame(width: 55, height: 55)
             }
         }
-        .onAppear {
-            viewModel.selectedImageName = selectedImageName
-        }
-        .onChange(of: selectedImageName) { newValue in
-            viewModel.selectedImageName = newValue
-        }
-        .onTapGesture {
-            showImagePicker = true
-        }
+        .onTapGesture { showImagePicker = true }
     }
     
     // MARK: - Image Option Sheet
     var imageOption: some View {
-        let imageNames = [
-            "profileBird",
-            "profileButterfly",
-            "profileCat",
-            "profileDog",
-            "profileRabbit",
-            "profileTurtle"
-        ]
+        let imageNames = ["profileBird", "profileButterfly", "profileCat", "profileDog", "profileRabbit", "profileTurtle"]
         
         return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 20) {
             ForEach(imageNames, id: \.self) { imageName in
@@ -137,7 +115,7 @@ struct EditProfileView: View {
                         .foregroundColor(Color.chLabelWhitePrimary)
                         .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
                         .onTapGesture {
-                            selectedImageName = imageName
+                            viewModel.selectedImageName = imageName
                             showImagePicker = false
                         }
                     
@@ -157,6 +135,7 @@ struct EditProfileView: View {
                 Text("닉네임")
                     .font(.chPrimaryCaptionMedium)
                     .foregroundColor(.chLabelBlackPrimary)
+                    .lineHeight(1.4, fontSize: 16)
                 Spacer()
             }
             
@@ -184,8 +163,18 @@ struct EditProfileView: View {
                             )
                     )
                 
-                TextField("\($viewModel.originalNickname)", text: $viewModel.nickname)
+                if viewModel.nickname.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    Text("닉네임을 입력해주세요.")
+                        .foregroundColor(.chLabelBlackSecondary)
+                        .font(.chPrimaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 16)
+                        .padding(.horizontal, 20)
+                }
+                
+                TextField("", text: $viewModel.nickname)
+                    .maxLength(text: $viewModel.nickname, 8)
                     .font(.chPrimaryCaptionMedium)
+                    .lineHeight(1.4, fontSize: 16)
                     .foregroundColor(
                         viewModel.hasUserEdited ? .chLabelBlackPrimary : .chLabelBlackSecondary
                     )

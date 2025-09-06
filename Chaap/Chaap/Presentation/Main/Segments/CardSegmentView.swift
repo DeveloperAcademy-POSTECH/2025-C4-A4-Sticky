@@ -24,7 +24,10 @@ struct CardSegmentView: View {
     
     var body: some View {
         ZStack {
-            if let index = currentIndex, let data = recentFiveChaaps[index].photoData, let chaapImage = UIImage(data: data) {
+            if !recentFiveChaaps.isEmpty,
+               let index = currentIndex,
+               let data = recentFiveChaaps[index].photoData,
+               let chaapImage = UIImage(data: data) {
                 Image(uiImage: chaapImage)
                     .resizable()
                     .scaledToFill()

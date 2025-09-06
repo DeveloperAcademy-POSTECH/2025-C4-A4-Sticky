@@ -94,7 +94,3 @@ struct SegmentControlPicker: View {
         }
     }
 }
-
-#Preview {
-    MainView()
-}

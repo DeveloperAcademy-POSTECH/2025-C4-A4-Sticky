@@ -11,6 +11,7 @@ import SwiftData
 struct MainView: View {
     @StateObject private var viewModel = SegmentsViewModel()
     @StateObject private var navigationManager = CHNavigationManager()
+    @Bindable var userProfileViewModel: UserProfileViewModel
     @Environment(\.modelContext) private var modelContext
     @AppStorage("SelectedProfileImageName") private var selectedImageName: String?
 
@@ -74,7 +75,7 @@ struct MainView: View {
                     SearchView()
                         .environmentObject(navigationManager)
                 case .editProfile:
-                    EditProfileView(selectedImageName: $selectedImageName)
+                    EditProfileView(viewModel: userProfileViewModel)
                         .environmentObject(navigationManager)
                 case .compose(let chaap):
                     ChaapComposeView(chaap: chaap, modelContext: modelContext)
@@ -109,8 +110,4 @@ struct MainView: View {
                 .environmentObject(navigationManager)
         }
     }
-}
-
-#Preview {
-    MainView()
 }

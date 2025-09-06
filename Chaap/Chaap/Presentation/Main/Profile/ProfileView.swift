@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @Bindable var viewModel = ProfileViewModel()
+    @Bindable var viewModel: UserProfileViewModel
     @State private var shouldNavigateToHome = false
     
     @State private var showImagePicker = false
-    @State private var selectedImageName: String? = nil
     
     var body: some View {
         NavigationStack {
@@ -37,16 +36,11 @@ struct ProfileView: View {
                     .ignoresSafeArea(.all)
                 
                 VStack(spacing: 19) {
-                    /// 상단 네비게이션
                     topNavigation
                         .padding(.bottom, 10)
-                    
-                    /// 프로필 사진
                     chooseProfileImage
-                    
-                    /// 닉네임 섹션
                     nicknameField
-
+                    
                     Spacer()
                 }
             }
@@ -55,6 +49,7 @@ struct ProfileView: View {
                     Text("프로필 이미지 선택")
                         .font(.chBodyMedium)
                         .foregroundStyle(Color.chLabelWhitePrimary)
+                        .lineHeight(1.4, fontSize: 18)
                     
                     imageOption
                     Spacer()
@@ -63,6 +58,8 @@ struct ProfileView: View {
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
             }
+            .background(Color.white)
+            .navigationBarBackButtonHidden(true)
         }
     }
     
@@ -72,21 +69,17 @@ struct ProfileView: View {
             Text("Chaap")
                 .font(.systemEmphasized)
                 .foregroundColor(.chLabelWhitePrimary)
+                .lineHeight(1.4, fontSize: 17)
             
             /// 오른쪽(다음) 버튼
             HStack {
                 Spacer()
                 Button("다음") {
-                    viewModel.saveNickname()
-                    
-                    if let selectedImageName {
-                        UserDefaults.standard.set(selectedImageName, forKey: "SelectedProfileImageName")
-                    }
-                    
-                    shouldNavigateToHome = true
-                    // TODO: 연결
+                    viewModel.saveProfile()
+//                    shouldNavigateToHome = true
                 }
                 .font(.chPrimaryCaptionMedium)
+                .lineHeight(1.4, fontSize: 16)
                 .foregroundColor(viewModel.isNextButtonEnabled ? .chLabelWhitePrimary : .chLabelWhiteSecondary)
                 .disabled(!viewModel.isNextButtonEnabled)
             }
@@ -102,7 +95,7 @@ struct ProfileView: View {
                 .foregroundColor(Color.chLabelWhitePrimary)
                 .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
             
-            if let selectedImageName {
+            if let selectedImageName = viewModel.selectedImageName {
                 Image(selectedImageName)
                     .resizable()
                     .scaledToFill()
@@ -114,21 +107,12 @@ struct ProfileView: View {
                     .frame(width: 55, height: 55)
             }
         }
-        .onTapGesture {
-            showImagePicker = true
-        }
+        .onTapGesture { showImagePicker = true }
     }
     
     // MARK: - Image Option Sheet
     var imageOption: some View {
-        let imageNames = [
-            "profileBird",
-            "profileButterfly",
-            "profileCat",
-            "profileDog",
-            "profileRabbit",
-            "profileTurtle"
-        ]
+        let imageNames = ["profileBird", "profileButterfly", "profileCat", "profileDog", "profileRabbit", "profileTurtle"]
         
         return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 50), count: 3), spacing: 30) {
             ForEach(imageNames, id: \.self) { imageName in
@@ -138,7 +122,7 @@ struct ProfileView: View {
                         .foregroundColor(Color.chLabelWhitePrimary)
                         .shadow(color: .black.opacity(0.3), radius: 2.5, x: 3, y: 3)
                         .onTapGesture {
-                            selectedImageName = imageName
+                            viewModel.selectedImageName = imageName
                             showImagePicker = false
                         }
                     
@@ -160,6 +144,7 @@ struct ProfileView: View {
                 Text("닉네임")
                     .font(.chPrimaryCaptionMedium)
                     .foregroundColor(.chLabelWhitePrimary)
+                    .lineHeight(1.4, fontSize: 16)
                 Spacer()
             }
             
@@ -188,21 +173,23 @@ struct ProfileView: View {
                             )
                     )
                 
-                if viewModel.nickname.isEmpty {
+                if viewModel.nickname.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Text("닉네임을 입력해주세요.")
                         .foregroundColor(.chLabelBlackSecondary)
                         .font(.chPrimaryCaptionMedium)
+                        .lineHeight(1.4, fontSize: 16)
                         .padding(.horizontal, 20)
                 }
                 
                 TextField("", text: $viewModel.nickname)
+                    .maxLength(text: $viewModel.nickname, 8)
                     .font(.chPrimaryCaptionMedium)
                     .foregroundColor(.chLabelWhitePrimary)
+                    .lineHeight(1.4, fontSize: 16)
                     .padding(.horizontal, 20)
                     .frame(height: 52)
                     .cornerRadius(100)
                     .tint(Color.chLabelWhitePrimary)
-                    .lineLimit(1)
                     .background(Color.clear)
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
@@ -211,8 +198,4 @@ struct ProfileView: View {
         }
         .safeAreaPadding(.horizontal, 22)
     }
-}
-
-#Preview {
-    ProfileView()
 }

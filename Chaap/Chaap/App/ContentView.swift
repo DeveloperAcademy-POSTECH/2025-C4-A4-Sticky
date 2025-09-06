@@ -12,13 +12,14 @@ struct ContentView: View {
     @AppStorage("displayName") private var displayName: String = ""
     
     @State private var isSplashFinished = false
+    @State private var userProfileViewModel = UserProfileViewModel()
     
     var body: some View {
         if isSplashFinished {
             if displayName.isEmpty {
-                ProfileView()
+                ProfileView(viewModel: userProfileViewModel)
             } else {
-                MainView()
+                MainView(userProfileViewModel: userProfileViewModel)
             }
         } else {
             SplashView()
