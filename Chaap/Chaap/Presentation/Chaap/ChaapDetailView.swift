@@ -110,7 +110,7 @@ struct ChaapDetailView: View {
         .background(
             CHCardBG()
         )
-    }c
+    }
     
     var peerDateInfoView: some View {
         VStack(spacing: 8) {
