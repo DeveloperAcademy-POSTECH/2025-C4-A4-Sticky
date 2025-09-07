@@ -46,15 +46,29 @@ struct ChaapDetailView: View {
                         Color.black.opacity(0.25)
                     )
             }
-            VStack(spacing: 0) {
-                topNavigationView
+            
+            if let data = chaap.photoData, let chaapImage = UIImage(data: data) {
                 ScrollView {
                     VStack {
-                        Spacer().frame(height: 50)
+                        Spacer().frame(height: 103)
                         cardView
+                        Spacer().frame(height: 103)
                     }
                 }
                 .scrollIndicators(.hidden)
+                .safeAreaPadding(.horizontal, 40)
+            } else {
+                VStack {
+                    Spacer()
+                    cardView
+                    Spacer()
+                }
+                .safeAreaPadding(.horizontal, 40)
+            }
+            
+            VStack(spacing: 0) {
+                topNavigationView
+                Spacer()
             }
             .safeAreaPadding(.horizontal, 16)
         }
@@ -83,21 +97,20 @@ struct ChaapDetailView: View {
     }
     
     var cardView: some View {
-        ZStack {
-            CHCardBG()
-            VStack(spacing: 50) {
-                peerDateInfoView
-                VStack(spacing: 8) {
-                    titleLabel
-                    contextLabel
-                }
-                placeView
-                photoView
+        VStack(spacing: 50) {
+            peerDateInfoView
+            VStack(spacing: 8) {
+                titleLabel
+                contextLabel
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 24)
+            placeView
+            photoView
         }
-    }
+        .padding(24)
+        .background(
+            CHCardBG()
+        )
+    }c
     
     var peerDateInfoView: some View {
         VStack(spacing: 8) {

@@ -50,16 +50,17 @@ struct ChaapComposeView: View {
                         Color.black.opacity(0.25)
                     )
             }
+            
             ScrollView {
                 VStack {
-                    Spacer().frame(height: 94)
+                    Spacer().frame(height: 103)
                     cardView
-                    Spacer().frame(height: 80)
-                    
+                    Spacer().frame(height: 105)
                 }
             }
             .scrollIndicators(.hidden)
-            .safeAreaPadding(.horizontal, 16)
+            .safeAreaPadding(.horizontal, 40)
+            
             VStack(spacing: 0) {
                 topNavigationView
                 
