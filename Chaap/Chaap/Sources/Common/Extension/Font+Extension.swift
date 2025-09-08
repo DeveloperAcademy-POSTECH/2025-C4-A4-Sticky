@@ -9,17 +9,13 @@ import SwiftUI
 
 extension Font {
     enum Pretend {
-        case extraBold
         case bold
         case semibold
         case medium
         case regular
-        case light
         
         var value: String {
             switch self {
-            case .extraBold:
-                return "Pretendard-ExtraBold"
             case .bold:
                 return "Pretendard-Bold"
             case .semibold:
@@ -28,8 +24,6 @@ extension Font {
                 return "Pretendard-Medium"
             case .regular:
                 return "Pretendard-Regular"
-            case .light:
-                return "Pretendard-Light"
             }
         }
     }
