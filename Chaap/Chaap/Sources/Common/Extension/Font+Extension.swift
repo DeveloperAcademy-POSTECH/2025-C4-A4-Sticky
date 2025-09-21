@@ -65,11 +65,11 @@ extension Font {
     }
     
     static var chSecondaryCaptionRegular: Font {
-        return .pretend(type: .regular, size: 11)
+        return .pretend(type: .regular, size: 12)
     }
     
     static var chSecondaryCaptionMedium: Font {
-        return .pretend(type: .medium, size: 11)
+        return .pretend(type: .medium, size: 12)
     }
     
     static var systemEmphasized: Font {

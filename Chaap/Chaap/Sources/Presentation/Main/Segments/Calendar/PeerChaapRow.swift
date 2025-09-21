@@ -52,50 +52,46 @@ struct PeerChaapRow: View {
                 )
             
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     // 사람 이름
                     if !chaap.peers.isEmpty {
                         Text(chaap.peers.map { $0.displayName }.joined(separator: ", "))
                             .multilineTextAlignment(.leading)
                             .font(.chSecondaryCaptionMedium)
-                            .lineHeight(1.4, fontSize: 11)
+                            .lineHeight(1.2, fontSize: 12)
                             .foregroundStyle(Color.chLabelWhiteSecondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    
-                    Spacer()
                     
                     // 제목
                     Text(chaap.title)
                         .multilineTextAlignment(.leading)
                         .font(.chBodyMedium)
-                        .lineHeight(1.4, fontSize: 18)
+                        .lineHeight(1.2, fontSize: 18)
                         .foregroundStyle(Color.chLabelWhitePrimary)
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(width: 157)
+                .frame(width: 146, height: 46)
                 
                 Spacer()
                 
-                VStack {
-                    VStack(alignment: .trailing, spacing: 3) {
-                        // 날짜 시간
-                        Text(formatDateTime(chaap.createdAt))
-                            .font(.chSecondaryCaptionMedium)
-                            .lineHeight(1.4, fontSize: 11)
-                            .foregroundStyle(Color.chLabelWhiteSecondary)
-                            .lineLimit(1)
-                        // 장소
-                        Text(chaap.place)
-                            .font(.chSecondaryCaptionMedium)
-                            .lineHeight(1.4, fontSize: 11)
-                            .foregroundStyle(Color.chLabelWhiteSecondary)
-                            .lineLimit(1)
-                    }
-                    .frame(height: 33)
-                    Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    // 날짜 시간
+                    Text(formatDateTime(chaap.createdAt))
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.2, fontSize: 12)
+                        .foregroundStyle(Color.chLabelWhiteSecondary)
+                        .lineLimit(1)
+                    
+                    // 장소
+                    Text(chaap.place)
+                        .font(.chSecondaryCaptionMedium)
+                        .lineHeight(1.2, fontSize: 12)
+                        .foregroundStyle(Color.chLabelWhiteSecondary)
+                        .lineLimit(1)
                 }
+                .frame(height: 46, alignment: .topTrailing)
             }
             .padding(.vertical, 4)
         }

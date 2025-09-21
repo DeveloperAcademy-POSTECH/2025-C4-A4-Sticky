@@ -154,7 +154,7 @@ struct PeopleDetailView: View {
                     .background(Color.clear)
                     
                     Rectangle()
-                        .foregroundColor(.chLabelBlackTeritary)
+                        .foregroundColor(Color.white.opacity(0.2))
                         .frame(height: 1)
                         .padding(.vertical, 16)
                 }
@@ -193,20 +193,20 @@ struct PeopleDetailView: View {
                 .lineLimit(1)
                 .frame(width: 157, alignment: .leading)
             
-            VStack(alignment: .trailing) {
+            VStack(alignment: .trailing, spacing: 4) {
                 Text(chaap.createdAt, style: .date)
                     .font(.chSecondaryCaptionMedium)
-                    .lineHeight(1.4, fontSize: 11)
+                    .lineHeight(1.4, fontSize: 12)
                     .lineLimit(1)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
-                Spacer()
+                
                 Text(chaap.place.isEmpty ? "장소 없음" : chaap.place)
                     .font(.chSecondaryCaptionMedium)
-                    .lineHeight(1.4, fontSize: 11)
+                    .lineHeight(1.4, fontSize: 12)
                     .lineLimit(1)
                     .foregroundStyle(Color.chLabelWhiteSecondary)
             }
-            .frame(width: 122, height: 33, alignment: .topTrailing)
+            .frame(width: 122, height: 46)
         }
     }
     
