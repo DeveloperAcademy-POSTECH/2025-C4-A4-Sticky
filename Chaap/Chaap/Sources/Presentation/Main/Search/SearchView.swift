@@ -80,7 +80,7 @@ struct SearchView: View {
                             Spacer()
                             
                             VStack(alignment: .trailing) {
-                                Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                Text(chaap.createdAt.formatDateTime())
                                     .font(.chSecondaryCaptionMedium)
                                     .foregroundStyle(Color.chLabelBlackSecondary)
                                 

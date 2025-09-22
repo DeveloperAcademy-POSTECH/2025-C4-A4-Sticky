@@ -78,7 +78,7 @@ struct PeerChaapRow: View {
                 
                 VStack(alignment: .trailing, spacing: 4) {
                     // 날짜 시간
-                    Text(formatDateTime(chaap.createdAt))
+                    Text(chaap.createdAt.formatDateTime())
                         .font(.chSecondaryCaptionMedium)
                         .lineHeight(1.2, fontSize: 12)
                         .foregroundStyle(Color.chLabelWhiteSecondary)
@@ -99,10 +99,10 @@ struct PeerChaapRow: View {
     }
     
     // 날짜 시간 포맷 함수
-    private func formatDateTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd 월요일 HH:mm"
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: date)
-    }
+//    private func formatDateTime(_ date: Date) -> String {
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy.MM.dd 월요일 HH:mm"
+//        formatter.locale = Locale(identifier: "ko_KR")
+//        return formatter.string(from: date)
+//    }
 }

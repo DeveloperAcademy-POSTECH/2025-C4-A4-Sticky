@@ -61,7 +61,7 @@ struct CHCardShow: View {
                 .lineHeight(1.4, fontSize: 18)
                 .foregroundStyle(Color.chLabelWhitePrimary)
             
-            Text(chaap.createdAt.formatted(date: .abbreviated, time: .shortened))
+            Text(chaap.createdAt.formatDateTime())
                 .font(.chPrimaryCaptionRegular)
                 .lineHeight(1.4, fontSize: 16)
                 .foregroundStyle(Color.chLabelWhiteSecondary)
