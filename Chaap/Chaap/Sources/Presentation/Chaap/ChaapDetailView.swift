@@ -165,7 +165,6 @@ struct ChaapDetailView: View {
             .font(.chBodyRegular)
             .lineHeight(1.4, fontSize: 18)
             .foregroundStyle(Color.chLabelWhitePrimary)
-            .multilineTextAlignment(.center)
     }
     
     var placeView: some View {
